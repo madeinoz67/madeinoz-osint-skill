@@ -1,5 +1,21 @@
 {
+  "name": "madeinoz-osint-skill",
+  "version": "1.3.0",
+  "type": "module",
+  "scripts": {
+    "lint": "cd src/tools && bun run lint",
+    "typecheck": "cd src/tools && bun run typecheck",
+    "build": "cd src/tools && bun build ./index.ts --outdir ../../dist --target bun",
+    "test": "cd src/tools && bun run test"
+  },
   "dependencies": {
     "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
   }
 }

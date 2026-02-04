@@ -2,29 +2,49 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - '**'
+    tags:
+      - 'v*'
   pull_request:
-    branches: [main, develop]
+    branches:
+      - '**'
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref to build (tag or branch)'
+        required: false
+        default: ''
 
 jobs:
-  lint-yaml:
-    name: Lint YAML
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint YAML files
-        uses: ibiqlik/action-yamllint@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          config_file: .github/yamllint.yml
-          file_or_dir: src/skills/osint/AgentProfiles.yaml
-          strict: true
+          bun-version: latest
 
-  security-scan:
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run ESLint
+        run: bun run lint
+
+      - name: Run TypeScript check
+        run: bun run typecheck
+
+  security:
     name: Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,71 +54,225 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
 
-      - name: TruffleHog Secret Scanning
+      - name: Run TruffleHog secret scan
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ${{ github.event.repository.default_branch }}
+          base: ''
           head: HEAD
+          extra_args: --only-verified
 
-  validate-markdown:
-    name: Validate Markdown
+  typescript-tests:
+    name: TypeScript Tests
     runs-on: ubuntu-latest
+    needs: [lint]
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate Markdown links
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          use-quiet-mode: 'yes'
-          use-verbose-mode: 'yes'
-          folder-path: 'docs'
+          bun-version: latest
 
-  build-docs:
-    name: Build Documentation
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run tests
+        run: bun test
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
+    needs: [lint, security, typescript-tests]
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build TypeScript
+        run: bun run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      # Build documentation (validate only)
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
-        run: |
-          pip install mkdocs-material
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
 
       - name: Build documentation
         run: mkdocs build --strict
 
-  deploy-docs:
-    name: Deploy Documentation
-    needs: build-docs
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: site/
+
+  release:
+    name: Release
     runs-on: ubuntu-latest
+    needs: [build]
+    if: startsWith(github.ref, 'refs/tags/v')
+    concurrency:
+      group: changelog-update
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      packages: write
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog for this release
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --latest --strip header
+        env:
+          OUTPUT: RELEASE_NOTES.md
+
+      - name: Update full CHANGELOG.md
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+
+      - name: Commit CHANGELOG.md
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Save generated CHANGELOG.md before switching branches
+          cp CHANGELOG.md /tmp/CHANGELOG.md
+          # Discard local changes so we can switch branches
+          git checkout -- CHANGELOG.md
+          # Checkout main to apply changelog update (tag checkout is detached HEAD)
+          git fetch origin main
+          git checkout main
+          # Restore the generated CHANGELOG.md
+          cp /tmp/CHANGELOG.md CHANGELOG.md
+          git add CHANGELOG.md
+          git diff --staged --quiet || git commit -m "docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]"
+          git push origin main
+          # Return to tag for subsequent build steps
+          git checkout ${{ github.ref_name }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: RELEASE_NOTES.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Publish documentation to GitHub Pages
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: ./site
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
+
+  update-unreleased:
+    name: Update Unreleased Changes
+    runs-on: ubuntu-latest
+    needs: [build]
+    # Run on pushes to main (not tags, not PRs)
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    concurrency:
+      group: changelog-update
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          fetch-depth: 0
 
-      - name: Install dependencies
+      - name: Check for unreleased changes
+        id: check
         run: |
-          pip install mkdocs-material mike
+          # Check if there are commits since the last tag
+          if git describe --tags --abbrev=0 2>/dev/null; then
+            LAST_TAG=$(git describe --tags --abbrev=0)
+            COMMITS=$(git rev-list ${LAST_TAG}..HEAD --count)
+            echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+          else
+            echo "commits=1" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Deploy to GitHub Pages
+      - name: Generate changelog with unreleased
+        if: steps.check.outputs.commits != '0'
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+
+      - name: Commit and push changelog
+        if: steps.check.outputs.commits != '0'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          mike deploy --push --update-alias main latest
+          git add CHANGELOG.md
+          git diff --staged --quiet || git commit -m "docs: update CHANGELOG.md [skip ci]"
+          git push
