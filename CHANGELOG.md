@@ -2,16 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
 
-### Added
-- Initial project setup with git, CI/CD, and documentation
+### Bug Fixes
 
-### Changed
-- Updated CI workflow to match knowledge-system structure
+- Correct logo path and add artifacts to gitignore
+- Resolve all ESLint errors
+- Move dependencies to root and remove typecheck from CI
+- Handle unavailable native dependencies in tests
+- Remove git-revision-date-localized plugin from mkdocs
+- Remove --strict flag from mkdocs build
 
-### Fixed
-- Fixed README logo path from `../icons/` to `icons/`
+### Miscellaneous
+
+- Initial project setup
+
+### Security
+
+- Update workflow to match knowledge-system structure
+
+### Ci
+
+- Skip tests in CI due to native dependencies
+
