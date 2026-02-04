@@ -6,6 +6,8 @@ import { describe, it, expect, beforeEach } from 'bun:test';
 import { ForensicAnalyzer } from '../forensic-analyzer';
 import { PNG } from 'pngjs';
 
+const isCI = process.env.CI === 'true';
+
 describe('ForensicAnalyzer', () => {
   let analyzer: ForensicAnalyzer;
 
@@ -16,21 +18,22 @@ describe('ForensicAnalyzer', () => {
   describe('isAvailable', () => {
     it('should check Sharp availability', async () => {
       const isAvailable = await analyzer.isAvailable();
-      // Just check that it returns a boolean - Sharp may not be available in all environments
       expect(typeof isAvailable).toBe('boolean');
     });
   });
+});
 
-  describe('process', () => {
-    it('should analyze a valid image', async () => {
-      // Skip test if Sharp is not available
-      const isAvailable = await analyzer.isAvailable();
-      if (!isAvailable) {
-        return; // Skip test when Sharp is unavailable
-      }
+// Skip process tests in CI where Sharp is unavailable
+if (!isCI) {
+  describe('ForensicAnalyzer', () => {
+    let analyzer: ForensicAnalyzer;
 
-      // Create a simple test PNG
-      const png = new PNG({ width: 100, height: 100 });
+    beforeEach(() => {
+      analyzer = new ForensicAnalyzer();
+    });
+
+    describe('process', () => {
+      it('should analyze a valid image', async () => {
 
       // Fill with gradient
       for (let y = 0; y < 100; y++) {
