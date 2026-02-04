@@ -1,0 +1,97 @@
+site_name: MadeInOz OSINT Skill
+site_description: AI-powered Open Source Intelligence collection and analysis with knowledge graph integration
+site_author: MadeInOz
+copyright: Copyright &copy; 2026 MadeInOz
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - toc.follow
+    - content.code.copy
+    - content.tabs.link
+
+plugins:
+  - search:
+      lang: en
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home:
+      - Overview: index.md
+      - Installation: installation.md
+      - Verification: verification.md
+  - User Guide:
+      - Quick Reference: quick-reference.md
+      - User Guide: user-guide.md
+      - Company Research: company-research.md
+  - Workflows:
+      - Investigation Orchestrator: investigation-orchestrator.md
+      - Username Recon: username-recon.md
+      - Domain Recon: domain-recon.md
+      - Social Capture: social-capture.md
+      - Infrastructure Mapping: infra-mapping.md
+      - Entity Linking: entity-linking.md
+      - Timeline Analysis: timeline-analysis.md
+      - Target Profile: target-profile.md
+      - Intel Report: intel-report.md
+      - Company Profile: company-profile.md
+      - Corporate Structure: corporate-structure.md
+      - Financial Recon: financial-recon.md
+      - Competitor Analysis: competitor-analysis.md
+      - Risk Assessment: risk-assessment.md
+      - Email Recon: email-recon.md
+      - Phone Recon: phone-recon.md
+      - Image Recon: image-recon.md
+  - Advanced:
+      - Image Analysis Tools: image-analysis-tools.md
+      - Enrichment Roadmap: enrichment-roadmap.md
+  - Changelog: changelog.md
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/madeinoz/madeinoz-osint-skill

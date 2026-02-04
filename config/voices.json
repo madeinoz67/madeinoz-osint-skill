@@ -1,0 +1,49 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "OSINT Pack voice personalities for VoiceServer integration",
+    "sync_target": "$PAI_DIR/VoiceServer/voice-personalities.json"
+  },
+  "voices": {
+    "collector": {
+      "voice_id": "21m00Tcm4TlvDq8ikWAM",
+      "voice_name": "Rachel",
+      "stability": 0.62,
+      "similarity_boost": 0.80,
+      "description": "Methodical, academic - meticulous intelligence gatherer (F)"
+    },
+    "linker": {
+      "voice_id": "onwK4e9ZLuTAKqWW03F9",
+      "voice_name": "Daniel",
+      "stability": 0.60,
+      "similarity_boost": 0.80,
+      "description": "Sophisticated, refined - pattern recognition specialist (M)"
+    },
+    "auditor": {
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "voice_name": "Sarah",
+      "stability": 0.70,
+      "similarity_boost": 0.85,
+      "description": "Authoritative, precise - due diligence expert (F)"
+    },
+    "shadow": {
+      "voice_id": "2EiwWnXFnvU5JabPnv8n",
+      "voice_name": "Clyde",
+      "stability": 0.55,
+      "similarity_boost": 0.75,
+      "description": "Intense, gravelly - adversarial intelligence operator (M)"
+    },
+    "verifier": {
+      "voice_id": "pNInz6obpgDQGcFmaJgB",
+      "voice_name": "Adam",
+      "stability": 0.65,
+      "similarity_boost": 0.80,
+      "description": "Warm, careful - source verification specialist (M)"
+    }
+  },
+  "_voices_info": {
+    "gender_balance": "3 Female (Rachel, Sarah, Charlotte via analyst), 3 Male (Daniel, Clyde, Adam)",
+    "elevenlabs_type": "Public pre-made voices - work on all accounts",
+    "customization": "Replace voice_id values with your own ElevenLabs voice IDs"
+  }
+}

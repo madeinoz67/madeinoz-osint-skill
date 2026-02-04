@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__codanna__get_index_info"
+    ]
+  }
+}
