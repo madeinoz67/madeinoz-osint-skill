@@ -20,11 +20,17 @@ All notable changes to this project will be documented in this file.
 
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md [skip ci]
+- Add OSINT ontology for Graphiti knowledge graph
 
 ### Miscellaneous
 
 - Initial project setup
 - Bump tesseract.js from 5.1.1 to 7.0.0
+
+### Refactoring
+
+- Improve OSINT skill structure and add quality checks
 
 ### Security
 
