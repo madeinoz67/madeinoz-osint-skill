@@ -24,6 +24,7 @@ Thumbs.db
 # Build
 dist/
 build/
+artifacts/
 *.tsbuildinfo
 
 # Logs
