@@ -45,6 +45,34 @@ keywords: [osint, intelligence, reconnaissance, investigation, social-media, dom
 
 ---
 
+## Quick Start
+
+Get started immediately with these common OSINT commands:
+
+```bash
+# Username enumeration
+/osint username johndoe
+
+# Domain investigation
+/osint domain example.com
+
+# Company research
+/osint company "Acme Corporation"
+
+# Email reconnaissance
+/osint email john@example.com
+
+# Full investigation with automatic pivot expansion
+/osint investigate johndoe --follow-leads
+```
+
+**Tip:** Use natural language instead of `/osint`:
+- "Find all accounts for username johndoe"
+- "Research company Acme Corp"
+- "Investigate domain example.com"
+
+---
+
 ## Installation Prompt
 
 You are receiving a PAI Pack - a modular upgrade for AI agent systems.

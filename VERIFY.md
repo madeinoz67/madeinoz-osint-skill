@@ -99,6 +99,27 @@ OSINT_VOICES=$(grep -c '"collector"\|"linker"\|"auditor"\|"shadow"\|"verifier"' 
 ```
 **Expected:** Voice IDs are actual ElevenLabs IDs, not ${ENV_VAR} placeholders
 
+### Check 10c: Voice Markers in Workflows
+```bash
+# Check that workflows include voice output markers (🗣️)
+MISSING=0
+for f in $PAI_DIR/skills/osint/Workflows/*.md; do
+  name=$(basename "$f")
+  if grep -q '🗣️' "$f"; then
+    echo "✓ $name has voice markers"
+  else
+    echo "⚠ $name missing voice markers"
+    MISSING=$((MISSING + 1))
+  fi
+done
+if [ $MISSING -eq 0 ]; then
+  echo "✓ PASS: All workflows have voice markers"
+else
+  echo "⚠ WARNING: $MISSING workflow(s) missing voice markers"
+fi
+```
+**Expected:** All workflows include 🗣️ voice markers for audio notifications
+
 ---
 
 ## Skill Configuration (3 checks)
@@ -198,11 +219,11 @@ fi
 | Category | Checks | Required |
 |----------|--------|----------|
 | Core Structure | 5 | All must pass |
-| Workflows | 2 | All must pass (16 files, 16 with knowledge) |
+| Workflows | 2 | All must pass (17 files, 17 with knowledge) |
 | Dependencies | 2 | Warnings acceptable |
-| Voice Configuration | 3 | 1 must pass (Traits.yaml), 2 warnings acceptable |
+| Voice Configuration | 4 | 1 must pass (Traits.yaml), 3 warnings acceptable |
 | Configuration | 3 | All must pass |
-| **Total** | **15** | **11+ pass, 0 fail** |
+| **Total** | **16** | **11+ pass, 0 fail** |
 
 ---
 

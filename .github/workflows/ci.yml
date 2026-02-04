@@ -37,6 +37,87 @@ jobs:
       - name: Run ESLint
         run: bun run lint
 
+  osint-skill-checks:
+    name: OSINT Skill Validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check SKILL.md line count
+        run: |
+          LINES=$(wc -l < src/skills/osint/SKILL.md)
+          echo "SKILL.md has $LINES lines"
+          if [ $LINES -gt 500 ]; then
+            echo "❌ FAIL: SKILL.md exceeds 500 lines ($LINES)"
+            exit 1
+          else
+            echo "✅ PASS: SKILL.md is under 500 lines ($LINES)"
+          fi
+
+      - name: Check YAML frontmatter
+        run: |
+          if head -20 src/skills/osint/SKILL.md | grep -q "^name:"; then
+            echo "✅ PASS: Valid YAML frontmatter"
+          else
+            echo "❌ FAIL: Missing YAML frontmatter"
+            exit 1
+          fi
+
+      - name: Check skill name is lowercase
+        run: |
+          if grep -q "^name: osint$" src/skills/osint/SKILL.md; then
+            echo "✅ PASS: Skill name is lowercase"
+          else
+            echo "❌ FAIL: Skill name must be 'osint' (lowercase)"
+            exit 1
+          fi
+
+      - name: Validate AgentProfiles.yaml
+        run: |
+          python3 -c "import yaml; yaml.safe_load(open('src/skills/osint/AgentProfiles.yaml'))"
+          echo "✅ PASS: AgentProfiles.yaml is valid YAML"
+
+      - name: Check all 17 workflows exist
+        run: |
+          WORKFLOWS="UsernameRecon DomainRecon SocialCapture InfraMapping EntityLinking TimelineAnalysis TargetProfile IntelReport CompanyProfile CorporateStructure FinancialRecon CompetitorAnalysis RiskAssessment EmailRecon PhoneRecon ImageRecon InvestigationOrchestrator"
+          for wf in $WORKFLOWS; do
+            if [ -f "src/skills/osint/Workflows/${wf}.md" ]; then
+              echo "✅ ${wf}.md"
+            else
+              echo "❌ ${wf}.md MISSING"
+              exit 1
+            fi
+          done
+
+      - name: Check voice markers in workflows
+        run: |
+          MISSING=0
+          for f in src/skills/osint/Workflows/*.md; do
+            if grep -q '🗣️' "$f"; then
+              echo "✅ $(basename "$f") has voice markers"
+            else
+              echo "⚠️  $(basename "$f") missing voice markers"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+          if [ $MISSING -gt 0 ]; then
+            echo "⚠️  $MISSING workflow(s) missing voice markers"
+          fi
+
+      - name: Check documentation files
+        run: |
+          DOCS="USER_GUIDE.md QUICK_REFERENCE.md COMPANY_RESEARCH.md CHANGELOG.md AGENT_ROLES.md VOICE_MAPPINGS.md"
+          for doc in $DOCS; do
+            if [ -f "docs/$doc" ]; then
+              echo "✅ docs/$doc"
+            else
+              echo "⚠️  docs/$doc missing"
+            fi
+          done
+
   security:
     name: Security Scan
     runs-on: ubuntu-latest
@@ -67,7 +148,7 @@ jobs:
   typescript-tests:
     name: TypeScript Tests
     runs-on: ubuntu-latest
-    needs: [lint]
+    needs: [lint, osint-skill-checks]
     permissions:
       contents: read
     steps:
