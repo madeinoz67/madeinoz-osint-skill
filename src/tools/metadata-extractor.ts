@@ -3,7 +3,6 @@
  */
 
 import { spawn } from 'node:child_process';
-import { promisify } from 'node:util';
 import { ToolWrapper, ToolResult, ExifMetadata, ToolInput } from './types.js';
 
 export interface MetadataExtractorOptions {

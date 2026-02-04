@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "type": "module",
   "scripts": {
-    "lint": "cd src/tools && bun run lint",
+    "lint": "eslint .",
     "typecheck": "cd src/tools && bun run typecheck",
     "build": "cd src/tools && bun build ./index.ts --outdir ../../dist --target bun",
     "test": "cd src/tools && bun run test"
@@ -12,8 +12,10 @@
     "yaml": "^2.8.2"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "typescript": "^5.7.2"
+    "@eslint/js": "^9.39.2",
+    "@types/bun": "^1.3.8",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
   },
   "engines": {
     "bun": ">=1.0.0"

@@ -154,7 +154,7 @@ describe('ForensicAnalyzer', () => {
       const mockAnomalies = ['Anomaly 1', 'Anomaly 2', 'Anomaly 3'];
 
       // Access private method through type assertion for testing
-      // @ts-ignore - testing private method
+      // @ts-expect-error - testing private method
       const prob = analyzer.calculateManipulationProbability(60, mockAnomalies);
 
       expect(prob).toBe('high');
@@ -163,7 +163,7 @@ describe('ForensicAnalyzer', () => {
     it('should return medium probability for medium ELA scores', () => {
       const mockAnomalies = ['Anomaly 1'];
 
-      // @ts-ignore - testing private method
+      // @ts-expect-error - testing private method
       const prob = analyzer.calculateManipulationProbability(30, mockAnomalies);
 
       expect(prob).toBe('medium');
@@ -172,7 +172,7 @@ describe('ForensicAnalyzer', () => {
     it('should return low probability for low ELA scores', () => {
       const mockAnomalies: string[] = [];
 
-      // @ts-ignore - testing private method
+      // @ts-expect-error - testing private method
       const prob = analyzer.calculateManipulationProbability(10, mockAnomalies);
 
       expect(prob).toBe('low');

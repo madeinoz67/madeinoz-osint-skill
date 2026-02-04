@@ -4,6 +4,7 @@
 
 import { describe, it, expect, beforeEach } from 'bun:test';
 import { HashCalculator } from '../hash-calculator';
+import { PNG } from 'pngjs';
 
 describe('HashCalculator', () => {
   let calculator: HashCalculator;
@@ -25,7 +26,6 @@ describe('HashCalculator', () => {
       const testImageData = Buffer.alloc(8 * 8, 128);
 
       // Create PNG with this data
-      const PNG = require('pngjs').PNG;
       const png = new PNG({ width: 8, height: 8 });
       png.data = testImageData;
       const testBuffer = PNG.sync.write(png);
@@ -47,7 +47,6 @@ describe('HashCalculator', () => {
     });
 
     it('should return consistent hashes for same image', async () => {
-      const PNG = require('pngjs').PNG;
       const png1 = new PNG({ width: 8, height: 8 });
       const png2 = new PNG({ width: 8, height: 8 });
 
@@ -79,8 +78,6 @@ describe('HashCalculator', () => {
     });
 
     it('should return different hashes for different images', async () => {
-      const PNG = require('pngjs').PNG;
-
       // Create first image - light gray
       const png1 = new PNG({ width: 8, height: 8 });
       for (let i = 0; i < png1.data.length; i += 4) {

@@ -163,7 +163,7 @@ async function validateImage(imagePath: string): Promise<ImageValidation> {
   try {
     const mimeOutput = await $`file --mime-type -b ${imagePath}`.text();
     result.mimeType = mimeOutput.trim();
-  } catch (e) {
+  } catch (_e) {
     result.mimeType = "unknown";
   }
 
@@ -171,7 +171,7 @@ async function validateImage(imagePath: string): Promise<ImageValidation> {
   try {
     const typeOutput = await $`file -b ${imagePath}`.text();
     result.fileType = typeOutput.trim();
-  } catch (e) {
+  } catch (_e) {
     result.fileType = "unknown";
   }
 
@@ -182,7 +182,7 @@ async function validateImage(imagePath: string): Promise<ImageValidation> {
     if (width && height) {
       result.dimensions = { width, height };
     }
-  } catch (e) {
+  } catch (_e) {
     // Try with exiftool as fallback
     try {
       const exifOutput =
@@ -325,7 +325,7 @@ async function extractExif(imagePath: string): Promise<ExifData> {
 
     // Store raw data for full analysis
     exif.raw = data;
-  } catch (e) {
+  } catch (_e) {
     // exiftool not available or failed
   }
 
@@ -658,7 +658,7 @@ function formatReport(result: ImageAnalysisResult): string {
 
 async function analyzeImage(
   imagePath: string,
-  options: { full?: boolean } = {}
+  _options: { full?: boolean } = {}
 ): Promise<ImageAnalysisResult> {
   const result: ImageAnalysisResult = {
     file: imagePath,

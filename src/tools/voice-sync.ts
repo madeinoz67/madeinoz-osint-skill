@@ -43,7 +43,7 @@ interface PackVoiceConfig {
     sync_target: string;
   };
   voices: Record<string, VoiceEntry>;
-  _voices_info?: any;
+  _voices_info?: unknown;
 }
 
 interface SyncResult {

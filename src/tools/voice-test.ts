@@ -132,7 +132,7 @@ function success(msg: string) {
   console.log(`${colors.green}${msg}${colors.reset}`);
 }
 
-function warn(msg: string) {
+function _warn(msg: string) {
   console.log(`${colors.yellow}${msg}${colors.reset}`);
 }
 
