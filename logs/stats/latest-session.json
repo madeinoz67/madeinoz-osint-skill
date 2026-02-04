@@ -1,34 +1,34 @@
 {
   "tokens": {
-    "input": 172112,
-    "output": 16849,
-    "cache_read": 5910528,
+    "input": 184910,
+    "output": 21995,
+    "cache_read": 10892928,
     "cache_creation": 0,
-    "total": 6099489
+    "total": 11099833
   },
   "tools": {
-    "Bash": 62,
-    "Read": 25,
+    "Bash": 105,
+    "Read": 29,
     "TaskCreate": 22,
     "TaskUpdate": 42,
-    "Write": 12,
+    "Write": 15,
     "mcp__codanna__get_index_info": 1,
     "TaskList": 4,
-    "Edit": 14
+    "Edit": 20
   },
   "messages": {
-    "user": 198,
-    "assistant": 322
+    "user": 255,
+    "assistant": 446
   },
   "timestamps": {
     "start": "2026-02-04T00:06:47.546Z",
-    "end": "2026-02-04T01:42:17.205Z"
+    "end": "2026-02-04T01:57:27.875Z"
   },
   "session_id": "7bd3869d-af9f-4a11-bbf2-bc719d93082c",
   "model": "glm-4.7",
-  "duration_ms": 5729659,
-  "duration_seconds": 5729,
+  "duration_ms": 6640329,
+  "duration_seconds": 6640,
   "hook_event": "Stop",
   "cwd": "/Users/seaton/Documents/src/madeinoz-osint-skill",
-  "analyzed_at": "2026-02-04T01:42:18.186Z"
+  "analyzed_at": "2026-02-04T01:57:31.025Z"
 }
