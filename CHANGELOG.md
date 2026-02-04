@@ -19,10 +19,12 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md [skip ci]
 
 ### Miscellaneous
 
 - Initial project setup
+- Bump tesseract.js from 5.1.1 to 7.0.0
 
 ### Security
 
