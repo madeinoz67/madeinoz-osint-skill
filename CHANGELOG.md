@@ -12,6 +12,13 @@ All notable changes to this project will be documented in this file.
 - Handle unavailable native dependencies in tests
 - Remove git-revision-date-localized plugin from mkdocs
 - Remove --strict flag from mkdocs build
+- Restore CI flow with tests passing before build
+- Properly close conditional blocks in test files
+- Conditionally skip tests requiring native deps in CI
+
+### Documentation
+
+- Update CHANGELOG.md [skip ci]
 
 ### Miscellaneous
 
