@@ -4,12 +4,15 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
-    "typecheck": "cd src/tools && bun run typecheck",
+    "typecheck": "cd src/tools && tsc --noEmit",
     "build": "cd src/tools && bun build ./index.ts --outdir ../../dist --target bun",
     "test": "cd src/tools && bun run test"
   },
   "dependencies": {
-    "yaml": "^2.8.2"
+    "yaml": "^2.8.2",
+    "sharp": "^0.33.5",
+    "tesseract.js": "^5.1.1",
+    "pngjs": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
