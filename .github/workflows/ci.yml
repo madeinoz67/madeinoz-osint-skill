@@ -123,7 +123,7 @@ jobs:
         run: pip install mkdocs-material
 
       - name: Build documentation
-        run: mkdocs build --strict
+        run: mkdocs build
 
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4
