@@ -34,9 +34,6 @@ theme:
 plugins:
   - search:
       lang: en
-  - git-revision-date-localized:
-      enable_creation_date: true
-      type: date
 
 markdown_extensions:
   - pymdownx.highlight:
