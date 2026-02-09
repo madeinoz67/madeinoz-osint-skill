@@ -1,34 +1,37 @@
 {
   "tokens": {
-    "input": 467198,
-    "output": 26450,
-    "cache_read": 14383360,
+    "input": 624594,
+    "output": 26415,
+    "cache_read": 19358720,
     "cache_creation": 0,
-    "total": 14877008
+    "total": 20009729
   },
   "tools": {
-    "Bash": 125,
-    "Read": 34,
-    "TaskCreate": 24,
-    "TaskUpdate": 46,
-    "Write": 15,
-    "mcp__codanna__get_index_info": 1,
-    "TaskList": 4,
-    "Edit": 27
+    "Glob": 7,
+    "Bash": 111,
+    "TaskOutput": 17,
+    "Read": 38,
+    "TaskCreate": 12,
+    "TaskList": 5,
+    "Edit": 15,
+    "TaskUpdate": 11,
+    "Grep": 1,
+    "AskUserQuestion": 2,
+    "Task": 1
   },
   "messages": {
-    "user": 295,
+    "user": 267,
     "assistant": 530
   },
   "timestamps": {
-    "start": "2026-02-04T00:06:47.546Z",
-    "end": "2026-02-04T02:13:49.287Z"
+    "start": "2026-02-09T05:59:11.774Z",
+    "end": "2026-02-09T07:15:15.208Z"
   },
-  "session_id": "7bd3869d-af9f-4a11-bbf2-bc719d93082c",
+  "session_id": "b2bb879a-58cb-41fb-9d52-dec3fe468831",
   "model": "glm-4.7",
-  "duration_ms": 7621741,
-  "duration_seconds": 7621,
+  "duration_ms": 4563434,
+  "duration_seconds": 4563,
   "hook_event": "Stop",
-  "cwd": "/Users/seaton/Documents/src/madeinoz-osint-skill/src/tools",
-  "analyzed_at": "2026-02-04T02:13:52.108Z"
+  "cwd": "/Users/seaton/Documents/src/madeinoz-osint-skill",
+  "analyzed_at": "2026-02-09T07:15:19.698Z"
 }

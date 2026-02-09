@@ -2,6 +2,10 @@
 
 Voice mappings for OSINT agent roles and how they map to the PAI voice system.
 
+<p align="center">
+  <img src="../../assets/osint-voice-mappings.png" alt="Voice Mappings Flow" width="80%">
+</p>
+
 ## Agent Role → Voice → Traits Mapping
 
 | Agent Role | Voice | Traits | Description |
@@ -51,6 +55,7 @@ Voice mappings for OSINT agent roles and how they map to the PAI voice system.
 All OSINT agents MUST include voice markers for audio notifications. The voice system picks up `🗣️` lines and speaks them aloud.
 
 ### Voice Line Format
+
 ```
 🗣️ [AgentRole]: [Brief status message - max 20 words]
 ```
@@ -80,21 +85,25 @@ All OSINT agents MUST include voice markers for audio notifications. The voice s
 ## Voice Personality Descriptions
 
 ### Sophisticated Voice
+
 - **Tone:** Nuanced, measured, intellectual
 - **Used for:** Analysis, correlation, investigation
 - **Roles:** Recon, Analyst, Linker, Collector, Verifier, TechAnalyst, PatternAnalyst, Correlator
 
 ### Authoritative Voice
+
 - **Tone:** Formal, definitive, expert
 - **Used for:** Technical analysis, reporting, scanning
 - **Roles:** Scanner, TechAnalyst, Synthesizer, Briefer, ImageRecon
 
 ### Professional Voice
+
 - **Tone:** Balanced, business-like, advisory
 - **Used for:** Corporate research, financial analysis
 - **Roles:** FinanceAnalyst, BusinessAnalyst, Researcher, CompanyProfile
 
 ### Intense Voice
+
 - **Tone:** Urgent, serious, security-focused
 - **Used for:** Risk assessment, adversarial operations
 - **Roles:** Auditor, Shadow, RiskAssessment

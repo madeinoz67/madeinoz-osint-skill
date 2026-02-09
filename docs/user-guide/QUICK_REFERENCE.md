@@ -39,6 +39,7 @@
 ## Natural Language Examples
 
 ### Investigation Orchestrator (Iterative Pivot-Driven)
+
 ```
 Deep dive on username johndoe
 Investigate johndoe, follow the leads
@@ -51,6 +52,7 @@ Pursue deferred leads from last investigation
 ```
 
 ### Username/Person
+
 ```
 Find all accounts for username johndoe
 Capture social profile for @target_user
@@ -59,12 +61,14 @@ Analyze activity timeline for target
 ```
 
 ### Domain/Infrastructure
+
 ```
 Investigate domain example.com
 Map infrastructure for 192.168.1.0/24
 ```
 
 ### Company Research
+
 ```
 Company profile on Acme Corporation
 Who owns XYZ Inc?
@@ -74,6 +78,7 @@ Run risk check on vendor ABC
 ```
 
 ### Digital Artifacts
+
 ```
 Email lookup john@example.com
 Check if email was in any breaches
@@ -83,6 +88,7 @@ Reverse image search
 ```
 
 ### Analysis
+
 ```
 Link these accounts together
 Generate intelligence report
@@ -166,6 +172,7 @@ Show relationships for entity
 ## Deferred Leads & Resume
 
 ### Query Deferred Leads
+
 ```
 What deferred leads do I have?
 Show deferred pivots from OSINT-INV-2026-001
@@ -173,6 +180,7 @@ Search knowledge for deferred OSINT leads
 ```
 
 ### Resume Investigation
+
 ```
 Resume investigation OSINT-INV-2026-001
 Pursue deferred leads from last investigation
@@ -188,6 +196,7 @@ Investigate deferred pivot colleague@acme.com
 ## File Naming
 
 Reports saved as:
+
 ```
 {workflow}_{target}_{date}.md
 

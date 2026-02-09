@@ -1,26 +1,37 @@
 # OSINT Image Analysis - Tool Requirements
 
 ## Overview
+
 This document outlines the required tools for a local-first OSINT image analysis toolkit, organized by priority and implementation tier.
+
+<p align="center">
+  <img src="../assets/osint-image-analysis-pipeline.png" alt="Image Analysis Pipeline" width="80%">
+</p>
 
 ## Tier 1: Essential Tools (Must Have)
 
 ### Metadata Extraction
+
 - **ExifTool** (v13.45+)
+
   - Purpose: Comprehensive EXIF/GPS/IPTC/XMP metadata extraction
   - Install: `brew install exiftool` (macOS), `apt install libimage-exiftool-perl` (Linux)
   - License: Open source (GPL/Artistic)
   - Interface: CLI with JSON output support
 
 ### Image Processing
+
 - **Sharp** (Node.js/Bun library)
+
   - Purpose: High-performance image processing and basic metadata
   - Install: `bun add sharp`
   - License: Apache-2.0
   - Interface: Node.js/Bun library
 
 ### File Operations
+
 - **ImageMagick** (optional fallback)
+
   - Purpose: Batch processing, format conversion
   - Install: `brew install imagemagick` (macOS)
   - License: Apache-2.0
@@ -29,20 +40,26 @@ This document outlines the required tools for a local-first OSINT image analysis
 ## Tier 2: Enhanced Tools (Should Have)
 
 ### OCR Capabilities
+
 - **Tesseract.js**
+
   - Purpose: Text extraction from images
   - Install: `bun add tesseract.js`
   - License: Apache-2.0
   - Interface: Node.js/Bun library
 
 ### Perceptual Hashing
+
 - **Sharp** with custom implementations
+
   - Purpose: Duplicate detection (aHash, pHash, dHash)
   - Algorithms: Implement in TypeScript
   - License: Custom implementation
 
 ### Image Forensics
+
 - **ELA (Error Level Analysis)** implementation
+
   - Purpose: Detect image manipulation
   - Implementation: Custom TypeScript using Sharp
   - Method: Save at different quality levels, compare differences
@@ -50,33 +67,41 @@ This document outlines the required tools for a local-first OSINT image analysis
 ## Tier 3: Advanced Tools (Nice to Have)
 
 ### Steganography Detection
+
 - **Binwalk**
+
   - Purpose: Detect embedded files/data
   - Install: `brew install binwalk` (macOS), `apt install binwalk` (Linux)
   - License: MIT
   - Interface: CLI
 
 ### Object Detection
+
 - **TensorFlow.js** or **ONNX Runtime**
+
   - Purpose: Object detection and classification
   - Install: `bun add @tensorflow/tensorflowjs` or `bun add onnxruntime-node`
   - License: Apache-2.0
   - Interface: Node.js library
 
 ### Reverse Image Search
+
 - **Self-hosted vector search** (future)
+
   - Milvus or FAISS for local similarity search
   - Requires: Python or Docker setup
 
 ## System Requirements
 
 ### Development Environment
+
 - **Runtime:** Bun 1.0+
 - **Language:** TypeScript 5.0+
 - **Package Manager:** Bun
 - **Testing:** Bun's built-in test runner
 
 ### External Dependencies
+
 - ExifTool CLI (must be in PATH)
 - Optional: ImageMagick CLI
 - Optional: Binwalk CLI
@@ -123,6 +148,7 @@ interface ToolWrapper {
 ## Installation Commands
 
 ### macOS
+
 ```bash
 # Essential tools
 brew install exiftool
@@ -135,6 +161,7 @@ bun install
 ```
 
 ### Linux (Debian/Ubuntu)
+
 ```bash
 # Essential tools
 sudo apt-get install libimage-exiftool-perl
@@ -149,6 +176,7 @@ bun install
 ## Testing Strategy
 
 ### Unit Test Coverage
+
 - Tool availability checks
 - Input validation
 - Successful operation scenarios
@@ -156,6 +184,7 @@ bun install
 - Edge cases (corrupt files, missing metadata)
 
 ### Test Fixtures
+
 - Sample images with EXIF data
 - Images without metadata
 - Corrupted images
@@ -163,6 +192,7 @@ bun install
 - Known manipulated images (for forensics)
 
 ### Mock Strategy
+
 - Mock CLI tool executions for unit tests
 - Use integration tests for actual tool validation
 - Provide fixtures for consistent testing

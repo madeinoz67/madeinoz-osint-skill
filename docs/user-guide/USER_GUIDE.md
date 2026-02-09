@@ -40,6 +40,10 @@ The skill will automatically route to the appropriate workflow.
 
 The Investigation Orchestrator is the most powerful workflow in the OSINT skill. It automatically expands collection as new intelligence is discovered, creating a comprehensive intelligence picture.
 
+<p align="center">
+  <img src="../../assets/osint-orchestrator-flow.png" alt="Investigation Orchestrator Flow" width="80%">
+</p>
+
 ### What Makes It Different
 
 | Standard Workflow | Investigation Orchestrator |
@@ -78,29 +82,38 @@ PHASE 5: Synthesis & Report
 └── Comprehensive dossier generation
 ```
 
+<p align="center">
+  <img src="../../assets/osint-pivot-decision-tree.png" alt="Pivot Investigation Decision Tree" width="80%">
+</p>
+
 ### Invocation Examples
 
 **Basic investigation (auto mode):**
+
 ```
 Investigate username johndoe
 ```
 
 **Deep investigation with wide scope:**
+
 ```
 Deep dive on email john@example.com with max_depth 3 and wide scope
 ```
 
 **Interactive mode (approve each pivot):**
+
 ```
 Investigate johndoe with interactive approval
 ```
 
 **Company investigation:**
+
 ```
 Full investigation on Acme Corp, follow the leads
 ```
 
 **Resume a previous investigation:**
+
 ```
 Resume investigation OSINT-INV-2026-001
 ```
@@ -155,11 +168,13 @@ Leads that aren't pursued are stored in the Knowledge Graph for later:
 - **Resume capability**: Continue investigation anytime
 
 **To view deferred leads:**
+
 ```
 What deferred leads do I have from OSINT investigations?
 ```
 
 **To pursue deferred leads:**
+
 ```
 Resume investigation OSINT-INV-2026-001, pursue deferred leads
 Investigate deferred pivot colleague@acme.com
@@ -205,7 +220,7 @@ Investigate deferred pivot colleague@acme.com
 
 | Workflow | Use When | Example |
 |----------|----------|---------|
-| EmailRecon | Email investigation, breach checking | "Email lookup john@example.com" |
+| EmailRecon | Email investigation, breach checking | "Email lookup <john@example.com>" |
 | PhoneRecon | Phone number validation | "Phone lookup +1-555-123-4567" |
 | ImageRecon | Image metadata, forensics | "Analyze this image for EXIF data" |
 
@@ -283,6 +298,7 @@ Many workflows support scope levels:
 | comprehensive | Full investigation, all sub-workflows | ~45+ min |
 
 Example:
+
 ```
 Run a comprehensive company profile on Acme Corporation
 ```

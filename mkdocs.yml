@@ -1,43 +1,92 @@
-site_name: MadeInOz OSINT Skill
-site_description: AI-powered Open Source Intelligence collection and analysis with knowledge graph integration
-site_author: MadeInOz
-copyright: Copyright &copy; 2026 MadeInOz
+# MkDocs Configuration for PAI OSINT Skill Documentation
+# Builds static site for GitHub Pages publishing
 
+docs_dir: docs
+site_dir: site
+
+site_name: PAI OSINT Skill
+site_description: AI-powered Open Source Intelligence collection and analysis with knowledge graph integration
+site_author: madeinoz67
+copyright: Copyright &copy; 2026 madeinoz67
+
+# Repository links
+repo_name: madeinoz-osint-skill
+repo_url: https://github.com/madeinoz67/madeinoz-osint-skill
+edit_uri: edit/main/docs/
+
+# Theme configuration
 theme:
   name: material
+  language: en
   palette:
-    - scheme: default
-      primary: blue
-      accent: blue
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - scheme: slate
-      primary: blue
-      accent: blue
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   features:
-    - search.suggest
-    - search.highlight
-    - search.share
     - navigation.instant
     - navigation.tracking
     - navigation.tabs
     - navigation.sections
     - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
     - toc.follow
     - content.code.copy
-    - content.tabs.link
+  icon:
+    logo: material/radar
+    repo: fontawesome/brands/github
 
+# Plugins
 plugins:
   - search:
       lang: en
 
+# Extensions (Python Markdown)
 markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -47,48 +96,46 @@ markdown_extensions:
       alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
-  - attr_list
-  - md_in_html
-  - footnotes
-  - tables
-  - toc:
-      permalink: true
+  - pymdownx.tilde
 
-nav:
-  - Home:
-      - Overview: index.md
-      - Installation: installation.md
-      - Verification: verification.md
-  - User Guide:
-      - Quick Reference: quick-reference.md
-      - User Guide: user-guide.md
-      - Company Research: company-research.md
-  - Workflows:
-      - Investigation Orchestrator: investigation-orchestrator.md
-      - Username Recon: username-recon.md
-      - Domain Recon: domain-recon.md
-      - Social Capture: social-capture.md
-      - Infrastructure Mapping: infra-mapping.md
-      - Entity Linking: entity-linking.md
-      - Timeline Analysis: timeline-analysis.md
-      - Target Profile: target-profile.md
-      - Intel Report: intel-report.md
-      - Company Profile: company-profile.md
-      - Corporate Structure: corporate-structure.md
-      - Financial Recon: financial-recon.md
-      - Competitor Analysis: competitor-analysis.md
-      - Risk Assessment: risk-assessment.md
-      - Email Recon: email-recon.md
-      - Phone Recon: phone-recon.md
-      - Image Recon: image-recon.md
-  - Advanced:
-      - Image Analysis Tools: image-analysis-tools.md
-      - Enrichment Roadmap: enrichment-roadmap.md
-  - Changelog: changelog.md
-
+# Extra configuration
 extra:
-  version:
-    provider: mike
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/madeinoz/madeinoz-osint-skill
+      link: https://github.com/madeinoz67
+      name: GitHub
+
+# Navigation structure
+nav:
+  - Home:
+      - index.md
+  - User Guide:
+      - user-guide/index.md
+      - Getting Started: user-guide/USER_GUIDE.md
+      - Quick Reference: user-guide/QUICK_REFERENCE.md
+      - Changelog: CHANGELOG.md
+  - Investigation Types:
+      - investigation/index.md
+      - People Research: investigation/PEOPLE_TOOLS.md
+      - Company Research: investigation/COMPANY_TOOLS.md
+      - Entity Analysis: investigation/ENTITY_TOOLS.md
+  - Framework:
+      - framework/index.md
+      - Methodology: framework/METHODOLOGY.md
+      - Ethical Framework: framework/ETHICAL_FRAMEWORK.md
+  - Advanced:
+      - advanced/index.md
+      - Agent Roles: advanced/AGENT_ROLES.md
+      - Voice Mappings: advanced/VOICE_MAPPINGS.md
+      - Knowledge Groups: advanced/KNOWLEDGE_GROUPS.md
+      - Company Research Guide: advanced/COMPANY_RESEARCH.md
+  - Knowledge Graph:
+      - knowledge/index.md
+      - OSINT Ontology: knowledge/OSINT_ONTOLOGY.md
+      - Ontology Quick Reference: knowledge/ONTOLOGY_QUICK_REFERENCE.md
+      - Graphiti Implementation: knowledge/GRAPHITI_IMPLEMENTATION.md
+  - Development:
+      - development/index.md
+      - Image Analysis Tools: development/IMAGE_ANALYSIS_TOOLS.md
+      - OSINT Image Analysis Research: development/OSINT_IMAGE_ANALYSIS_RESEARCH.md
+      - Enrichment Roadmap: development/ENRICHMENT_ROADMAP.md

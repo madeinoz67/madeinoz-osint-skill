@@ -79,23 +79,27 @@ Who owns Acme Corporation?
 ### What It Discovers
 
 - **Ownership Hierarchy**
+
   - Immediate parent company
   - Ultimate beneficial owner (UBO)
   - Ownership percentages
   - Circular ownership detection
 
 - **Subsidiaries**
+
   - All subsidiary entities
   - Jurisdiction per entity
   - Active vs dormant status
 
 - **Key Personnel**
+
   - Directors and officers
   - Appointment dates
   - Other directorships
   - Potential conflicts
 
 - **Corporate History**
+
   - Name changes
   - Ownership transfers
   - Mergers/acquisitions
@@ -125,12 +129,14 @@ What's the financial status of TechCorp?
 ### Public vs Private Companies
 
 **Public Companies:**
+
 - Full SEC filings (10-K, 10-Q, 8-K)
 - Audited financials
 - Insider transactions
 - Analyst reports
 
 **Private Companies:**
+
 - Funding rounds from Crunchbase/PitchBook
 - Estimated revenue from signals
 - Investor information
@@ -147,6 +153,7 @@ What's the financial status of TechCorp?
 ### Estimation Techniques
 
 For private companies, revenue is estimated from:
+
 - Job postings mentioning revenue
 - Press releases
 - Employee count to revenue ratios
@@ -172,27 +179,32 @@ Analyze competitors for Acme Corp
 ### What It Discovers
 
 - **Market Context**
+
   - Industry/sector classification
   - Market size and growth rate
   - Key trends
 
 - **Competitor Identification**
+
   - Direct competitors
   - Indirect competitors
   - Emerging challengers
 
 - **Competitor Profiles**
+
   - Company overview
   - Funding/revenue
   - Market share estimates
   - Strengths/weaknesses
 
 - **Comparative Analysis**
+
   - Feature matrix
   - Pricing comparison
   - Market position map
 
 - **SWOT Analysis**
+
   - Strengths vs competitors
   - Weaknesses vs competitors
   - Market opportunities
@@ -294,6 +306,7 @@ Show me all companies with high risk scores
 ### Cross-Investigation Linking
 
 The knowledge graph automatically links:
+
 - People across companies (e.g., shared directors)
 - Investors across portfolio companies
 - Competitors within industries

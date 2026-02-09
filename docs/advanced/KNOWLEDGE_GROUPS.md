@@ -47,6 +47,7 @@ group_ids: ["osint-companies", "osint-financial", "osint-risk"]
 ## New Groups
 
 When adding new workflows, follow the `osint-{category}` pattern:
+
 1. Use descriptive, singular category names
 2. Add to this reference document
 3. Document in workflow file

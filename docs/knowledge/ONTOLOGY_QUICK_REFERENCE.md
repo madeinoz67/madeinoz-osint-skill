@@ -23,6 +23,7 @@
 ## Relationship Types Quick Reference
 
 ### Identity Resolution
+
 ```
 SAME_PERSON_AS (95-100%)    — Confirmed same person
 LIKELY_SAME_PERSON (70-94%) — Probable match
@@ -31,6 +32,7 @@ DIFFERENT_PERSON (95-100%) — Confirmed different
 ```
 
 ### Digital Identity
+
 ```
 HAS_EMAIL       Person → Email
 HAS_PHONE       Person → Phone
@@ -39,6 +41,7 @@ REGISTERED_WITH Account → Email
 ```
 
 ### Professional
+
 ```
 WORKS_AT        Person → Org (since, title)
 DIRECTOR_OF     Person → Org (appointed, resigned)
@@ -47,6 +50,7 @@ EMPLOYS          Org → Person
 ```
 
 ### Corporate
+
 ```
 PARENT_OF        Org → Org (ownership_pct)
 SUBSIDIARY_OF   Org → Org
@@ -56,6 +60,7 @@ COMPETES_WITH   Org ↔ Org
 ```
 
 ### Infrastructure
+
 ```
 RESOLVES_TO     Domain → IP
 HOSTS           IP → Domain
@@ -64,6 +69,7 @@ EXPOSES         IP → Port
 ```
 
 ### Social
+
 ```
 KNOWS           Person → Person
 FOLLOWS        Account → Account
@@ -103,6 +109,7 @@ osint-investigations  → Investigation cases
 ## Common Episode Patterns
 
 ### Username Enumeration Episode
+
 ```
 Person: John Smith
 Usernames: twitter: @jsmith, github: jsmith-dev
@@ -113,6 +120,7 @@ Sources: Twitter API, GitHub Profile
 ```
 
 ### Corporate Profile Episode
+
 ```
 Organization: Acme Corporation Inc.
 Registration: DE-12345678

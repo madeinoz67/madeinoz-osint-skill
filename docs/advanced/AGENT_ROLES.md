@@ -2,6 +2,10 @@
 
 Complete reference for OSINT specialist agent roles, their trait combinations, voices, and appropriate work types.
 
+<p align="center">
+  <img src="../../assets/osint-agent-roles.png" alt="Agent Roles Architecture" width="80%">
+</p>
+
 ## Tier 1: Enumeration Specialists (Collection)
 
 | Role | Traits | Voice | Work Types | Use For Workflows |
