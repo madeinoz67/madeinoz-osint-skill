@@ -41,7 +41,7 @@ The skill will automatically route to the appropriate workflow.
 The Investigation Orchestrator is the most powerful workflow in the OSINT skill. It automatically expands collection as new intelligence is discovered, creating a comprehensive intelligence picture.
 
 <p align="center">
-  <img src="../assets/osint-orchestrator-flow.png" alt="Investigation Orchestrator Flow" width="80%">
+  <img src="../../assets/osint-orchestrator-flow.png" alt="Investigation Orchestrator Flow" width="80%">
 </p>
 
 ### What Makes It Different
@@ -83,7 +83,7 @@ PHASE 5: Synthesis & Report
 ```
 
 <p align="center">
-  <img src="../assets/osint-pivot-decision-tree.png" alt="Pivot Investigation Decision Tree" width="80%">
+  <img src="../../assets/osint-pivot-decision-tree.png" alt="Pivot Investigation Decision Tree" width="80%">
 </p>
 
 ### Invocation Examples
