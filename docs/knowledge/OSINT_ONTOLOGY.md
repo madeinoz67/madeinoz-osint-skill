@@ -18,6 +18,10 @@
 
 ---
 
+<p align="center">
+  <img src="../assets/osint-erd-diagram.png" alt="OSINT Knowledge Graph Entity Relationship Diagram" width="80%">
+</p>
+
 ## Overview
 
 ### Design Principles
@@ -107,6 +111,7 @@ type UsernameMap = Record<string, string>;  // platform -> username
 ```
 
 **Example Episode:**
+
 ```
 Person: John Smith
 - Primary Name: John Smith

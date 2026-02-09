@@ -2,11 +2,15 @@
 
 Technical documentation for developers extending or maintaining the PAI OSINT Skill.
 
+<p align="center">
+  <img src="../assets/enrichment-pipeline.png" alt="OSINT Enrichment Data Pipeline" width="80%">
+</p>
+
 ## Development Topics
 
-- **[Image Analysis Tools](../IMAGE_ANALYSIS_TOOLS.md)** - Tool requirements and setup
-- **[OSINT Image Analysis Research](../OSINT_IMAGE_ANALYSIS_RESEARCH.md)** - Research on image analysis capabilities
-- **[Enrichment Roadmap](../ENRICHMENT_ROADMAP.md)** - API integration guide for data enrichment
+- **[Image Analysis Tools](IMAGE_ANALYSIS_TOOLS.md)** - Tool requirements and setup
+- **[OSINT Image Analysis Research](OSINT_IMAGE_ANALYSIS_RESEARCH.md)** - Research on image analysis capabilities
+- **[Enrichment Roadmap](ENRICHMENT_ROADMAP.md)** - API integration guide for data enrichment
 
 ## Project Structure
 
@@ -26,6 +30,7 @@ madeinoz-osint-skill/
 ## Contributing
 
 When adding new workflows:
+
 1. Create workflow file in `src/skills/osint/Workflows/`
 2. Add trigger pattern to `SKILL.md`
 3. Update documentation in `docs/`
@@ -41,22 +46,27 @@ When adding new workflows:
 Brief description of what this workflow does.
 
 ## Triggers
+
 - "trigger phrase 1"
 - "trigger phrase 2"
 
 ## Prerequisites
+
 - Required skills
 - Required tools
 - Required permissions
 
 ## Steps
+
 1. First step
 2. Second step
 3. etc.
 
 ## Output
+
 What the workflow produces.
 
 ## Storage
+
 How data is stored to knowledge graph.
 ```

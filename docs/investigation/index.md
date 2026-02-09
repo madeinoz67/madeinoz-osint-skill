@@ -2,11 +2,15 @@
 
 The PAI OSINT Skill supports multiple investigation types, each with specialized workflows and tools.
 
+<p align="center">
+  <img src="../assets/pivot-investigation.png" alt="Investigation Orchestrator Pivot Workflow" width="80%">
+</p>
+
 ## Investigation Categories
 
 ### People Research
 
-**[People Tools](../PEOPLE_TOOLS.md)** - Tools and workflows for investigating individuals
+**[People Tools](PEOPLE_TOOLS.md)** - Tools and workflows for investigating individuals
 
 - Username enumeration across platforms
 - Social media profile capture
@@ -15,7 +19,7 @@ The PAI OSINT Skill supports multiple investigation types, each with specialized
 
 ### Company Research
 
-**[Company Tools](../COMPANY_TOOLS.md)** - Corporate intelligence workflows
+**[Company Tools](COMPANY_TOOLS.md)** - Corporate intelligence workflows
 
 - Company profiling and structure analysis
 - Financial reconnaissance
@@ -24,7 +28,7 @@ The PAI OSINT Skill supports multiple investigation types, each with specialized
 
 ### Entity Analysis
 
-**[Entity Tools](../ENTITY_TOOLS.md)** - Cross-entity investigation tools
+**[Entity Tools](ENTITY_TOOLS.md)** - Cross-entity investigation tools
 
 - Domain reconnaissance
 - Infrastructure mapping

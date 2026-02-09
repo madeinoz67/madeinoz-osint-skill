@@ -111,31 +111,31 @@ nav:
       - index.md
   - User Guide:
       - user-guide/index.md
-      - Getting Started: USER_GUIDE.md
-      - Quick Reference: QUICK_REFERENCE.md
+      - Getting Started: user-guide/USER_GUIDE.md
+      - Quick Reference: user-guide/QUICK_REFERENCE.md
       - Changelog: CHANGELOG.md
   - Investigation Types:
       - investigation/index.md
-      - People Research: PEOPLE_TOOLS.md
-      - Company Research: COMPANY_TOOLS.md
-      - Entity Analysis: ENTITY_TOOLS.md
+      - People Research: investigation/PEOPLE_TOOLS.md
+      - Company Research: investigation/COMPANY_TOOLS.md
+      - Entity Analysis: investigation/ENTITY_TOOLS.md
   - Framework:
       - framework/index.md
-      - Methodology: METHODOLOGY.md
-      - Ethical Framework: ETHICAL_FRAMEWORK.md
+      - Methodology: framework/METHODOLOGY.md
+      - Ethical Framework: framework/ETHICAL_FRAMEWORK.md
   - Advanced:
       - advanced/index.md
-      - Agent Roles: AGENT_ROLES.md
-      - Voice Mappings: VOICE_MAPPINGS.md
-      - Knowledge Groups: KNOWLEDGE_GROUPS.md
-      - Company Research Guide: COMPANY_RESEARCH.md
+      - Agent Roles: advanced/AGENT_ROLES.md
+      - Voice Mappings: advanced/VOICE_MAPPINGS.md
+      - Knowledge Groups: advanced/KNOWLEDGE_GROUPS.md
+      - Company Research Guide: advanced/COMPANY_RESEARCH.md
   - Knowledge Graph:
       - knowledge/index.md
-      - OSINT Ontology: OSINT_ONTOLOGY.md
-      - Ontology Quick Reference: ONTOLOGY_QUICK_REFERENCE.md
-      - Graphiti Implementation: GRAPHITI_IMPLEMENTATION.md
+      - OSINT Ontology: knowledge/OSINT_ONTOLOGY.md
+      - Ontology Quick Reference: knowledge/ONTOLOGY_QUICK_REFERENCE.md
+      - Graphiti Implementation: knowledge/GRAPHITI_IMPLEMENTATION.md
   - Development:
       - development/index.md
-      - Image Analysis Tools: IMAGE_ANALYSIS_TOOLS.md
-      - OSINT Image Analysis Research: OSINT_IMAGE_ANALYSIS_RESEARCH.md
-      - Enrichment Roadmap: ENRICHMENT_ROADMAP.md
+      - Image Analysis Tools: development/IMAGE_ANALYSIS_TOOLS.md
+      - OSINT Image Analysis Research: development/OSINT_IMAGE_ANALYSIS_RESEARCH.md
+      - Enrichment Roadmap: development/ENRICHMENT_ROADMAP.md

@@ -19,6 +19,7 @@
 ```
 
 **Tip:** Use natural language instead of `/osint`:
+
 - "Find all accounts for username johndoe"
 - "Research company Acme Corp"
 - "Investigate domain example.com"
@@ -68,7 +69,7 @@ See [Ethical Framework](ETHICAL_FRAMEWORK.md) for complete guidelines.
 
 ## Version
 
-**v1.3.0** - See [CHANGELOG.md](CHANGELOG.md) for version history.
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Links
 

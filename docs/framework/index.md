@@ -2,11 +2,15 @@
 
 The PAI OSINT Skill is built on a structured framework that ensures systematic, ethical, and effective intelligence collection.
 
+<p align="center">
+  <img src="../assets/intelligence-cycle.png" alt="OSINT Intelligence Cycle" width="80%">
+</p>
+
 ## Framework Components
 
 ### Methodology
 
-**[Methodology](../METHODOLOGY.md)** - Core principles and procedures
+**[Methodology](METHODOLOGY.md)** - Core principles and procedures
 
 - Intelligence cycle (Planning → Collection → Processing → Analysis → Dissemination)
 - Source hierarchy and verification standards
@@ -15,7 +19,7 @@ The PAI OSINT Skill is built on a structured framework that ensures systematic, 
 
 ### Ethical Framework
 
-**[Ethical Framework](../ETHICAL_FRAMEWORK.md)** - Legal and ethical guidelines
+**[Ethical Framework](ETHICAL_FRAMEWORK.md)** - Legal and ethical guidelines
 
 - Authorization requirements
 - Legal compliance (CFAA, FCRA, GDPR, CCPA)
