@@ -23,6 +23,8 @@ All notable changes to this project will be documented in this file.
 - Update CHANGELOG.md [skip ci]
 - Add OSINT ontology for Graphiti knowledge graph
 - Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md [skip ci]
+- Add OSINT methodology and tool framework documentation
 
 ### Miscellaneous
 
