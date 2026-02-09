@@ -4,11 +4,9 @@
 
 ### 1. Intelligence Cycle
 
-```
-Planning -> Collection -> Processing -> Analysis -> Dissemination
-    ^                                                    |
-    +----------------------------------------------------+
-```
+<p align="center">
+  <img src="../assets/intelligence-cycle.png" alt="OSINT Intelligence Cycle" width="80%">
+</p>
 
 **Planning:** Define objectives, scope, requirements
 **Collection:** Gather raw data from sources
