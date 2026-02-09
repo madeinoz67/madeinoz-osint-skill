@@ -3,7 +3,7 @@
 Voice mappings for OSINT agent roles and how they map to the PAI voice system.
 
 <p align="center">
-  <img src="../assets/osint-voice-mappings.png" alt="Voice Mappings Flow" width="80%">
+  <img src="../../assets/osint-voice-mappings.png" alt="Voice Mappings Flow" width="80%">
 </p>
 
 ## Agent Role → Voice → Traits Mapping
