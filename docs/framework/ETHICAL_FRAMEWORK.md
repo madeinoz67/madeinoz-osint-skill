@@ -38,6 +38,12 @@ Every OSINT investigation requires:
 
 ---
 
+<p align="center">
+  <img src="../assets/osint-ethical-decision-tree.png" alt="Ethical Decision Tree" width="80%">
+</p>
+
+---
+
 ## Ethical Boundaries
 
 ### ALWAYS

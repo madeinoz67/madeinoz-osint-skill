@@ -4,6 +4,10 @@
 
 This document outlines the required tools for a local-first OSINT image analysis toolkit, organized by priority and implementation tier.
 
+<p align="center">
+  <img src="../assets/osint-image-analysis-pipeline.png" alt="Image Analysis Pipeline" width="80%">
+</p>
+
 ## Tier 1: Essential Tools (Must Have)
 
 ### Metadata Extraction
