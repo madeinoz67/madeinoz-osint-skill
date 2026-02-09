@@ -12,7 +12,7 @@ keywords: [osint, intelligence, reconnaissance, investigation, social-media, dom
 ---
 
 <p align="center">
-  <img src="icons/pai-osint-skill.png" alt="PAI OSINT Skill" width="256">
+  <img src="docs/assets/header.png" alt="OSINT Intelligence Gathering" width="100%">
 </p>
 
 # PAI OSINT Skill v1.3.0
