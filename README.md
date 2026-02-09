@@ -1,7 +1,7 @@
 ---
 name: PAI OSINT Skill
-pack-id: pai-osint-skill-v1.3.0
-version: 1.3.0
+pack-id: pai-osint-skill-v1.4.0
+version: 1.4.0
 author: pai
 description: AI-powered Open Source Intelligence collection and analysis with knowledge graph integration and iterative pivot-driven investigations
 type: skill
