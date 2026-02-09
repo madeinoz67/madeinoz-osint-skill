@@ -25,6 +25,8 @@ All notable changes to this project will be documented in this file.
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md [skip ci]
 - Add OSINT methodology and tool framework documentation
+- Update CHANGELOG.md [skip ci]
+- Add header graphic and fix markdown formatting (#3)
 
 ### Miscellaneous
 
