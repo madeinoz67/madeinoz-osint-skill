@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.0] - 2026-02-09
+## [Unreleased]
 
 ### Bug Fixes
 
@@ -28,13 +28,14 @@ All notable changes to this project will be documented in this file.
 - Update CHANGELOG.md [skip ci]
 - Add header graphic and fix markdown formatting (#3)
 - Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md for v1.4.0 [skip ci]
 
 ### Miscellaneous
 
 - Initial project setup
 - Bump tesseract.js from 5.1.1 to 7.0.0
 - Bump sharp from 0.33.5 to 0.34.5
-- Bump version to 1.4.0
+- Bump @types/bun from 1.3.8 to 1.3.9 (#6)
 
 ### Refactoring
 
