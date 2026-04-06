@@ -9,7 +9,7 @@
     "test": "cd src/tools && bun run test"
   },
   "dependencies": {
-    "yaml": "^2.8.2",
+    "yaml": "^2.8.3",
     "sharp": "^0.34.5",
     "tesseract.js": "^7.0.0",
     "pngjs": "^7.0.0"
