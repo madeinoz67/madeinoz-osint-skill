@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md [skip ci]
 
 ### Miscellaneous
 
@@ -54,6 +55,8 @@ All notable changes to this project will be documented in this file.
 - Bump typescript-eslint from 8.57.0 to 8.59.3 (#26)
 - Bump typescript from 5.9.3 to 7.0.2 (#20)
 - Bump version to 1.4.0
+- Bump @types/bun from 1.3.14 to 1.4.0 (#28)
+- Bump typescript-eslint from 8.59.3 to 8.69.0 (#30)
 
 ### Refactoring
 
