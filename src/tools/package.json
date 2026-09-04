@@ -1,13 +1,13 @@
 {
-  "name": "@pai-osint/image-tools",
+  "name": "@osint-skill/image-tools",
   "version": "1.0.0",
   "description": "OSINT image analysis tool wrappers for local-first investigation",
   "type": "module",
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "test": "bun test ./tests/**/*.test.ts",
-    "test:watch": "bun test --watch ./tests/**/*.test.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
@@ -18,18 +18,12 @@
     "ocr",
     "hashing"
   ],
-  "author": "Personal AI Infrastructure",
+  "author": "madeinoz",
   "license": "MIT",
   "dependencies": {
     "sharp": "^0.33.5",
     "tesseract.js": "^5.1.1",
     "pngjs": "^7.0.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@types/bun": "latest",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.54.0"
   },
   "peerDependencies": {
     "bun": ">=1.0.0"

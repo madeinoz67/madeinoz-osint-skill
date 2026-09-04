@@ -57,16 +57,20 @@ export class OCREngine implements ToolWrapper<OCRResult> {
       const result: OCRResult = {
         text: data.text,
         confidence: data.confidence,
-        lines: data.lines.map((line) => ({
-          text: line.text,
-          confidence: line.confidence,
-          boundingBox: {
-            x0: line.bbox.x0,
-            y0: line.bbox.y0,
-            x1: line.bbox.x1,
-            y1: line.bbox.y1,
-          },
-        })),
+        // tesseract.js v6+ replaced top-level lines with the block hierarchy
+        lines: (data.blocks ?? [])
+          .flatMap((block) => block.paragraphs ?? [])
+          .flatMap((paragraph) => paragraph.lines ?? [])
+          .map((line) => ({
+            text: line.text,
+            confidence: line.confidence,
+            boundingBox: {
+              x0: line.bbox.x0,
+              y0: line.bbox.y0,
+              x1: line.bbox.x1,
+              y1: line.bbox.y1,
+            },
+          })),
       };
 
       return {
@@ -117,16 +121,21 @@ export class OCREngine implements ToolWrapper<OCRResult> {
 
       const { data } = await this.worker.recognize(buffer);
 
-      const words = data.words.map((word) => ({
-        text: word.text,
-        confidence: word.confidence,
-        boundingBox: {
-          x0: word.bbox.x0,
-          y0: word.bbox.y0,
-          x1: word.bbox.x1,
-          y1: word.bbox.y1,
-        },
-      }));
+      // tesseract.js v6+ nests words under blocks > paragraphs > lines
+      const words = (data.blocks ?? [])
+        .flatMap((block) => block.paragraphs ?? [])
+        .flatMap((paragraph) => paragraph.lines ?? [])
+        .flatMap((line) => line.words ?? [])
+        .map((word) => ({
+          text: word.text,
+          confidence: word.confidence,
+          boundingBox: {
+            x0: word.bbox.x0,
+            y0: word.bbox.y0,
+            x1: word.bbox.x1,
+            y1: word.bbox.y1,
+          },
+        }));
 
       return {
         success: true,

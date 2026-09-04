@@ -26,8 +26,7 @@ export class ForensicAnalyzer implements ToolWrapper<ForensicResult> {
 
   async isAvailable(): Promise<boolean> {
     try {
-      await Sharp.version();
-      return true;
+      return typeof Sharp.versions.sharp === 'string';
     } catch {
       return false;
     }
@@ -40,7 +39,7 @@ export class ForensicAnalyzer implements ToolWrapper<ForensicResult> {
       const buffer = typeof input === 'string' ? await readFile(input) : input;
 
       const elaScore = await this.calculateELAScore(buffer);
-      const anomalies = this.detectAnomalies(buffer);
+      const anomalies = await this.detectAnomalies(buffer);
       const qualityHistogram = await this.calculateQualityHistogram(buffer);
       const manipulationProbability = this.calculateManipulationProbability(elaScore, anomalies);
 
@@ -56,7 +55,7 @@ export class ForensicAnalyzer implements ToolWrapper<ForensicResult> {
         data: result,
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     } catch (error) {
@@ -65,7 +64,7 @@ export class ForensicAnalyzer implements ToolWrapper<ForensicResult> {
         error: error instanceof Error ? error.message : String(error),
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     }
@@ -319,7 +318,7 @@ export class ForensicAnalyzer implements ToolWrapper<ForensicResult> {
         data: elaImage,
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     } catch (error) {
@@ -328,7 +327,7 @@ export class ForensicAnalyzer implements ToolWrapper<ForensicResult> {
         error: error instanceof Error ? error.message : String(error),
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     }

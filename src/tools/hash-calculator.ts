@@ -14,8 +14,7 @@ export class HashCalculator implements ToolWrapper<ImageHash> {
 
   async isAvailable(): Promise<boolean> {
     try {
-      await Sharp.version();
-      return true;
+      return typeof Sharp.versions.sharp === 'string';
     } catch {
       return false;
     }
@@ -39,7 +38,7 @@ export class HashCalculator implements ToolWrapper<ImageHash> {
         data: hashes,
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     } catch (error) {
@@ -48,7 +47,7 @@ export class HashCalculator implements ToolWrapper<ImageHash> {
         error: error instanceof Error ? error.message : String(error),
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     }
@@ -236,7 +235,7 @@ export class HashCalculator implements ToolWrapper<ImageHash> {
     // Transform rows
     for (let y = 0; y < size; y++) {
       const row = result.slice(y * size, (y + 1) * size);
-      const transformed = this.haarWavelet1D(row);
+      const transformed = this.haarWavelet1D(Array.from(row));
       for (let x = 0; x < size; x++) {
         result[y * size + x] = transformed[x];
       }

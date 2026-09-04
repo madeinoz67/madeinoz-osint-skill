@@ -32,7 +32,9 @@ export class ImageProcessor implements ToolWrapper<ImageInfo> {
         height: metadata.height || 0,
         format: metadata.format || 'unknown',
         channels: metadata.channels || 0,
-        premultiplied: metadata.premultiplied || false,
+        // sharp 0.34 removed premultiplied from Metadata (it is a constructor
+        // option); Sharp(buffer) is never premultiplied
+        premultiplied: false,
         size: buffer.length,
       };
 
@@ -41,7 +43,7 @@ export class ImageProcessor implements ToolWrapper<ImageInfo> {
         data: info,
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     } catch (error) {
@@ -50,7 +52,7 @@ export class ImageProcessor implements ToolWrapper<ImageInfo> {
         error: error instanceof Error ? error.message : String(error),
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     }
@@ -86,7 +88,7 @@ export class ImageProcessor implements ToolWrapper<ImageInfo> {
       }
 
       if (operations.quality !== undefined) {
-        switch (this.getImageFormat(buffer)) {
+        switch (await this.getImageFormat(buffer)) {
           case 'jpeg':
             image = image.jpeg({ quality: operations.quality });
             break;
@@ -106,7 +108,7 @@ export class ImageProcessor implements ToolWrapper<ImageInfo> {
         data: processedBuffer,
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     } catch (error) {
@@ -115,14 +117,18 @@ export class ImageProcessor implements ToolWrapper<ImageInfo> {
         error: error instanceof Error ? error.message : String(error),
         metadata: {
           processingTimeMs: Date.now() - startTime,
-          toolVersion: Sharp.versions,
+          toolVersion: Sharp.versions.sharp,
         },
       };
     }
   }
 
-  private getImageFormat(buffer: Buffer): string {
-    const metadata = Sharp(buffer).metadata();
-    return metadata.then((m) => m.format || 'jpeg').catch(() => 'jpeg');
+  private async getImageFormat(buffer: Buffer): Promise<string> {
+    try {
+      const metadata = await Sharp(buffer).metadata();
+      return metadata.format || 'jpeg';
+    } catch {
+      return 'jpeg';
+    }
   }
 }

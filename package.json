@@ -6,7 +6,7 @@
     "lint": "eslint .",
     "typecheck": "cd src/tools && tsc --noEmit",
     "build": "cd src/tools && bun build ./index.ts --outdir ../../dist --target bun",
-    "test": "cd src/tools && bun run test"
+    "test": "cd src/tools && CI=true bun test"
   },
   "dependencies": {
     "yaml": "^2.9.0",
@@ -17,7 +17,8 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/bun": "^1.3.14",
-    "typescript": "^7.0.2",
+    "@types/pngjs": "^6.0.5",
+    "typescript": "6.0.3",
     "typescript-eslint": "^8.59.3"
   },
   "engines": {

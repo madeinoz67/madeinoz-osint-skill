@@ -48,7 +48,7 @@ jobs:
 
       - name: Check SKILL.md line count
         run: |
-          LINES=$(wc -l < src/skills/osint/SKILL.md)
+          LINES=$(wc -l < osint/SKILL.md)
           echo "SKILL.md has $LINES lines"
           if [ $LINES -gt 500 ]; then
             echo "❌ FAIL: SKILL.md exceeds 500 lines ($LINES)"
@@ -59,7 +59,7 @@ jobs:
 
       - name: Check YAML frontmatter
         run: |
-          if head -20 src/skills/osint/SKILL.md | grep -q "^name:"; then
+          if head -20 osint/SKILL.md | grep -q "^name:"; then
             echo "✅ PASS: Valid YAML frontmatter"
           else
             echo "❌ FAIL: Missing YAML frontmatter"
@@ -68,7 +68,7 @@ jobs:
 
       - name: Check skill name is lowercase
         run: |
-          if grep -q "^name: osint$" src/skills/osint/SKILL.md; then
+          if grep -q "^name: osint$" osint/SKILL.md; then
             echo "✅ PASS: Skill name is lowercase"
           else
             echo "❌ FAIL: Skill name must be 'osint' (lowercase)"
@@ -77,14 +77,14 @@ jobs:
 
       - name: Validate AgentProfiles.yaml
         run: |
-          python3 -c "import yaml; yaml.safe_load(open('src/skills/osint/AgentProfiles.yaml'))"
+          python3 -c "import yaml; yaml.safe_load(open('osint/AgentProfiles.yaml'))"
           echo "✅ PASS: AgentProfiles.yaml is valid YAML"
 
       - name: Check all 17 workflows exist
         run: |
           WORKFLOWS="UsernameRecon DomainRecon SocialCapture InfraMapping EntityLinking TimelineAnalysis TargetProfile IntelReport CompanyProfile CorporateStructure FinancialRecon CompetitorAnalysis RiskAssessment EmailRecon PhoneRecon ImageRecon InvestigationOrchestrator"
           for wf in $WORKFLOWS; do
-            if [ -f "src/skills/osint/Workflows/${wf}.md" ]; then
+            if [ -f "osint/Workflows/${wf}.md" ]; then
               echo "✅ ${wf}.md"
             else
               echo "❌ ${wf}.md MISSING"
@@ -95,7 +95,7 @@ jobs:
       - name: Check voice markers in workflows
         run: |
           MISSING=0
-          for f in src/skills/osint/Workflows/*.md; do
+          for f in osint/Workflows/*.md; do
             if grep -q '🗣️' "$f"; then
               echo "✅ $(basename "$f") has voice markers"
             else

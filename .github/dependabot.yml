@@ -9,3 +9,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      # typescript-eslint does not yet support TypeScript 7 (typescript-estree
+      # crashes reading ts.ScriptKind.Cjs); keep majors off until it does.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
