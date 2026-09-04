@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 - Restore CI flow with tests passing before build
 - Properly close conditional blocks in test files
 - Conditionally skip tests requiring native deps in CI
+- Restore CI and modernize toolchain
+- Bump sharp to 0.35.0 (GHSA-f88m-g3jw-g9cj)
 
 ### Documentation
 
@@ -34,6 +36,7 @@ All notable changes to this project will be documented in this file.
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md [skip ci]
 
 ### Miscellaneous
 
@@ -46,6 +49,11 @@ All notable changes to this project will be documented in this file.
 - Bump typescript-eslint from 8.56.1 to 8.57.0 (#10)
 - Bump @types/bun from 1.3.9 to 1.3.10 (#9)
 - Bump yaml from 2.8.2 to 2.8.3 (#12)
+- Bump yaml from 2.8.3 to 2.9.0 (#24)
+- Bump @types/bun from 1.3.10 to 1.3.14 (#25)
+- Bump typescript-eslint from 8.57.0 to 8.59.3 (#26)
+- Bump typescript from 5.9.3 to 7.0.2 (#20)
+- Bump version to 1.4.0
 
 ### Refactoring
 
@@ -58,4 +66,5 @@ All notable changes to this project will be documented in this file.
 ### Ci
 
 - Skip tests in CI due to native dependencies
+- Pin trivy-action to v0.36.0
 
