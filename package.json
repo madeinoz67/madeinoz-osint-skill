@@ -9,10 +9,10 @@
     "test": "cd src/tools && CI=true bun test"
   },
   "dependencies": {
-    "yaml": "^2.9.0",
-    "sharp": "^0.34.5",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.35.0",
     "tesseract.js": "^7.0.0",
-    "pngjs": "^7.0.0"
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
