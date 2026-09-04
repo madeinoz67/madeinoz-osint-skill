@@ -21,7 +21,7 @@
   "author": "Personal AI Infrastructure",
   "license": "MIT",
   "dependencies": {
-    "sharp": "^0.33.5",
+    "sharp": "^0.35.4",
     "tesseract.js": "^5.1.1",
     "pngjs": "^7.0.0"
   },
