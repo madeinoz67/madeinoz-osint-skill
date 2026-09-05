@@ -33,7 +33,7 @@ The OSINT skill provides 13 comprehensive workflows covering person, domain, and
 ### Implementation Approach
 
 ```typescript
-// Proposed structure: src/skills/osint/Tools/EnrichmentEngine.ts
+// Proposed structure: osint/Tools/EnrichmentEngine.ts
 interface EnrichmentProvider {
   name: string;
   apiKey: string | undefined;
@@ -84,8 +84,8 @@ HIBP_API_KEY="..."
                          ▼
 ┌─────────────────────────────────────────────────────────┐
 │                   STORAGE LAYER                          │
-│  • Knowledge Graph (entities + relationships)           │
-│  • File Reports (human-readable)                        │
+│  • Memory adapter (MuninnDB or findings log)            │
+│  • Human-readable reports                               │
 │  • Temporal metadata (validity tracking)                 │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -119,7 +119,7 @@ resolution_signals:
 
 ### Graph-Based Resolution
 
-Leverage the knowledge skill's graph capabilities:
+Leverage linked findings in the memory layer (MuninnDB links, or explicit cross-references in the findings log):
 
 ```typescript
 // Entity resolution query pattern
@@ -129,19 +129,19 @@ interface IdentityCluster {
   confidence: number;
   resolution_path: ResolutionSignal[];
 }
+```
 
-// Store resolution results
-add_memory({
-  name: "Identity Resolution",
-  episode_body: JSON.stringify({
-    cluster_id: "...",
-    entities: [...],
-    confidence: 0.85,
-    signals: [...]
-  }),
-  source: "json",
-  group_id: "osint_identities"
-});
+Store resolution results as one atomic finding per resolved identity, tagged with the investigation group:
+
+```
+muninn_remember(
+  concept: "osint-entities: identity cluster for johndoe",
+  content: "[[johndoe]] (primary) ≡ [[jsmith-dev]] (github) ≡ twitter:@jsmith;
+            confidence 0.85; signals: shared email, profile-photo match",
+  entities: [{name: "johndoe", type: "person"}],
+  tags: ["osint-entities", "osint"],
+  type: "observation"
+)
 ```
 
 ---
@@ -240,21 +240,25 @@ monitoring_capabilities:
 ### Implementation
 
 ```typescript
-// Proposed: src/skills/osint/Tools/Monitor.ts
+// Proposed: osint/Tools/Monitor.ts
 interface MonitoringRule {
   target_type: "username" | "domain" | "company" | "person";
   target_value: string;
   check_interval: string;  // "1h", "24h", etc.
   alert_conditions: AlertCondition[];
 }
+```
 
-// Store rules in knowledge graph
-add_memory({
-  name: "OSINT Monitor Rule",
-  episode_body: JSON.stringify(rule),
-  source: "json",
-  group_id: "osint_monitors"
-});
+Store rules via the memory adapter so they survive across runs:
+
+```
+muninn_remember(
+  concept: "osint-monitor: watch domain example.com",
+  content: "Monitor rule: watch DNS + WHOIS changes for [[example.com]] every 24h",
+  entities: [{name: "example.com", type: "other"}],
+  tags: ["osint-monitors", "osint"],
+  type: "task"
+)
 ```
 
 ---

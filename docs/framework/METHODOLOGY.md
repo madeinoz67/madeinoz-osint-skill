@@ -273,7 +273,7 @@ Prevents intelligence gaps like missing investor-facing portals on alternative T
 ### Active Investigation
 
 ```
-~/.claude/MEMORY/WORK/$(jq -r '.work_dir' ~/.claude/MEMORY/STATE/current-work.json)/scratch/YYYY-MM-DD-HHMMSS_osint-[target]/
+./YYYY-MM-DD-HHMMSS_osint-[target]/
   phase1-collection.md
   phase2-analysis.md
   phase3-report.md
@@ -281,10 +281,12 @@ Prevents intelligence gaps like missing investor-facing portals on alternative T
   raw-data/
 ```
 
+Findings persist separately via the memory adapter — see `osint/SKILL.md` § Memory Adapter (MuninnDB group, or `./osint-findings/<group>.md` on the local-log path).
+
 ### Archived Reports
 
 ```
-~/.claude/History/research/YYYY-MM/[target]-osint/
+<your archive location>/[target]-osint/
   README.md
   comprehensive-report.md
   executive-summary.md

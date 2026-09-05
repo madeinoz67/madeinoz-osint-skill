@@ -1,372 +1,82 @@
-# PAI OSINT Skill Verification
+# OSINT Skill v2.0.0 — Verification Checklist
 
-**All checks must pass for successful installation.**
+Run after installation and after any upgrade. Every check names its expected result; a check that cannot run is a FAIL, not a skip.
 
----
-
-## Core Structure (5 checks)
-
-### Check 1: OSINT Directory
-```bash
-[ -d "$PAI_DIR/skills/osint" ] && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Directory exists at `$PAI_DIR/skills/osint/`
-
-### Check 2: SKILL.md Present
-```bash
-[ -f "$PAI_DIR/skills/osint/SKILL.md" ] && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** File exists with intent routing configuration
-
-### Check 3: Skill Name Lowercase
-```bash
-grep -q "^name: osint$" "$PAI_DIR/skills/osint/SKILL.md" && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Skill name is `osint` (lowercase)
-
-### Check 4: Workflows Directory
-```bash
-[ -d "$PAI_DIR/skills/osint/Workflows" ] && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Workflows directory exists
-
-### Check 5: Research Directory
-```bash
-[ -d "$PAI_DIR/history/research/osint" ] && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Research output directory exists
-
----
-
-## Workflows (16 checks)
-
-### Check 6: All Workflows Present
-```bash
-WORKFLOWS="UsernameRecon DomainRecon SocialCapture InfraMapping EntityLinking TimelineAnalysis TargetProfile IntelReport CompanyProfile CorporateStructure FinancialRecon CompetitorAnalysis RiskAssessment EmailRecon PhoneRecon ImageRecon"
-for wf in $WORKFLOWS; do
-  [ -f "$PAI_DIR/skills/osint/Workflows/${wf}.md" ] && echo "✓ ${wf}.md" || echo "✗ ${wf}.md MISSING"
-done
-```
-**Expected:** All 16 workflow files present
-
-### Check 7: Knowledge Skill Integration
-```bash
-for f in $PAI_DIR/skills/osint/Workflows/*.md; do
-  name=$(basename "$f")
-  grep -q 'Use the \*\*knowledge\*\* skill' "$f" && echo "✓ $name" || echo "✗ $name - no knowledge integration"
-done
-```
-**Expected:** All workflows reference the **knowledge** skill
-
----
-
-## Dependencies (2 checks)
-
-### Check 8: Browser Skill Available
-```bash
-[ -d "$PAI_DIR/skills/Browser" ] && echo "✓ PASS" || echo "⚠ WARNING: Browser skill not installed"
-```
-**Expected:** Browser skill installed (optional but recommended)
-
-### Check 9: Knowledge Skill Available
-```bash
-[ -d "$PAI_DIR/skills/Knowledge" ] && echo "✓ PASS" || echo "⚠ WARNING: Knowledge skill not installed"
-```
-**Expected:** Knowledge skill installed (optional but recommended)
-
----
-
-## Voice Configuration (3 checks)
-
-### Check 10: VoiceServer Config Present
-```bash
-[ -f "$PAI_DIR/VoiceServer/voice-personalities.json" ] && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** voice-personalities.json exists in VoiceServer directory
-
-### Check 10a: OSINT Voices Configured
-```bash
-# Check that OSINT agents have voices configured (collector, linker, auditor, shadow, verifier)
-OSINT_VOICES=$(grep -c '"collector"\|"linker"\|"auditor"\|"shadow"\|"verifier"' "$PAI_DIR/VoiceServer/voice-personalities.json" 2>/dev/null)
-[ "$OSINT_VOICES" -ge 5 ] && echo "✓ PASS ($OSINT_VOICES/5 OSINT voices)" || echo "⚠ WARNING: Only $OSINT_VOICES/5 OSINT voices configured"
-```
-**Expected:** All 5 OSINT agent voices are configured
-
-### Check 10b: Voice IDs Are Real
-```bash
-# Check that voices have real ElevenLabs IDs (not env var placeholders)
-! grep -q '"\${ELEVENLABS_VOICE_' "$PAI_DIR/VoiceServer/voice-personalities.json" 2>/dev/null && echo "✓ PASS" || echo "⚠ WARNING: Some voices use env var placeholders"
-```
-**Expected:** Voice IDs are actual ElevenLabs IDs, not ${ENV_VAR} placeholders
-
-### Check 10c: Voice Markers in Workflows
-```bash
-# Check that workflows include voice output markers (🗣️)
-MISSING=0
-for f in $PAI_DIR/skills/osint/Workflows/*.md; do
-  name=$(basename "$f")
-  if grep -q '🗣️' "$f"; then
-    echo "✓ $name has voice markers"
-  else
-    echo "⚠ $name missing voice markers"
-    MISSING=$((MISSING + 1))
-  fi
-done
-if [ $MISSING -eq 0 ]; then
-  echo "✓ PASS: All workflows have voice markers"
-else
-  echo "⚠ WARNING: $MISSING workflow(s) missing voice markers"
-fi
-```
-**Expected:** All workflows include 🗣️ voice markers for audio notifications
-
----
-
-## Skill Configuration (3 checks)
-
-### Check 11: Valid YAML Frontmatter
-```bash
-head -20 "$PAI_DIR/skills/osint/SKILL.md" | grep -q "^name:" && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Valid YAML frontmatter with name field
-
-### Check 12: Triggers Defined
-```bash
-grep -q "triggers:" "$PAI_DIR/skills/osint/SKILL.md" && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Trigger phrases defined in SKILL.md
-
-### Check 13: Intent Routing Present
-```bash
-grep -q "Intent Routing" "$PAI_DIR/skills/osint/SKILL.md" && echo "✓ PASS" || echo "✗ FAIL"
-```
-**Expected:** Intent routing section documented
-
----
-
-## Summary
-
-### Run All Checks
-```bash
-export PAI_DIR=~/.claude
-
-echo "=== PAI OSINT Skill Verification ==="
-echo ""
-
-PASS=0
-FAIL=0
-WARN=0
-
-# Core Structure
-echo "Core Structure:"
-if [ -d "$PAI_DIR/skills/osint" ]; then echo "  ✓ osint directory"; ((PASS++)); else echo "  ✗ osint directory"; ((FAIL++)); fi
-if [ -f "$PAI_DIR/skills/osint/SKILL.md" ]; then echo "  ✓ SKILL.md"; ((PASS++)); else echo "  ✗ SKILL.md"; ((FAIL++)); fi
-if grep -q "^name: osint$" "$PAI_DIR/skills/osint/SKILL.md" 2>/dev/null; then echo "  ✓ Skill name lowercase"; ((PASS++)); else echo "  ✗ Skill name not lowercase"; ((FAIL++)); fi
-if [ -d "$PAI_DIR/skills/osint/Workflows" ]; then echo "  ✓ Workflows directory"; ((PASS++)); else echo "  ✗ Workflows directory"; ((FAIL++)); fi
-if [ -d "$PAI_DIR/history/research/osint" ]; then echo "  ✓ Research directory"; ((PASS++)); else echo "  ✗ Research directory"; ((FAIL++)); fi
-
-# Workflows
-echo ""
-echo "Workflows (16 required):"
-WF_COUNT=$(ls "$PAI_DIR/skills/osint/Workflows/"*.md 2>/dev/null | wc -l | xargs)
-echo "  Found: $WF_COUNT/16 workflows"
-if [ "$WF_COUNT" -eq 16 ]; then ((PASS++)); else ((FAIL++)); fi
-
-# Knowledge integration
-echo ""
-echo "Knowledge Integration:"
-KI_COUNT=$(grep -l 'Use the \*\*knowledge\*\* skill' "$PAI_DIR/skills/osint/Workflows/"*.md 2>/dev/null | wc -l | xargs)
-echo "  Found: $KI_COUNT/16 workflows with knowledge skill"
-if [ "$KI_COUNT" -eq 16 ]; then ((PASS++)); else ((FAIL++)); fi
-
-# Dependencies
-echo ""
-echo "Dependencies:"
-if [ -d "$PAI_DIR/skills/Browser" ]; then echo "  ✓ Browser skill"; ((PASS++)); else echo "  ⚠ Browser skill not installed"; ((WARN++)); fi
-if [ -d "$PAI_DIR/skills/Knowledge" ]; then echo "  ✓ Knowledge skill"; ((PASS++)); else echo "  ⚠ Knowledge skill not installed"; ((WARN++)); fi
-
-# Voice Configuration
-echo ""
-echo "Voice Configuration:"
-if [ -f "$PAI_DIR/VoiceServer/voice-personalities.json" ]; then echo "  ✓ VoiceServer config present"; ((PASS++)); else echo "  ✗ VoiceServer config missing"; ((FAIL++)); fi
-OSINT_VOICES=$(grep -c '"collector"\|"linker"\|"auditor"\|"shadow"\|"verifier"' "$PAI_DIR/VoiceServer/voice-personalities.json" 2>/dev/null || echo 0)
-if [ "$OSINT_VOICES" -ge 5 ]; then echo "  ✓ OSINT voices configured ($OSINT_VOICES/5)"; ((PASS++)); else echo "  ⚠ OSINT voices incomplete ($OSINT_VOICES/5)"; ((WARN++)); fi
-if ! grep -q '"\${ELEVENLABS_VOICE_' "$PAI_DIR/VoiceServer/voice-personalities.json" 2>/dev/null; then echo "  ✓ Voice IDs are real"; ((PASS++)); else echo "  ⚠ Some voices use env placeholders"; ((WARN++)); fi
-
-# Configuration
-echo ""
-echo "Configuration:"
-if grep -q "^name:" "$PAI_DIR/skills/osint/SKILL.md" 2>/dev/null; then echo "  ✓ Valid frontmatter"; ((PASS++)); else echo "  ✗ Invalid frontmatter"; ((FAIL++)); fi
-if grep -q "triggers:" "$PAI_DIR/skills/osint/SKILL.md" 2>/dev/null; then echo "  ✓ Triggers defined"; ((PASS++)); else echo "  ✗ Triggers missing"; ((FAIL++)); fi
-if grep -q "Intent Routing" "$PAI_DIR/skills/osint/SKILL.md" 2>/dev/null; then echo "  ✓ Intent routing"; ((PASS++)); else echo "  ✗ Intent routing missing"; ((FAIL++)); fi
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Results: $PASS passed, $FAIL failed, $WARN warnings"
-echo ""
-
-if [ $FAIL -eq 0 ]; then
-  echo "✓ OSINT System installation VERIFIED"
-else
-  echo "✗ Installation incomplete - review failed checks"
-fi
-```
-
----
-
-## Expected Results
-
-| Category | Checks | Required |
-|----------|--------|----------|
-| Core Structure | 5 | All must pass |
-| Workflows | 2 | All must pass (17 files, 17 with knowledge) |
-| Dependencies | 2 | Warnings acceptable |
-| Voice Configuration | 4 | 1 must pass (Traits.yaml), 3 warnings acceptable |
-| Configuration | 3 | All must pass |
-| **Total** | **16** | **11+ pass, 0 fail** |
-
----
-
-## Troubleshooting
-
-### Debugging Commands
+## 1. Skill structure
 
 ```bash
-# Check skill file syntax
-cat "$PAI_DIR/skills/osint/SKILL.md" | head -30
+SKILL=~/.claude/skills/osint
 
-# Verify workflow file integrity
-for f in "$PAI_DIR/skills/osint/Workflows"/*.md; do
-  echo "Checking: $(basename "$f")"
-  head -10 "$f" | grep -q "^#" && echo "  ✓ Valid markdown" || echo "  ✗ Invalid"
-done
+# Skill definition present and Claude-native
+test -f "$SKILL/SKILL.md" && echo "SKILL.md present"
 
-# Test knowledge skill integration
-echo "Testing knowledge skill..."
-# knowledge skill should respond with status
+# Frontmatter is exactly name + description (no legacy triggers array)
+python3 -c "
+import yaml
+meta = yaml.safe_load(open('$SKILL/SKILL.md').read().split('---')[1])
+assert sorted(meta.keys()) == ['description', 'name'], meta.keys()
+assert meta['name'] == 'osint'
+print('frontmatter OK: name + description only')
+"
 
-# Check file permissions
-ls -la "$PAI_DIR/skills/osint/"
-ls -la "$PAI_DIR/skills/osint/Workflows/"
+# Line budget (CI enforces < 500)
+[ "$(wc -l < "$SKILL/SKILL.md")" -lt 500 ] && echo "SKILL.md under 500 lines"
 
-# Verify PAI_DIR
-echo "PAI_DIR: $PAI_DIR"
-echo "Write access: [ -w "$PAI_DIR" ] && echo 'Yes' || echo 'No'"
+# All 17 workflows present
+ls "$SKILL/Workflows" | wc -l   # expect 17
+
+# Personas parse
+python3 -c "import yaml; yaml.safe_load(open('$SKILL/AgentProfiles.yaml')); print('AgentProfiles.yaml valid')"
+
+# Self-contained references
+ls "$SKILL/References/"          # expect AGENT_ROLES.md VOICE_MAPPINGS.md KNOWLEDGE_GROUPS.md
 ```
 
-### Common Errors and Solutions
+## 2. Routing smoke test
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| "Permission denied" | No write access to $PAI_DIR | Run: `chmod u+w $PAI_DIR` |
-| "SKILL.md not found" | Incomplete installation | Re-run Phase 4.2 |
-| "Workflows missing" | Copy command failed | Re-run Phase 4.3 |
-| "Knowledge skill error" | Dependency not installed | Install pai-knowledge-system |
-| "Wrong workflow count" | Not all workflows copied | Re-copy from PACK_SOURCE |
+In a fresh Claude session:
 
-### Rollback Procedure
+- [ ] "Find all accounts for username johndoe" dispatches UsernameRecon
+- [ ] "Deep dive on johndoe, follow the leads" dispatches InvestigationOrchestrator
+- [ ] "Company profile Acme Corporation" dispatches CompanyProfile
+- [ ] "Check if john@example.com was breached" dispatches EmailRecon
+
+## 3. Memory adapter
+
+- [ ] **Path probe:** with MuninnDB MCP bound, an investigation stores via `muninn_remember` and the finding is retrievable — `muninn_recall` with `tags_any: ["osint-<group>"]` returns it
+- [ ] **Fallback:** without MuninnDB, the same investigation appends an entry to `./osint-findings/<group>.md`
+- [ ] **Update semantics:** correcting a stored finding uses `muninn_evolve` (no duplicate near-copies in recall)
+
+## 4. Optional backends (only if installed)
+
+- [ ] Bright Data MCP: a scrape request returns markdown (bot-walled source)
+- [ ] Browser automation: a screenshot request produces an image file
+
+## 5. Image-forensics tools (optional, repo clone only)
 
 ```bash
-# If installation fails, restore from backup
-BACKUP_DIR="$PAI_DIR/Backups/osint-YYYYMMDD-HHMMSS"
-rm -rf "$PAI_DIR/skills/osint"
-cp -r "$BACKUP_DIR/osint" "$PAI_DIR/skills/"
-
-# Or manually uninstall
-rm -rf "$PAI_DIR/skills/osint"
-rm -rf "$PAI_DIR/history/research/osint"
+bun install
+bun run lint && bun run typecheck && bun run test
+# expect: lint clean, typecheck clean, 15/15 tests
 ```
 
-### Detailed Troubleshooting by Issue
+## 6. CI parity (repo contributors)
 
-#### Failed: OSINT Directory
-**Symptoms:** Installation fails with "osint directory not found"
-
-**Causes:**
-- PAI_DIR not set correctly
-- Parent directory doesn't exist
-- Insufficient permissions
-
-**Solutions:**
 ```bash
-# Check PAI_DIR
-echo "PAI_DIR is set to: ${PAI_DIR:-$HOME/.claude}"
-
-# Create parent directory if needed
-mkdir -p "$PAI_DIR/skills"
-
-# Set proper permissions
-chmod u+w "$PAI_DIR"
+python3 -c "import yaml; yaml.safe_load(open('osint/AgentProfiles.yaml'))"
+grep -q "^name: osint$" osint/SKILL.md && echo "name check OK"
+grep -rnE "pa[i]-|PA[I]_DIR|AgentFactor[y]|mcp__pa[i]|knowledge-syste[m]" osint/ src/tools/ docs/ README.md INSTALL.md VERIFY.md CLAUDE.md mkdocs.yml config/ \
+  | grep -v docs/investigation | grep -v GRAPHITI_IMPLEMENTATION | grep -v "src/tools/logs"
+# expect: zero output (legacy-residue gate; character classes keep this doc itself out of the match set)
 ```
 
-#### Failed: Skill Name Not Lowercase
-**Symptoms:** Verification shows "Skill name not lowercase"
+## Sign-off
 
-**Solution:**
-```bash
-# Edit SKILL.md to fix name
-sed -i '' 's/^name: OSINT$/name: osint/' "$PAI_DIR/skills/osint/SKILL.md"
-
-# Verify fix
-grep "^name:" "$PAI_DIR/skills/osint/SKILL.md"
-```
-
-#### Failed: Workflows Missing
-**Symptoms:** Workflow count is less than 16
-
-**Solution:**
-```bash
-# Determine PACK_SOURCE (if installing from git repo)
-PACK_SOURCE="$(git rev-parse --show-toplevel 2>/dev/null)/Packs/pai-osint-skill"
-
-# Or set manually if archive/download
-# PACK_SOURCE="/path/to/pai-osint-skill"
-
-# Re-copy workflows
-cp "$PACK_SOURCE/src/skills/osint/Workflows/"*.md "$PAI_DIR/skills/osint/Workflows/"
-
-# Verify
-ls "$PAI_DIR/skills/osint/Workflows/"*.md | wc -l
-```
-
-#### Failed: Knowledge Integration Missing
-**Symptoms:** Workflows don't reference knowledge skill
-
-**Check which workflows are missing:**
-```bash
-for f in "$PAI_DIR/skills/osint/Workflows"/*.md; do
-  if ! grep -q 'Use the \*\*knowledge\*\* skill' "$f"; then
-    echo "Missing: $(basename "$f")"
-  fi
-done
-```
-
-**Solution:** Re-copy workflows from updated pack source
-
-#### Warning: Browser Skill
-**Impact:** Limited web scraping, some workflows fail on JS-heavy sites
-
-**Install browser skill (optional but recommended):**
-```bash
-# Install pai-browser-skill pack
-# OSINT will work without it but with reduced functionality
-```
-
-#### Warning: Knowledge Skill
-**Impact:** Findings stored to files only, no cross-investigation linking
-
-**Install knowledge skill (required for full functionality):**
-```bash
-# Install pai-knowledge-system pack
-# The knowledge skill handles its own MCP and database configuration
-```
-
-### Getting Help
-
-If troubleshooting doesn't resolve the issue:
-
-1. Check documentation in `docs/` directory
-2. Review installation logs
-3. Run verification script with verbose output
-4. Check PAI system requirements
-5. Report issue with verification output
+| Section | Result | Evidence |
+|---|---|---|
+| 1. Structure | ☐ | |
+| 2. Routing | ☐ | |
+| 3. Memory adapter | ☐ | |
+| 4. Backends | ☐ / N-A | |
+| 5. Tools | ☐ / N-A | |
+| 6. CI parity | ☐ / N-A | |

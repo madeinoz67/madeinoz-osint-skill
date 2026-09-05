@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * voice-test.ts - OSINT Pack Voice Test Tool
+ * voice-test.ts - OSINT Voice Test Tool
  *
  * Tests each OSINT agent voice by sending test phrases to VoiceServer.
  *
@@ -185,7 +185,7 @@ ${colors.bold}Agents:${colors.reset}
   if (!serverUp) {
     error(`✗ VoiceServer not responding at ${VOICE_SERVER_URL}`);
     error("  Make sure VoiceServer is running:");
-    error("  bun run $PAI_DIR/VoiceServer/server.ts");
+    error("  bun run ~/.claude/VoiceServer/server.ts");
     process.exit(1);
   }
   success("✓ VoiceServer is running\n");

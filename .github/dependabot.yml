@@ -14,3 +14,7 @@ updates:
       # crashes reading ts.ScriptKind.Cjs); keep majors off until it does.
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
+      # @eslint/js majors pair with matching eslint majors; repo runs eslint 9
+      # via typescript-eslint 8.x — revisit when eslint moves to 10.
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * voice-sync.ts - OSINT Pack Voice Configuration Sync Tool
+ * voice-sync.ts - OSINT Voice Configuration Sync Tool
  *
  * Syncs OSINT agent voices from config/voices.json to the VoiceServer's
  * voice-personalities.md (in skills/CORE/). Only adds new voices, preserves existing.
@@ -83,14 +83,14 @@ function info(msg: string) {
   console.log(`${colors.cyan}${msg}${colors.reset}`);
 }
 
-// Resolve PAI_DIR
-function getPaiDir(): string {
-  return process.env.PAI_DIR || `${process.env.HOME}/.claude`;
+// Resolve the Claude config directory (~/.claude)
+function getClaudeDir(): string {
+  return `${process.env.HOME}/.claude`;
 }
 
 // Restart VoiceServer
-async function restartVoiceServer(paiDir: string): Promise<boolean> {
-  const serverPath = resolve(paiDir, "VoiceServer/server.ts");
+async function restartVoiceServer(claudeDir: string): Promise<boolean> {
+  const serverPath = resolve(claudeDir, "VoiceServer/server.ts");
 
   if (!existsSync(serverPath)) {
     warn("  VoiceServer not found - skipping restart");
@@ -171,8 +171,8 @@ function loadPackConfig(): PackVoiceConfig {
 }
 
 // Load voice-personalities.md and extract JSON
-function loadVoicePersonalities(paiDir: string): { data: VoicePersonalities; path: string; rawContent: string } {
-  const voicePath = resolve(paiDir, "skills/CORE/voice-personalities.md");
+function loadVoicePersonalities(claudeDir: string): { data: VoicePersonalities; path: string; rawContent: string } {
+  const voicePath = resolve(claudeDir, "skills/CORE/voice-personalities.md");
 
   if (!existsSync(voicePath)) {
     throw new Error(`voice-personalities.md not found: ${voicePath}\nEnsure CORE skill is installed.`);
@@ -306,7 +306,7 @@ async function main() {
 
   if (args.includes("--help") || args.includes("-h")) {
     log(`
-${colors.bold}OSINT Pack Voice Sync Tool${colors.reset}
+${colors.bold}OSINT Voice Sync Tool${colors.reset}
 
 Syncs OSINT agent voices to skills/CORE/voice-personalities.md.
 
@@ -355,9 +355,9 @@ ${colors.bold}Examples:${colors.reset}
     const packConfig = loadPackConfig();
     log(`  Found ${Object.keys(packConfig.voices).length} OSINT voices`);
 
-    const paiDir = getPaiDir();
-    info(`→ Loading voice-personalities.md from ${paiDir}...`);
-    const { data: serverConfig, path: serverPath, rawContent } = loadVoicePersonalities(paiDir);
+    const claudeDir = getClaudeDir();
+    info(`→ Loading voice-personalities.md from ${claudeDir}...`);
+    const { data: serverConfig, path: serverPath, rawContent } = loadVoicePersonalities(claudeDir);
     log(`  Found ${Object.keys(serverConfig.voices).length} existing voices`);
 
     // Perform sync
@@ -385,7 +385,7 @@ ${colors.bold}Examples:${colors.reset}
       // Restart VoiceServer to load new config
       if (!options.noRestart) {
         log("");
-        await restartVoiceServer(paiDir);
+        await restartVoiceServer(claudeDir);
       } else {
         log("");
         warn("⚠ VoiceServer restart skipped (--no-restart)");

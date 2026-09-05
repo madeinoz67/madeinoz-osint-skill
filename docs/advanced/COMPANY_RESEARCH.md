@@ -273,9 +273,9 @@ Run enhanced due diligence on ABC Corp
 - OpenSanctions database
 - Google News / LexisNexis
 
-## Knowledge Integration
+## Memory Integration
 
-All company research is automatically stored to the knowledge graph.
+All company research is persisted through the skill's memory adapter — one atomic finding per memory (MuninnDB) or per entry (local findings log), tagged with the workflow's group.
 
 ### What Gets Stored
 
@@ -292,7 +292,7 @@ Each workflow stores structured entities:
 ### Querying Past Research
 
 ```
-Search knowledge for "Acme Corporation executives"
+Recall osint-company findings for "Acme Corporation executives"
 ```
 
 ```
@@ -303,9 +303,11 @@ What investors are connected to TechCorp?
 Show me all companies with high risk scores
 ```
 
+(On the local-log path, read `./osint-findings/osint-company.md` and `./osint-findings/osint-financial.md` instead.)
+
 ### Cross-Investigation Linking
 
-The knowledge graph automatically links:
+Related findings are linked at store time — `muninn_link` between memories on the MuninnDB path, explicit entity names in log entries otherwise:
 
 - People across companies (e.g., shared directors)
 - Investors across portfolio companies

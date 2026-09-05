@@ -1,7 +1,7 @@
-# OSINT Ontology for Graphiti Knowledge Graph
+# OSINT Ontology
 
 **Version:** 1.0.0
-**Purpose:** Define custom entities and relationships for OSINT investigations in Graphiti
+**Purpose:** Define the entity and relationship vocabulary for OSINT investigations, as persisted through the skill's memory adapter (MuninnDB MCP preferred, local findings log fallback)
 **Based On:** STIX 2.1, Schema.org, UCO, OSINT Combine
 
 ---
@@ -110,7 +110,7 @@ interface PersonEntity {
 type UsernameMap = Record<string, string>;  // platform -> username
 ```
 
-**Example Episode:**
+**Example finding entry:**
 
 ```
 Person: John Smith
@@ -668,7 +668,7 @@ enum InvestigationScope {
 
 ### Bi-Temporal Tracking
 
-Graphiti uses bi-temporal data modeling:
+The memory layer models time bi-temporally — when a fact was recorded versus when it was true in the real world. MuninnDB exposes this directly: every memory carries `created_at`/`valid_from`/`valid_until`, and recall supports time travel via its `as_of` parameter.
 
 ```typescript
 interface TemporalMetadata {
@@ -700,6 +700,8 @@ John Smith —[WORKS_AT]→ TechCorp (2020-2022)
 ```
 
 ### Temporal Query Examples
+
+On the MuninnDB path, temporal queries use recall's `as_of` parameter (what was true at time T) plus `include_invalid` for history. The Cypher below is illustrative, for hosts that persist the ontology into a graph database:
 
 ```cypher
 // What did we know about John Smith in June 2021?
@@ -816,178 +818,75 @@ interface CollectionMetadata {
 
 ## Implementation Guide
 
-### Phase 1: Define Custom Entities in Graphiti
+The ontology is implemented on top of the memory adapter defined in `osint/SKILL.md` § Memory Adapter — no custom backend code required.
 
-```python
-# src/custom_entities/person.py
-from pydantic import BaseModel
-from datetime import datetime
-from typing import List, Optional, Dict
-from enum import Enum
+### Phase 1: Map Entities onto the Memory Adapter
 
-class LineType(str, Enum):
-    MOBILE = "Mobile"
-    LANDLINE = "Landline"
-    VOIP = "VOIP"
-    TOLL_FREE = "TollFree"
-    PREMIUM_RATE = "PremiumRate"
+MuninnDB accepts typed entities directly. Map the ontology's entity types like so:
 
-class PersonEntity(BaseModel):
-    """Custom Person entity for OSINT investigations"""
+| Ontology entity | MuninnDB `entities` type |
+|---|---|
+| Person | `person` |
+| Organization | `organization` |
+| Location | `location` |
+| Account, Domain, Email, Phone, Image, IPAddress | name them explicitly in content (and wrap in `[[brackets]]`); use `other` if a typed entry is needed |
+| Investigation | `concept` |
 
-    # Core
-    uuid: str
-    entity_type: str = "Person"
-
-    # Identity
-    primary_name: str
-    given_name: str
-    family_name: str
-    middle_name: Optional[str] = None
-
-    # Variants
-    aliases: List[str] = []
-    usernames: Dict[str, str] = {}
-    emails: List[str] = []
-    phones: List[str] = []
-
-    # Temporal
-    born_at: Optional[datetime] = None
-    active_since: Optional[datetime] = None
-    last_seen: Optional[datetime] = None
-
-    # Location
-    locations: List[str] = []
-
-    # Professional
-    occupations: List[str] = []
-    employers: List[str] = []
-
-    # Metadata
-    confidence: float = 0.0
-    sources: List[str] = []
-    created_at: datetime
-    updated_at: datetime
-    valid_from: datetime
-    valid_until: Optional[datetime] = None
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "uuid": "person_abc123",
-                "primary_name": "John Smith",
-                "given_name": "John",
-                "family_name": "Smith",
-                "usernames": {"twitter": "@jsmith", "github": "jsmith-dev"},
-                "confidence": 85.0
-            }
-        }
-
-# Register with Graphiti
-CUSTOM_ENTITIES = {
-    "Person": PersonEntity,
-    # ... add other entities
-}
-```
-
-### Phase 2: Custom Relationship Extraction
-
-```python
-# src/custom_relationships.py
-from graphiti_core.edges import Edge
-
-class IdentityResolutionEdge(Edge):
-    """Identity resolution relationship"""
-
-    def __init__(self,
-                 source_node_uuid: str,
-                 target_node_uuid: str,
-                 relationship_type: str,  # SAME_PERSON_AS, LIKELY_SAME_PERSON
-                 confidence: float,
-                 evidence: List[str],
-                 valid_from: datetime,
-                 valid_until: Optional[datetime] = None):
-        super().__init__(
-            source_node_uuid=source_node_uuid,
-             target_node_uuid=target_node_uuid,
-             created_at=datetime.now(datetime.UTC)
-        )
-        self.relationship_type = relationship_type
-        self.confidence = confidence
-        self.evidence = evidence
-        self.valid_from = valid_from
-        self.valid_until = valid_until
-
-# Relationship type mapping
-RELATIONSHIP_TYPES = {
-    "SAME_PERSON_AS": IdentityResolutionEdge,
-    "LIKELY_SAME_PERSON": IdentityResolutionEdge,
-    # ... other relationship types
-}
-```
-
-### Phase 3: Episode Processing for OSINT
-
-```python
-# src/episode_processors/osint_processor.py
-from graphiti_core import Graphiti
-from graphiti_core.observations import Episode
-from src.custom_entities import PersonEntity
-from src.custom_relationships import IdentityResolutionEdge
-
-class OSINTEpisodeProcessor:
-    """Process OSINT episodes into custom entities"""
-
-    def __init__(self, graphiti: Graphiti):
-        self.graphiti = graphiti
-
-    async def process_username_recon(self, episode_body: str):
-        """Process username enumeration episode"""
-
-        # Extract entities using LLM
-        entities = await self._extract_entities(episode_body)
-
-        # Create Person entity
-        person = PersonEntity(
-            uuid=f"person_{self._generate_hash()}",
-            primary_name=entities.get("name"),
-            usernames=entities.get("usernames", {}),
-            confidence=entities.get("confidence", 70.0),
-            sources=entities.get("sources", []),
-            created_at=datetime.now(datetime.UTC),
-            updated_at=datetime.now(datetime.UTC),
-            valid_from=datetime.now(datetime.UTC)
-        )
-
-        # Add to Graphiti
-        await self.graphiti.add_episode(
-            name="username_recon",
-            episode_body=episode_body,
-            source=EpisodeType.text,
-            source_description="OSINT Username Reconnaissance"
-        )
-
-        # Link accounts to person
-        for platform, username in person.usernames.items():
-            await self._link_account_to_person(
-                platform, username, person.uuid
-            )
-```
-
-### Phase 4: Knowledge Graph Groups
+All remaining attributes (usernames map, breach history, EXIF, confidence, sources) live in the finding's `content` prose — keep them named explicitly so keyword recall can find them.
 
 ```
-osint-people         - Person entities
-osint-organizations   - Organization entities
-osint-accounts       - Platform accounts
-osint-domains        - Domain/DNS entities
-osint-emails         - Email entities
-osint-phones         - Phone entities
-osint-locations      - Location entities
-osint-images         - Image entities
-osint-investigations - Investigation cases
-osint-pivots         - Pivot tracking
-osint-relationships  - Cross-entity relationships
+muninn_remember(
+  concept: "osint-username: John Smith accounts",
+  content: "[[John Smith]] uses twitter:@jsmith and github:jsmith-dev;
+            emails john@example.com; born 1985-03-15; located San Francisco CA;
+            employer [[TechCorp Inc]] 2020-present; confidence 85;
+            sources: LinkedIn profile, Twitter bio",
+  entities: [
+    {name: "John Smith", type: "person"},
+    {name: "TechCorp Inc", type: "organization"},
+    {name: "San Francisco CA", type: "location"}
+  ],
+  tags: ["osint-username", "osint"],
+  type: "observation"
+)
+```
+
+On the local-log path, the same finding is one entry in `./osint-findings/osint-username.md` with the same content shape.
+
+### Phase 2: Relationship Types as Links
+
+The ontology's relationship vocabulary (Section: Relationship Types) is expressed with `muninn_link` between the two findings that carry the entities:
+
+| Ontology relationship | Link relation |
+|---|---|
+| `SAME_PERSON_AS`, `LIKELY_SAME_PERSON`, `POSSIBLY_SAME_PERSON` | `relates_to` (confidence stated in the source finding's content) |
+| `HAS_EMAIL`, `HAS_PHONE`, `HAS_ACCOUNT`, `WORKS_AT`, `OWNS`, `FUNDED_BY` | `supports` |
+| `CONTRADICTED_BY` / conflicting evidence | `contradicts` |
+| Pivot chains (`CHAINED_FROM`, `DISCOVERED_IN`) | `relates_to` |
+
+```
+muninn_link(source_id: "<finding A>", target_id: "<finding B>", relation: "supports")
+```
+
+On the local-log path, cross-reference by naming both entities in each entry ("John Smith works at TechCorp Inc").
+
+### Phase 3: Storing Workflow Output
+
+Every workflow's "store findings" step means: run the adapter once per finding, atomically — never one blob per investigation. Re-asserting or correcting a stored fact goes through `muninn_evolve` on the prior memory's ID; deferred pivots are stored as findings marked `deferred` in the investigation group so a later run can resume from them.
+
+### Phase 4: Memory Groups
+
+```
+osint-username                    - username enumeration results
+osint-domain                      - domain/infrastructure results
+osint-email                       - email findings
+osint-phone                       - phone findings
+osint-image                       - image forensics findings
+osint-company                     - corporate intelligence
+osint-financial                   - financial data and SEC filings
+osint-risk                        - risk and due diligence findings
+osint-entities                    - cross-entity relationships
+osint-investigation-<SLUG>-<YEAR> - orchestrated investigation + deferred pivots
 ```
 
 ---

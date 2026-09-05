@@ -85,36 +85,36 @@ Verify with multiple sources:
 - Court records
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the corporate structure:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-company". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-company", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-company.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Company Entity:
-   - Name: "Company: {company_name}"
+   - Label: "Company: {company_name}"
    - Data: Legal name, registration number, type, status, jurisdiction
-   - Group: "osint-companies"
+   - Group: "osint-company"
 
 2. Ownership Hierarchy:
-   - Name: "Ownership: {company_name}"
+   - Label: "Ownership: {company_name}"
    - Data: Parent entities, ownership percentages, UBO information
-   - Relationships: owned_by, parent_of, controls
+   - Relationships: owned_by, parent_of, controls (muninn_link relates_to)
 
 3. Subsidiaries:
-   - Name: "Subsidiaries: {company_name}"
+   - Label: "Subsidiaries: {company_name}"
    - Data: Each subsidiary with jurisdiction, stake, status
    - Relationships: subsidiary_of, owns
 
 4. Directors & Officers:
    - For each person, store as individual entity:
-   - Name: "Person: {full_name}"
+   - Label: "Person: {full_name}"
    - Data: Positions held, appointment dates, other directorships
    - Relationships: director_of, officer_of, works_at
 
 5. Corporate Timeline:
-   - Name: "History: {company_name}"
+   - Label: "History: {company_name}"
    - Data: Key events (incorporations, name changes, acquisitions)
    - Temporal metadata for each event
 ```
@@ -249,8 +249,7 @@ Previous Addresses:
 • UBO identified and verified
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity IDs: corp_acme_001, person_jsmith_001, ...
+💾 Stored via memory adapter: osint-company (MuninnDB group | local findings file)
 ```
 
 ## Data Sources

@@ -18,26 +18,28 @@ Generate structured intelligence reports from collected OSINT data.
 
 ## REQUIRED: Agent Delegation
 
-**This workflow MUST be executed by a specialized report synthesis agent via the Task tool.**
+**This workflow MUST be executed by a specialized report synthesis agent via the native agent/Task tool.**
 
-### Step 1: Generate Agent Prompt
-```bash
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,communications,consultative" \
-  --task "Generate comprehensive intelligence report for investigation '{investigation_name}', synthesizing all collected OSINT data into structured dossier format" \
-  --output json
-```
+### Spawn Specialist Agent (MANDATORY)
 
-### Step 2: Spawn Subagent (MANDATORY)
-
-**IMMEDIATELY after getting the AgentFactory output, use the Task tool:**
+Compose the brief from the matching persona in AgentProfiles.yaml (workflow mapping: IntelReport → analyst), then dispatch natively:
 
 ```
-Task tool parameters:
+Agent/Task tool parameters:
   subagent_type: "general-purpose"
   description: "OSINT intel report for {investigation_name}"
   prompt: |
-    [Paste the "prompt" field from AgentFactory JSON]
+    [Persona block from AgentProfiles.yaml — role, voice, traits]
+
+    Task: Generate comprehensive intelligence report for investigation
+    '{investigation_name}', synthesizing all collected OSINT data into
+    structured dossier format.
+    Workflow: Read <skill-dir>/Workflows/IntelReport.md and follow it.
+    Memory: use the adapter in <skill-dir>/SKILL.md § Memory Adapter,
+    group "osint-report".
+    Tools: use whatever web/search tools this session provides.
+    Escalate back to the main session on judgment calls (legality,
+    scope expansion, ambiguous identity) — do not decide alone.
 
     ## Workflow Instructions
     [Include the Process steps below]
@@ -51,8 +53,8 @@ Task tool parameters:
 - `communications` - Professional report writing and clear presentation
 - `consultative` - Advisory stance with actionable recommendations
 
-⚠️ **FORBIDDEN: Executing this workflow directly without the Task tool spawn.**
-⚠️ **WHY: Voice system requires SubagentStop hook, which only fires for Task subagents.**
+⚠️ **FORBIDDEN: Executing this workflow directly without the agent spawn.**
+⚠️ **WHY: Specialist synthesis belongs in subagents — the main session orchestrates, it does not collect.**
 
 ---
 
@@ -60,7 +62,8 @@ Task tool parameters:
 
 ### Step 1: Gather Intelligence
 ```
-Query knowledge graph for:
+Recall stored intelligence via the memory adapter (Path 1: muninn_recall with
+context phrases + tags_any ["osint"]; Path 2: read ./osint-findings/) for:
 - All entities related to investigation
 - Facts and relationships
 - Timeline of collection
@@ -124,40 +127,40 @@ Report metadata:
 
 ### Step 5: Export
 ```
-Format with frontmatter for memory capture:
-- type: research
-- category: osint
+Persist via the memory adapter (SKILL.md § Memory Adapter):
+- Path 1: muninn_remember per finding, tags ["osint-report", "osint"]
+- Path 2: append to ./osint-findings/osint-report.md
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter with type: research, category: osint
+Store each finding via the memory adapter, group "osint-report". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]]); Path 2 appends each finding to `./osint-findings/osint-report.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Report Entity:
-   - Name: "Report: {investigation_name}"
+   - Label: "Report: {investigation_name}"
    - Data: Report ID, date, classification, scope, key findings summary
-   - Group: "osint-reports"
+   - Group: "osint-report"
 
 2. Target Summary:
-   - Name: "Target: {investigation_name}"
+   - Label: "Target: {investigation_name}"
    - Data: All targets included, primary identifiers, platform presence
-   - Links to individual target profiles
+   - Links to individual target profiles (muninn_link relates_to)
 
 3. Findings:
-   - Name: "Findings: {investigation_name}"
+   - Label: "Findings: {investigation_name}"
    - Data: Digital footprint, network analysis, timeline, risk assessment
    - Confidence levels and source counts
 
 4. Recommendations:
-   - Name: "Recommendations: {investigation_name}"
+   - Label: "Recommendations: {investigation_name}"
    - Data: Action items, follow-up suggestions
    - Priority levels
 
 5. Sources & Methodology:
-   - Name: "Sources: {investigation_name}"
+   - Label: "Sources: {investigation_name}"
    - Data: All sources used, collection methods, ethical compliance
    - Audit trail
 ```
@@ -172,7 +175,7 @@ Store the following as structured episodes:
 
 **Classification:** UNCLASSIFIED
 **Date:** 2026-01-09
-**Analyst:** PAI OSINT Skill
+**Analyst:** OSINT Skill
 **Report ID:** OSINT-2026-001
 
 ---
@@ -294,7 +297,7 @@ during the period [dates]. Key findings include:
 
 **END OF REPORT**
 
-Generated by PAI OSINT Skill v1.0.0
+Generated by OSINT Skill v1.0.0
 ```
 
 ## Export Formats

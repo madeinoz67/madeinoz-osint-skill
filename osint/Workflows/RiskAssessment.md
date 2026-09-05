@@ -24,12 +24,23 @@ Evaluate company risks including litigation, adverse media, regulatory issues, a
 
 **This workflow MUST be executed by a specialized OSINT agent with security expertise.**
 
-```bash
-# Spawn risk assessment agent
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,security,skeptical" \
-  --task "Conduct risk assessment for '{company}' including litigation, regulatory status, sanctions screening, adverse media, and ESG evaluation" \
-  --output json
+Compose the brief from the matching persona in AgentProfiles.yaml (workflow mapping: RiskAssessment → auditor), then dispatch with the host's native agent/Task tool:
+
+```
+Agent/Task tool parameters:
+  subagent_type: "general-purpose"
+  description: "OSINT risk assessment for {company}"
+  prompt: |
+    [Persona block from AgentProfiles.yaml — role, voice, traits]
+
+    Task: Conduct risk assessment for '{company}' including litigation,
+    regulatory status, sanctions screening, adverse media, and ESG evaluation.
+    Workflow: Read <skill-dir>/Workflows/RiskAssessment.md and follow it.
+    Memory: use the adapter in <skill-dir>/SKILL.md § Memory Adapter,
+    group "osint-risk".
+    Tools: use whatever web/search tools this session provides.
+    Escalate back to the main session on judgment calls (legality,
+    scope expansion, ambiguous identity) — do not decide alone.
 ```
 
 **Agent Traits:**
@@ -170,41 +181,41 @@ Calculate overall risk score:
 - Compare to industry benchmarks
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter with type: research, category: osint
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-risk". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-risk", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-risk.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Risk Profile:
-   - Name: "Risk: {company_name}"
+   - Label: "Risk: {company_name}"
    - Data: Overall risk score, category breakdown, assessment level
    - Group: "osint-risk"
 
 2. Litigation Record:
-   - Name: "Litigation: {company_name}"
+   - Label: "Litigation: {company_name}"
    - Data: Active cases, historical cases with outcomes, materiality
-   - Relationships: defendant_in, plaintiff_in
+   - Relationships: defendant_in, plaintiff_in (muninn_link relates_to)
 
 3. Regulatory Status:
-   - Name: "Regulatory: {company_name}"
+   - Label: "Regulatory: {company_name}"
    - Data: Compliance certifications, regulatory actions, enforcement history
    - Temporal metadata for each action
 
 4. Sanctions Screening:
-   - Name: "Sanctions: {company_name}"
+   - Label: "Sanctions: {company_name}"
    - Data: Screening results for each watchlist (OFAC, EU, UN, etc.)
    - PEP connections, country risk assessment
    - Screening date for temporal validity
 
 5. Adverse Media:
-   - Name: "Media: {company_name}"
+   - Label: "Media: {company_name}"
    - Data: Negative coverage items with severity, source, remediation status
    - Search period and article count
 
 6. ESG Assessment:
-   - Name: "ESG: {company_name}"
+   - Label: "ESG: {company_name}"
    - Data: Environmental, social, governance scores and findings
    - Disclosure level assessment
 ```
@@ -443,9 +454,7 @@ This company presents an acceptable risk profile for
 business engagement. No significant barriers identified.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: risk_assessment_acme_2026
-💾 Captured to Memory: Yes (type: research, category: osint)
+💾 Stored via memory adapter: osint-risk (MuninnDB group | local findings file)
 ```
 
 ## Data Sources

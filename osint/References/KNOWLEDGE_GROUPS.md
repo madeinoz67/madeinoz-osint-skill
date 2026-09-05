@@ -1,6 +1,6 @@
 # OSINT Memory Group Naming Convention
 
-Standard group names for persisting OSINT findings through the skill's memory adapter (see `osint/SKILL.md` § Memory Adapter).
+Standard group names for persisting OSINT findings through the skill's memory adapter. See [../SKILL.md](../SKILL.md) § Memory Adapter for the adapter contract (MuninnDB MCP preferred, local `osint-findings/` log fallback).
 
 ## Standard Group Pattern
 
@@ -29,8 +29,7 @@ The group name is used as-is: a MuninnDB tag on Path 1, a filename under `./osin
 | `osint-competitors` | CompetitorAnalysis | Market and competitor analysis |
 | `osint-risk` | RiskAssessment | Risk and due diligence findings |
 | `osint-entities` | EntityLinking, TimelineAnalysis | Cross-source entity relationships |
-| `osint-investigation-<SLUG>-<YEAR>` | InvestigationOrchestrator | Full investigation results |
-| `osint-investigation-<SLUG>-<YEAR>` (deferred entries) | InvestigationOrchestrator | Deferred pivots, stored in the same group marked `deferred` |
+| `osint-investigation-<SLUG>-<YEAR>` | InvestigationOrchestrator | Full investigation results, including deferred pivots |
 
 ## Usage Example
 
@@ -40,6 +39,7 @@ Path 1 — MuninnDB MCP (tag carries the group):
 muninn_remember(
   concept: "osint-username: johndoe 15 accounts across platforms",
   content: "Found 15 accounts for [[johndoe]] across platforms...",
+  entities: [{name: "johndoe", type: "person"}],
   tags: ["osint-username", "osint"],
   type: "observation"
 )

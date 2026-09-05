@@ -1,13 +1,11 @@
 ---
-name: PAI OSINT Skill
-pack-id: pai-osint-skill-v1.4.0
-version: 1.4.0
-author: pai
-description: AI-powered Open Source Intelligence collection and analysis with knowledge graph integration and iterative pivot-driven investigations
+name: OSINT Skill
+version: 2.0.0
+author: madeinoz
+description: AI-powered Open Source Intelligence collection and analysis with pluggable memory persistence and iterative pivot-driven investigations
 type: skill
 purpose-type: [intelligence, reconnaissance, investigation, analysis]
 platform: claude-code
-dependencies: [pai-browser-skill, pai-knowledge-system, pai-agents-skill]
 keywords: [osint, intelligence, reconnaissance, investigation, social-media, domain-analysis, geolocation, company-research, due-diligence, corporate-intelligence, competitor-analysis, pivot-detection, iterative-investigation]
 ---
 
@@ -15,9 +13,9 @@ keywords: [osint, intelligence, reconnaissance, investigation, social-media, dom
   <img src="docs/assets/header.png" alt="OSINT Intelligence Gathering" width="100%">
 </p>
 
-# PAI OSINT Skill v1.3.0
+# OSINT Skill v2.0.0
 
-> AI-powered Open Source Intelligence collection and analysis with knowledge graph integration and **iterative pivot-driven investigations**
+> AI-powered Open Source Intelligence collection and analysis with **iterative pivot-driven investigations** and pluggable memory persistence (MuninnDB preferred, local files otherwise)
 
 ---
 
@@ -28,14 +26,14 @@ keywords: [osint, intelligence, reconnaissance, investigation, social-media, dom
 - [Verification Checklist](VERIFY.md) - Post-installation validation
 
 **Documentation:**
-- [User Guide](docs/USER_GUIDE.md) - Complete usage documentation
-- [Quick Reference](docs/QUICK_REFERENCE.md) - Command cheat sheet
-- [Company Research Guide](docs/COMPANY_RESEARCH.md) - Business intelligence workflows
-- [Changelog](docs/CHANGELOG.md) - Version history and release notes
+- [User Guide](docs/user-guide/USER_GUIDE.md) - Complete usage documentation
+- [Quick Reference](docs/user-guide/QUICK_REFERENCE.md) - Command cheat sheet
+- [Company Research Guide](docs/advanced/COMPANY_RESEARCH.md) - Business intelligence workflows
+- [Changelog](CHANGELOG.md) - Version history and release notes
 
 **Advanced:**
-- [Image Analysis Tools](docs/IMAGE_ANALYSIS_TOOLS.md) - Tool requirements and setup
-- [Enrichment Roadmap](docs/ENRICHMENT_ROADMAP.md) - API integration guide
+- [Image Analysis Tools](docs/development/IMAGE_ANALYSIS_TOOLS.md) - Tool requirements and setup
+- [Enrichment Roadmap](docs/development/ENRICHMENT_ROADMAP.md) - API integration guide
 
 **By Workflow Type:**
 - **Person Investigation:** Username enumeration, social media, entity linking
@@ -73,26 +71,18 @@ Get started immediately with these common OSINT commands:
 
 ---
 
-## Installation Prompt
+## What This Is
 
-You are receiving a PAI Pack - a modular upgrade for AI agent systems.
-
-**What is PAI?** See: [PAI Project Overview](../README.md#what-is-pai)
-
-**What is a Pack?** See: [Pack System](../README.md#the-journey-pai-v1x--v20)
-
-This pack transforms your AI into an intelligence-gathering platform. The PAI OSINT Skill provides comprehensive workflows for:
+A self-contained Claude skill that turns your AI assistant into an intelligence-gathering platform. No required external dependencies — drop it into any skills directory and it works, with optional backends making it better.
 
 - **Person Investigation** - Username enumeration, social media capture, entity linking
 - **Domain Intelligence** - DNS, WHOIS, certificate transparency, subdomain discovery
 - **Company Research** - Corporate profiles, ownership tracing, financial analysis, risk assessment
-- **Knowledge Persistence** - All findings stored to knowledge graph via the **knowledge** skill
+- **Persistent Memory** - Findings stored via the memory adapter (MuninnDB MCP when installed, a local findings log otherwise)
 
 **Core principle:** Systematic collection, intelligent analysis, persistent storage.
 
-No more scattered notes across sessions. Your investigations build on each other through the knowledge graph.
-
-Please follow the installation instructions in `INSTALL.md` to integrate this pack into your infrastructure.
+No more scattered notes across sessions. Your investigations build on each other through persisted, recallable findings.
 
 ---
 
@@ -100,11 +90,11 @@ Please follow the installation instructions in `INSTALL.md` to integrate this pa
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| OSINT Skill Definition | `skills/osint/SKILL.md` | Intent routing and workflow dispatch |
+| OSINT Skill Definition | `osint/SKILL.md` | Intent routing and workflow dispatch |
 | **Investigation Orchestrator** | `Workflows/InvestigationOrchestrator.md` | **Iterative pivot-driven investigations with parallel agents** |
 | Username Reconnaissance | `Workflows/UsernameRecon.md` | Enumerate usernames across 400+ platforms |
 | Domain Reconnaissance | `Workflows/DomainRecon.md` | DNS, WHOIS, CT logs, subdomains |
-| Social Media Capture | `Workflows/SocialCapture.md` | Profile capture to knowledge graph |
+| Social Media Capture | `Workflows/SocialCapture.md` | Profile capture via memory adapter |
 | Infrastructure Mapping | `Workflows/InfraMapping.md` | Port scanning, service fingerprinting |
 | Entity Linking | `Workflows/EntityLinking.md` | Cross-source identity resolution |
 | Timeline Analysis | `Workflows/TimelineAnalysis.md` | Temporal pattern detection |
@@ -120,9 +110,9 @@ Please follow the installation instructions in `INSTALL.md` to integrate this pa
 | Image Reconnaissance | `Workflows/ImageRecon.md` | Image metadata, forensics, reverse search |
 
 **Summary:**
-- **Files created:** 19 (1 skill + 18 workflows including InvestigationOrchestrator)
-- **Directories created:** 2 (`skills/osint/Workflows/`, `history/research/osint/`)
-- **Dependencies:** pai-agents-skill (required), pai-knowledge-system (required), pai-browser-skill (recommended), Bright Data MCP (recommended)
+- **Skill directory:** `osint/` (1 SKILL.md + 17 workflows + AgentProfiles + References — the entire installable skill)
+- **Optional utilities:** `src/tools/` (bun-powered image forensics)
+- **Dependencies:** none required — MuninnDB MCP, Bright Data MCP, and browser automation are optional enhancements
 
 ---
 
@@ -156,13 +146,13 @@ Traditional OSINT is manual, fragmented, and ephemeral. Investigators repeat wor
 
 ## The Solution
 
-The PAI OSINT Skill provides **structured, persistent, knowledge-graph-backed intelligence collection**.
+The OSINT Skill provides **structured, persistent, memory-backed intelligence collection**.
 
 **Architecture:**
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        PAI OSINT Skill                              │
+│                           OSINT Skill                                │
 │            AI-Powered Open Source Intelligence Collection            │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
@@ -170,25 +160,25 @@ The PAI OSINT Skill provides **structured, persistent, knowledge-graph-backed in
          │                         │                         │
          ▼                         ▼                         ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  osint skill    │    │  browser skill  │    │ knowledge skill │
-│                 │    │  (Dependency)   │    │  (Dependency)   │
-│ • Intent Router │    │                 │    │                 │
-│ • 16 Workflows  │    │ • Playwright    │    │ • Entity Store  │
-│ • Agents        │    │ • Session Mgmt  │    │ • Relationships │
-│                 │    │ • Screenshots   │    │ • Graph Queries │
+│  osint skill    │    │ native agents   │    │ optional web    │
+│                 │    │                 │    │ backends        │
+│ • Intent Router │    │ • Persona briefs│    │                 │
+│ • 17 Workflows  │    │ • Parallel disp│    │ • Bright Data   │
+│ • Orchestrator  │    │ • Escalation    │    │ • Browser auto  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                         │                         │
          └─────────────────────────┼─────────────────────────┘
                                    │
                                    ▼
                     ┌─────────────────────────┐
-                    │   Dual Storage System   │
+                    │    Memory Adapter       │
                     │                         │
-                    │ • Knowledge Graph       │
-                    │   (queryable, linked)   │
+                    │ • MuninnDB MCP          │
+                    │   (preferred, tagged,   │
+                    │   recallable, linked)   │
                     │                         │
-                    │ • File Reports          │
-                    │   (human-readable)      │
+                    │ • Local findings log    │
+                    │   (fallback, always on) │
                     └─────────────────────────┘
 ```
 
@@ -200,15 +190,15 @@ Each workflow follows a consistent 5-step pattern:
 2. **Collection** - Systematic acquisition from public sources
 3. **Processing** - Normalizing, enriching, correlating data
 4. **Analysis** - Identifying patterns, relationships, risk
-5. **Storage** - Persist to knowledge graph AND file reports
+5. **Storage** - Persist via memory adapter AND file reports
 
 **Design Principles:**
 
-1. **Workflow-Driven**: 16 specialized workflows for different intelligence tasks
-2. **Knowledge-First**: Every workflow stores to knowledge graph via the **knowledge** skill
-3. **Dual Storage**: Both queryable graph AND human-readable file reports
+1. **Workflow-Driven**: 17 specialized workflows for different intelligence tasks
+2. **Memory-First**: Every workflow stores findings via the memory adapter
+3. **Dual Storage**: Recallable memory AND human-readable file reports
 4. **Ethical by Design**: Legal considerations built into every workflow
-5. **Progressive Enhancement**: Works without dependencies, better with them
+5. **Progressive Enhancement**: Works with zero dependencies, better with optional backends
 
 ---
 
@@ -216,9 +206,9 @@ Each workflow follows a consistent 5-step pattern:
 
 The OSINT System has 3 architectural layers:
 
-1. **Intent Routing (SKILL.md)** - Triggers map natural language to workflows
-2. **Workflow Execution (Workflows/)** - Structured steps with knowledge persistence
-3. **Knowledge Storage (knowledge skill)** - Entities and relationships in graph
+1. **Intent Routing (SKILL.md)** - The skill description routes natural language to workflows
+2. **Workflow Execution (Workflows/)** - Structured steps with memory persistence
+3. **Memory Adapter (SKILL.md § Memory Adapter)** - Findings persisted to MuninnDB or local files
 
 ```
 User: "investigate company Acme Corp"
@@ -242,17 +232,16 @@ User: "investigate company Acme Corp"
             │
             ▼
 ┌─────────────────────────┐
-│ knowledge skill         │
-│ Episode: Company Acme   │
-│ Group: osint-companies  │
-│ Relationships mapped    │
+│ Memory Adapter          │
+│ Group: osint-company    │
+│ Entities tagged, linked │
 └─────────────────────────┘
 ```
 
 **Why This Architecture Matters:**
 
 - **Explicit Routing**: Intent → Workflow → Storage, not fuzzy matching
-- **Persistent Memory**: Every investigation adds to the knowledge graph
+- **Persistent Memory**: Every investigation adds to recallable memory
 - **Cross-Investigation Linking**: Entity discovered in one workflow appears in future searches
 - **Audit Trail**: Full methodology documented for each collection
 
@@ -262,12 +251,12 @@ User: "investigate company Acme Corp"
 
 This sounds similar to using search engines manually which also finds public information. What makes this approach different?
 
-The OSINT System transforms ad-hoc searching into systematic intelligence collection. Each workflow follows a repeatable methodology, stores findings to a queryable knowledge graph, and builds institutional memory across investigations. Future queries automatically surface past findings.
+The OSINT System transforms ad-hoc searching into systematic intelligence collection. Each workflow follows a repeatable methodology, persists findings through the memory adapter, and builds institutional memory across investigations. Future queries automatically surface past findings.
 
 - Structured workflows replace random searching with methodology
-- Knowledge graph stores entities and relationships permanently
+- The memory adapter stores entities and findings persistently (MuninnDB when installed)
 - Cross-investigation linking surfaces connections automatically
-- Dual storage provides both queryable and human-readable outputs
+- Dual output: recallable memory AND human-readable reports
 
 ---
 
@@ -276,10 +265,12 @@ The OSINT System transforms ad-hoc searching into systematic intelligence collec
 See `INSTALL.md` for step-by-step wizard-style installation.
 
 **Quick Install:**
-1. Run the analysis commands to check prerequisites
-2. Answer questions about your OSINT needs
-3. Copy skill files to `$PAI_DIR/skills/osint/`
-4. Verify with `VERIFY.md` checklist
+```bash
+git clone https://github.com/madeinoz67/madeinoz-osint-skill.git
+ln -s "$(pwd)/madeinoz-osint-skill/osint" ~/.claude/skills/osint
+```
+
+Then verify with the `VERIFY.md` checklist.
 
 ---
 
@@ -340,7 +331,7 @@ PHASE 4: Expansion (Depth 1)
 PHASE 5: Synthesis & Report
 └── Comprehensive dossier with 27 entities, 45 relationships
 
-Output: Investigation complete. Deferred pivots saved to Knowledge Graph.
+Output: Investigation complete. Deferred pivots saved via the memory adapter.
 ```
 
 ### Example 2: Username Reconnaissance
@@ -352,10 +343,10 @@ System executes UsernameRecon workflow:
 1. Searches 400+ platforms for "johndoe"
 2. Validates discovered accounts
 3. Extracts profile metadata
-4. Stores to knowledge graph (group: osint-usernames)
-5. Saves report to $PAI_DIR/history/research/osint/
+4. Stores via memory adapter (group: osint-username)
+5. Saves report to osint-findings/
 
-Output: Found 15 accounts, stored to knowledge graph
+Output: Found 15 accounts, stored via memory adapter
 ```
 
 ### Example 2: Company Due Diligence
@@ -368,7 +359,7 @@ System executes RiskAssessment workflow:
 2. Checks sanctions lists (OFAC, EU, UK)
 3. Scans adverse media
 4. Reviews regulatory filings
-5. Stores findings to knowledge graph (group: osint-risk)
+5. Stores findings via memory adapter (group: osint-risk)
 
 Output: Risk profile generated with 3 litigation cases identified
 ```
@@ -385,7 +376,7 @@ System executes TargetProfile workflow:
 4. Runs EntityLinking
 5. Runs TimelineAnalysis
 6. Generates consolidated report
-7. Stores complete profile to knowledge graph
+7. Stores complete profile via memory adapter
 
 Output: Comprehensive dossier with 23 entities, 45 relationships
 ```
@@ -396,21 +387,11 @@ Output: Comprehensive dossier with 23 entities, 45 relationships
 
 **Environment Variables:**
 
-**Option 1: `.env` file** (recommended):
+**Optional API keys for enhanced capabilities** (`.env` or shell profile):
 ```bash
-# $PAI_DIR/.env
-PAI_DIR="$HOME/.claude"
-
-# Optional API keys for enhanced capabilities
 SHODAN_API_KEY="your_key_here"
 SECURITYTRAILS_API_KEY="your_key_here"
 HUNTER_API_KEY="your_key_here"
-```
-
-**Option 2: Shell profile**:
-```bash
-# Add to ~/.zshrc or ~/.bashrc
-export PAI_DIR="$HOME/.claude"
 ```
 
 ---
@@ -425,7 +406,7 @@ export PAI_DIR="$HOME/.claude"
 
 **Process:**
 1. Identify your most common OSINT tasks
-2. Create custom workflow variations in `$PAI_DIR/skills/osint/Workflows/`
+2. Create custom workflow variations in `~/.claude/skills/osint/Workflows/`
 3. Add trigger phrases to SKILL.md
 
 **Expected Outcome:** One-command investigations for your standard cases
@@ -436,25 +417,22 @@ export PAI_DIR="$HOME/.claude"
 
 | Customization | File | Impact |
 |--------------|------|--------|
-| Add API keys | `$PAI_DIR/.env` | Enhanced data sources |
+| Add API keys | `.env` | Enhanced data sources |
 | Custom report templates | `Workflows/IntelReport.md` | Branded output format |
 | Investigation categories | `history/research/osint/` | Organized by case type |
 
 ---
 
-## Dependencies
+## Optional Backends
 
-- **agents skill** - Agent delegation and parallel spawning (required)
-  - Without this: Cannot execute OSINT workflows
-- **knowledge skill** - Knowledge graph for entity storage (required)
-  - Without this: Findings stored to files only, no cross-investigation linking
-- **browser skill** - Browser automation for web scraping (recommended)
-  - Without this: Limited web scraping, some workflows will fail
-- **Bright Data MCP** - Enhanced web scraping and search (recommended)
-  - Without this: Uses standard search, may hit rate limits on some sites
+None are required — every workflow runs on the host's built-in tools and degrades gracefully.
 
-**Required:** pai-agents-skill, pai-knowledge-system
-**Recommended:** pai-browser-skill, Bright Data MCP (see [MCP servers](https://github.com/anthropics/claude-code-mcp-servers#bright-data))
+- **MuninnDB MCP** - Persistent, recallable, linked findings (preferred memory path)
+  - Without this: findings go to the local `osint-findings/` log instead
+- **Bright Data MCP** - Enhanced web scraping and search
+  - Without this: standard search tools, may hit rate limits on some sites
+- **Browser automation** - JavaScript-heavy sites and authenticated capture
+  - Without this: those sources are skipped
 
 ---
 
@@ -482,7 +460,7 @@ See `docs/` directory for detailed user guides:
 
 ## Credits
 
-- **Original concept**: Developed as part of PAI personal AI infrastructure
+- **Original concept**: A personal project that outgrew its home, now a standalone generic skill
 - **Methodology**: Based on standard OSINT intelligence cycle practices
 - **Inspired by**: Sherlock, theHarvester, Maltego, and professional OSINT frameworks
 
@@ -490,29 +468,18 @@ See `docs/` directory for detailed user guides:
 
 ## Works Well With
 
-- **pai-browser-skill** - Required for JavaScript-heavy sites and authentication
-- **pai-knowledge-system** - Required for knowledge graph persistence
-- **pai-history-system** - Automatically captures investigation sessions
+- **MuninnDB** - Long-term memory server; the preferred findings backend
+- **Bright Data MCP** - Bot-walled and scraping-heavy sources
+- **Any browser-automation skill** - JavaScript-heavy sites and screenshots
 
 ---
 
 ## Changelog
 
-See [docs/CHANGELOG.md](docs/CHANGELOG.md) for full version history.
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-### v1.2.0 (January 2026)
-- **Mandatory Agent Delegation** - All OSINT workflows now require specialized agents
-- **Workflow → Agent Trait Mapping** - Each workflow has specific recommended traits
-- **Multi-Agent Orchestration** - Complex investigations support parallel agents
-- **pai-agents-skill** is now a required dependency
-
-### v1.1.0 (January 2026)
-- **Company & Business Research Module** - 5 new workflows for corporate intelligence
-- **Digital Artifact Analysis Module** - Email, phone, and image reconnaissance
-- Added explicit **knowledge** skill integration to all 16 workflows
-- Added user documentation under `docs/`
-
-### v1.0.0 (January 2026)
-- Initial release with 8 core workflows
-- Browser and knowledge skill integration
-- Username enumeration, domain recon, social capture, intelligence reporting
+### v2.0.0 (September 2026)
+- **Generic Claude skill** - converted from the v1.x skill-pack format: Claude-native SKILL.md, one-directory install (`osint/`), zero required dependencies
+- **Memory adapter** - findings persist to MuninnDB MCP when installed, local `osint-findings/` log otherwise
+- **Native agent dispatch** - persona-driven subagent briefs via the host's Agent tool, no external agents skill
+- **Toolchain modernization** - sharp 0.35 (GHSA-f88m-g3jw-g9cj), tesseract.js v7 block-hierarchy API, single root manifest, typecheck now green

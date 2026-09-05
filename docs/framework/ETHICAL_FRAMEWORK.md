@@ -277,4 +277,4 @@ Before starting ANY OSINT investigation:
 
 **Version:** 1.0
 **Last Updated:** December 2024
-**Owner:** PAI OSINT Skill
+**Owner:** OSINT Skill

@@ -1,18 +1,19 @@
 # AgentProfiles.yaml - OSINT-Specialized Agent Compositions
 # Version: 1.0.0
-# Localized to: pai-osint-skill
+# Part of: the osint skill (self-contained)
 #
-# These profiles extend the core Agents pack with OSINT-specific trait combinations.
-# When spawning agents for OSINT tasks, use these pre-configured profiles for optimal results.
+# These profiles define OSINT-specific trait combinations.
+# When dispatching agents for OSINT tasks, use these pre-configured profiles for optimal results.
 #
-# Integration with Agents Pack:
-#   bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts --traits "osint,skeptical,thorough"
+# Integration with native agent dispatch:
+#   Compose the persona block (role, voice, traits) into the prompt and dispatch
+#   via the host's native agent/Task tool — see SKILL.md § Agent Dispatch.
 #
 # ==============================================================================
-# OSINT-SPECIFIC EXPERTISE TRAIT (Extends core Traits.yaml)
+# OSINT-SPECIFIC EXPERTISE TRAIT
 # ==============================================================================
 #
-# Add to Agents pack Traits.yaml under 'expertise':
+# Expertise trait to compose into agent prompts:
 #
 # osint:
 #   name: "OSINT Analyst"
@@ -262,7 +263,7 @@ parallel_compositions:
 # ==============================================================================
 # VOICE MAPPINGS (OSINT-specific)
 # ==============================================================================
-# These map to the core Agents pack voice registry
+# These map to the voice labels used in agent dispatch prompts
 voice_recommendations:
   collector: "Academic"      # Measured, intellectual
   linker: "Sophisticated"    # Nuanced, pattern-focused
@@ -286,6 +287,6 @@ voice_recommendations:
 #    "Run comprehensive person investigation on target"
 #    -> Spawns: collector, linker, analyst in parallel
 #
-# 4. Direct trait composition via AgentFactory:
-#    bun run AgentFactory.ts --traits "research,skeptical,thorough,adversarial"
+# 4. Direct trait composition in the dispatch prompt:
+#    "...traits: research, skeptical, thorough, adversarial..."
 #

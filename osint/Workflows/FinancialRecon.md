@@ -116,37 +116,37 @@ Evaluate overall health:
 - Red flags (going concern, audit issues)
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the financial intelligence:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-financial". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-financial", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-financial.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Funding History:
-   - Name: "Funding: {company_name}"
+   - Label: "Funding: {company_name}"
    - Data: Each round with date, amount, valuation, lead investor
-   - Group: "osint-financials"
+   - Group: "osint-financial"
 
 2. Investor Profiles:
    - For each significant investor:
-   - Name: "Investor: {investor_name}"
+   - Label: "Investor: {investor_name}"
    - Data: Type, investment amount, board seat, other portfolio companies
-   - Relationships: invested_in, board_member_of
+   - Relationships: invested_in, board_member_of (muninn_link relates_to)
 
 3. Financial Metrics:
-   - Name: "Metrics: {company_name}"
+   - Label: "Metrics: {company_name}"
    - Data: Revenue (actual or estimated), growth rates, margins, cash position
    - Confidence levels for each metric
    - Temporal metadata (as of date)
 
 4. SEC Filings (if public):
-   - Name: "SEC: {company_name}"
+   - Label: "SEC: {company_name}"
    - Data: Key filing summaries, material events, insider transactions
    - Links to source filings
 
 5. Financial Health Score:
-   - Name: "Health: {company_name}"
+   - Label: "Health: {company_name}"
    - Data: Overall assessment, growth signals, caution signals, red flags
    - Confidence level and assessment date
 ```
@@ -275,8 +275,7 @@ Overall Financial Health: GOOD
 Confidence: MEDIUM (private company estimates)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: fin_acme_2026
+💾 Stored via memory adapter: osint-financial (MuninnDB group | local findings file)
 ```
 
 ## Data Sources

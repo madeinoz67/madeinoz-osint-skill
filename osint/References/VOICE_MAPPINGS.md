@@ -2,10 +2,6 @@
 
 Voice mappings for OSINT agent roles — a convention for spoken status updates. If the host has a voice-notification system it speaks `🗣️` lines aloud; otherwise the lines are harmless text.
 
-<p align="center">
-  <img src="../../assets/osint-voice-mappings.png" alt="Voice Mappings Flow" width="80%">
-</p>
-
 ## Agent Role → Voice → Traits Mapping
 
 | Agent Role | Voice | Traits | Description |
@@ -94,20 +90,20 @@ OSINT agents include `🗣️` voice-marker lines so a host voice-notification s
 
 - **Tone:** Formal, definitive, expert
 - **Used for:** Technical analysis, reporting, scanning
-- **Roles:** Scanner, TechAnalyst, Synthesizer, Briefer, ImageRecon
+- **Roles:** Scanner, TechAnalyst, Synthesizer, Briefer
 
 ### Professional Voice
 
 - **Tone:** Balanced, business-like, advisory
 - **Used for:** Corporate research, financial analysis
-- **Roles:** FinanceAnalyst, BusinessAnalyst, Researcher, CompanyProfile
+- **Roles:** FinanceAnalyst, BusinessAnalyst, Researcher
 
 ### Intense Voice
 
 - **Tone:** Urgent, serious, security-focused
 - **Used for:** Risk assessment, adversarial operations
-- **Roles:** Auditor, Shadow, RiskAssessment
+- **Roles:** Auditor, Shadow
 
-## Voice Configuration
+## Voice Configuration (optional, host-side)
 
-Reference voice IDs (ElevenLabs public voices) for the five core agent roles live in [`config/voices.json`](https://github.com/madeinoz67/madeinoz-osint-skill/blob/main/config/voices.json) in this repository. Hosts with their own voice-notification system can map the role names above to their own voice entries — for example into `~/.claude/VoiceServer/voice-personalities.json` (the optional `src/tools/voice-sync.ts` helper automates that sync).
+The voice names above are a convention — the skill itself needs no voice setup. Hosts that want spoken updates map the four personality names to concrete voices in their own voice-notification system. The repository ships reference ElevenLabs public-voice IDs for the five core agent roles (collector, linker, auditor, shadow, verifier) in `config/voices.json` at the repo root; substitute your own voice IDs there if you use the optional sync helper in `src/tools/voice-sync.ts`.

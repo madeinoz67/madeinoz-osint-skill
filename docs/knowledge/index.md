@@ -1,16 +1,16 @@
-# Knowledge Graph Integration
+# Knowledge & Memory Model
 
-The PAI OSINT Skill integrates with the PAI Knowledge System (Graphiti) to persist intelligence findings and enable cross-investigation querying.
+The OSINT skill persists intelligence findings through a pluggable memory adapter: MuninnDB MCP when the host provides it (preferred), a local `osint-findings/` log otherwise. Findings are stored atomically, tagged by group, and linked so future investigations can pivot on them. See `osint/SKILL.md` § Memory Adapter for the adapter contract.
 
 <p align="center">
-  <img src="../assets/knowledge-graph.png" alt="Knowledge Graph Entity Relationships" width="80%">
+  <img src="../assets/knowledge-graph.png" alt="OSINT Entity Relationships" width="80%">
 </p>
 
-## Knowledge Graph Documentation
+## Documentation
 
 - **[OSINT Ontology](OSINT_ONTOLOGY.md)** - Complete ontology for OSINT entities and relationships
 - **[Ontology Quick Reference](ONTOLOGY_QUICK_REFERENCE.md)** - Quick lookup for entity types
-- **[Graphiti Implementation](GRAPHITI_IMPLEMENTATION.md)** - Technical implementation details
+- **[Graphiti Implementation](GRAPHITI_IMPLEMENTATION.md)** - Legacy backend notes (retired optional integration, kept for history)
 
 ## Key Concepts
 
@@ -34,11 +34,11 @@ The PAI OSINT Skill integrates with the PAI Knowledge System (Graphiti) to persi
 
 ## Investigation Persistence
 
-All OSINT investigations automatically store findings to the knowledge graph:
+All OSINT investigations store findings via the memory adapter:
 
-```bash
-# Query past investigations
-What do I know about username johndoe?
+```
+# Reload or query past investigations
+Recall osint findings about username johndoe
 What companies are linked to domain example.com?
 Show me all findings from OSINT investigations in the past week
 ```

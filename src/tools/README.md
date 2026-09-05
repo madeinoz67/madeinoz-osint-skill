@@ -76,7 +76,7 @@ import {
   OCREngine,
   HashCalculator,
   ForensicAnalyzer,
-} from '@pai-osint/image-tools';
+} from '@osint-skill/image-tools';
 
 // Metadata extraction
 const extractor = new MetadataExtractor();

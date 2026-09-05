@@ -1,6 +1,6 @@
 # OSINT Framework
 
-The PAI OSINT Skill is built on a structured framework that ensures systematic, ethical, and effective intelligence collection.
+The OSINT Skill is built on a structured framework that ensures systematic, ethical, and effective intelligence collection.
 
 <p align="center">
   <img src="../assets/intelligence-cycle.png" alt="OSINT Intelligence Cycle" width="80%">

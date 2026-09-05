@@ -90,25 +90,30 @@ CONNECTED_TO   Person → Person
 
 ---
 
-## Knowledge Graph Groups
+## Memory Groups
+
+Group names used by the memory adapter (MuninnDB tag or `osint-findings/` filename):
 
 ```
-osint-people          → Person entities
-osint-organizations   → Organization entities
-osint-accounts        → Platform accounts
-osint-domains         → Domain/DNS entities
-osint-emails          → Email entities
-osint-phones          → Phone entities
-osint-locations       → Location entities
-osint-images          → Image entities
-osint-investigations  → Investigation cases
+osint-username                    → username enumeration results
+osint-domain                      → domain/infrastructure results
+osint-email                       → email investigation findings
+osint-phone                       → phone lookup results
+osint-image                       → image forensics findings
+osint-company                     → corporate intelligence
+osint-financial                   → financial data and SEC filings
+osint-risk                        → risk and due diligence findings
+osint-entities                    → cross-source entity relationships
+osint-investigation-<SLUG>-<YEAR> → orchestrated investigation results
 ```
+
+See [KNOWLEDGE_GROUPS.md](../advanced/KNOWLEDGE_GROUPS.md) for the full convention.
 
 ---
 
-## Common Episode Patterns
+## Common Finding Patterns
 
-### Username Enumeration Episode
+### Username Enumeration Finding
 
 ```
 Person: John Smith
@@ -119,7 +124,7 @@ Confidence: 85%
 Sources: Twitter API, GitHub Profile
 ```
 
-### Corporate Profile Episode
+### Corporate Profile Finding
 
 ```
 Organization: Acme Corporation Inc.
@@ -136,25 +141,23 @@ Sources: Delaware Registry, SEC EDGAR
 
 ## Implementation Checklist
 
-- [ ] Define custom entities in Pydantic models
-- [ ] Register custom entities with Graphiti
-- [ ] Define custom relationship types
-- [ ] Create episode processors for each workflow
-- [ ] Test with sample OSINT data
-- [ ] Integrate with existing OSINT workflows
-- [ ] Set up knowledge graph groups
-- [ ] Configure Neo4j/FalkorDB connection
-- [ ] Add confidence scoring framework
-- [ ] Implement temporal tracking (bi-temporal)
-- [ ] Add provenance tracking
+- [ ] Probe at investigation start: MuninnDB MCP tools bound? (Path 1) : local log (Path 2)
+- [ ] Choose the group name (`osint-<type>` or `osint-investigation-<SLUG>-<YEAR>`)
+- [ ] Store one finding per memory/entry, atomic
+- [ ] Wrap entity names in `[[double brackets]]` (Path 1) or name them explicitly (Path 2)
+- [ ] Tag every memory with the group name plus `osint` (Path 1)
+- [ ] Link related findings (`muninn_link` / cross-references in log entries)
+- [ ] Include confidence level and source in every finding
+- [ ] Record provenance (tool or URL) per finding
+- [ ] Update existing findings rather than duplicating (`muninn_evolve` on Path 1)
 
 ---
 
 ## Related Documentation
 
 - [OSINT_ONTOLOGY.md](OSINT_ONTOLOGY.md) - Complete ontology specification
-- [GRAPHITI_IMPLEMENTATION.md](GRAPHITI_IMPLEMENTATION.md) - Implementation guide
-- [KNOWLEDGE_GROUPS.md](KNOWLEDGE_GROUPS.md) - Group naming conventions
+- [GRAPHITI_IMPLEMENTATION.md](GRAPHITI_IMPLEMENTATION.md) - Legacy backend notes (retired optional integration)
+- [KNOWLEDGE_GROUPS.md](../advanced/KNOWLEDGE_GROUPS.md) - Group naming conventions
 
 ---
 

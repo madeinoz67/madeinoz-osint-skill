@@ -23,37 +23,31 @@ Comprehensive company/business investigation combining all company-focused OSINT
 
 ### Agent Team Composition
 
-```bash
-# Agent 1: Corporate Structure Analyst
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,business,systematic" \
-  --task "Map corporate structure, ownership hierarchy, subsidiaries, and key personnel for '{company}'" \
-  --output json
+Compose each specialist from the matching persona in AgentProfiles.yaml (workflow_mappings), then dispatch with the host's native agent/Task tool — one dispatch per agent:
 
-# Agent 2: Financial Intelligence Analyst
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,finance,thorough" \
-  --task "Investigate financial status, funding history, SEC filings, and valuation for '{company}'" \
-  --output json
-
-# Agent 3: Technical Reconnaissance Specialist
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,technical,systematic" \
-  --task "Analyze digital footprint, domains, technology stack, and infrastructure for '{company}'" \
-  --output json
-
-# Agent 4: Risk Assessment Analyst
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,security,skeptical" \
-  --task "Conduct risk assessment, litigation check, adverse media, and sanctions screening for '{company}'" \
-  --output json
-
-# Agent 5: Intelligence Synthesizer (Coordinator)
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,communications,synthesizing" \
-  --task "Compile comprehensive company intelligence dossier from parallel agent findings for '{company}'" \
-  --output json
 ```
+# Agent 1: Corporate Structure Analyst (persona: auditor)
+#   traits: intelligence, business, systematic
+#   task: "Map corporate structure, ownership hierarchy, subsidiaries, and key personnel for '{company}'"
+
+# Agent 2: Financial Intelligence Analyst (persona: auditor)
+#   traits: intelligence, finance, thorough
+#   task: "Investigate financial status, funding history, SEC filings, and valuation for '{company}'"
+
+# Agent 3: Technical Reconnaissance Specialist (persona: collector)
+#   traits: intelligence, technical, systematic
+#   task: "Analyze digital footprint, domains, technology stack, and infrastructure for '{company}'"
+
+# Agent 4: Risk Assessment Analyst (persona: auditor)
+#   traits: intelligence, security, skeptical
+#   task: "Conduct risk assessment, litigation check, adverse media, and sanctions screening for '{company}'"
+
+# Agent 5: Intelligence Synthesizer (Coordinator; persona: analyst)
+#   traits: intelligence, communications, synthesizing
+#   task: "Compile comprehensive company intelligence dossier from parallel agent findings for '{company}'"
+```
+
+Each dispatch follows SKILL.md § Agent Dispatch: persona block, target, the sub-workflow file to read, memory adapter group, and the session's available tools.
 
 ### Orchestration Pattern
 
@@ -131,40 +125,40 @@ Merge all workflow outputs:
 Compile IntelReport with all findings
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the investigation:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-company". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-company", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-company.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Company Entity:
-   - Name: "Company: {company_name}"
+   - Label: "Company: {company_name}"
    - Data: Legal name, registration, jurisdiction, status, founded date
-   - Group: "osint-companies"
+   - Group: "osint-company"
 
 2. Corporate Structure:
-   - Name: "Structure: {company_name}"
+   - Label: "Structure: {company_name}"
    - Data: Parent company, subsidiaries, ownership percentages
-   - Relationships: owns, subsidiary_of, controls
+   - Relationships: owns, subsidiary_of, controls (muninn_link relates_to)
 
 3. Key Personnel:
-   - Name: "Executives: {company_name}"
+   - Label: "Executives: {company_name}"
    - Data: Directors, officers, board members with titles and tenure
    - Relationships: works_at, directs, founded
 
 4. Financial Profile:
-   - Name: "Financials: {company_name}"
+   - Label: "Financials: {company_name}"
    - Data: Funding rounds, investors, valuation, revenue estimates
    - Relationships: invested_in, funded_by
 
 5. Risk Assessment:
-   - Name: "Risk: {company_name}"
+   - Label: "Risk: {company_name}"
    - Data: Litigation, regulatory status, sanctions screening, adverse media
    - Risk score and category breakdown
 
 6. Competitive Position:
-   - Name: "Competitors: {company_name}"
+   - Label: "Competitors: {company_name}"
    - Data: Market position, key competitors, differentiators
    - Relationships: competes_with, operates_in
 ```
@@ -180,7 +174,7 @@ Store the following as structured episodes:
 CLASSIFICATION: UNCLASSIFIED
 REPORT DATE: 2026-01-10
 REPORT ID: OSINT-COMPANY-2026-001
-ANALYST: PAI OSINT Skill
+ANALYST: OSINT Skill
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -395,14 +389,13 @@ C. Confidence Matrix
 
                          END OF REPORT
 
-Generated by PAI OSINT Skill v1.0.0
+Generated by OSINT Skill v1.0.0
 Investigation Duration: 25 minutes
 Entities Discovered: 35
 Relationships Mapped: 52
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-💾 Captured to Memory: Yes (type: research, category: osint)
+💾 Stored via memory adapter: osint-company (MuninnDB group | local findings file)
 ```
 
 ## Scope Levels
@@ -451,7 +444,7 @@ Relationships Mapped: 52
 - SEC EDGAR search
 - Crunchbase API
 - LinkedIn Sales Navigator
-- Web scraping (Browser Pack)
+- Web scraping (browser automation, if available)
 
 ## Ethical Notes
 - Only use publicly available information

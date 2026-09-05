@@ -213,40 +213,40 @@ Shadow Analysis:
 - Hemisphere determination
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the findings:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-image". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-image", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-image.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Image Entity:
-   - Name: "Image: {hash_short}"
+   - Label: "Image: {hash_short}"
    - Data: File hash, dimensions, format, capture date, source URL
-   - Group: "osint-images"
+   - Group: "osint-image"
 
 2. Metadata Entity:
-   - Name: "Metadata: {hash_short}"
+   - Label: "Metadata: {hash_short}"
    - Data: Camera info, GPS coords, timestamps, software, copyright
-   - Relationships: metadata_for image entity
+   - Relationships: metadata_for image entity (muninn_link relates_to)
 
 3. Location Entity (if determined):
-   - Name: "Location: {coordinates_or_name}"
+   - Label: "Location: {coordinates_or_name}"
    - Data: GPS coordinates, landmark names, confidence level, method
    - Relationships: captured_at image entity, located_in region
 
 4. Reverse Search Results:
-   - Name: "Appearances: {hash_short}"
+   - Label: "Appearances: {hash_short}"
    - Data: First seen date, occurrence count, domains list
    - Relationships: appears_on domain entities
 
 5. Faces Entity (if applicable):
-   - Name: "Faces: {hash_short}"
+   - Label: "Faces: {hash_short}"
    - Data: Face count, potential matches, confidence levels
    - Relationships: depicts person entities
 
 6. Authenticity Entity:
-   - Name: "Authenticity: {hash_short}"
+   - Label: "Authenticity: {hash_short}"
    - Data: Manipulation score, AI detection, ELA results, anomalies
    - Relationships: validates image entity
 ```
@@ -317,9 +317,8 @@ Store the following as structured episodes:
 • Image shared publicly on 2 domains
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: img_a3f2c1b8
-📎 Related Entities: 3 linked
+💾 Stored via memory adapter: osint-image (MuninnDB group | local findings file)
+📎 Related entities: 3 linked via muninn_link
 ```
 
 ## Tools & APIs Used

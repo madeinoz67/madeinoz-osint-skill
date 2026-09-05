@@ -19,26 +19,27 @@ Comprehensive email address investigation including validation, breach exposure,
 
 ## REQUIRED: Agent Delegation
 
-**This workflow MUST be executed by a specialized OSINT agent via the Task tool.**
+**This workflow MUST be executed by a specialized OSINT agent via the native agent/Task tool.**
 
-### Step 1: Generate Agent Prompt
-```bash
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,analytical,systematic" \
-  --task "Investigate email '{email}' including validation, breach exposure, social correlation, and domain analysis" \
-  --output json
-```
+### Spawn Specialist Agent (MANDATORY)
 
-### Step 2: Spawn Subagent (MANDATORY)
-
-**IMMEDIATELY after getting the AgentFactory output, use the Task tool:**
+Compose the brief from the matching persona in AgentProfiles.yaml (workflow mapping: EmailRecon → collector), then dispatch natively:
 
 ```
-Task tool parameters:
+Agent/Task tool parameters:
   subagent_type: "general-purpose"
   description: "OSINT email recon for {email}"
   prompt: |
-    [Paste the "prompt" field from AgentFactory JSON]
+    [Persona block from AgentProfiles.yaml — role, voice, traits]
+
+    Task: Investigate email '{email}' including validation, breach exposure,
+    social correlation, and domain analysis.
+    Workflow: Read <skill-dir>/Workflows/EmailRecon.md and follow it.
+    Memory: use the adapter in <skill-dir>/SKILL.md § Memory Adapter,
+    group "osint-email".
+    Tools: use whatever web/search tools this session provides.
+    Escalate back to the main session on judgment calls (legality,
+    scope expansion, ambiguous identity) — do not decide alone.
 
     ## Workflow Instructions
     [Include the Process steps below]
@@ -52,8 +53,8 @@ Task tool parameters:
 - `analytical` - Systematic breach and account correlation
 - `systematic` - Structured investigation methodology
 
-⚠️ **FORBIDDEN: Executing this workflow directly without the Task tool spawn.**
-⚠️ **WHY: Voice system requires SubagentStop hook, which only fires for Task subagents.**
+⚠️ **FORBIDDEN: Executing this workflow directly without the agent spawn.**
+⚠️ **WHY: Specialist collection belongs in subagents — the main session orchestrates, it does not collect.**
 
 ---
 
@@ -163,41 +164,41 @@ Email reputation scoring:
 - Risk indicators
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter with type: research, category: osint
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-email". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-email", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-email.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Email Entity:
-   - Name: "Email: {email}"
+   - Label: "Email: {email}"
    - Data: Email address, domain, local part, validation status, reputation score
-   - Group: "osint-emails"
+   - Group: "osint-email"
 
 2. Breach Exposure:
-   - Name: "Breaches: {email}"
+   - Label: "Breaches: {email}"
    - Data: Breach list, dates, exposed data types, severity
-   - Relationships: exposed_in breach entities
+   - Relationships: exposed_in breach entities (muninn_link relates_to)
    - Temporal metadata for timeline
 
 3. Linked Accounts:
-   - Name: "Accounts: {email}"
+   - Label: "Accounts: {email}"
    - Data: Platform name, URL, username, confidence level
    - Relationships: owns_account, linked_to email entity
 
 4. Gravatar Profile:
-   - Name: "Gravatar: {email}"
+   - Label: "Gravatar: {email}"
    - Data: Avatar URL, hash, profile data
    - Relationships: avatar_for email entity
 
 5. Domain Association:
-   - Name: "Domain: {domain}"
+   - Label: "Domain: {domain}"
    - Data: MX records, SPF, DMARC, organization
    - Relationships: email_domain_of email entity
 
 6. Header Analysis (if provided):
-   - Name: "Headers: {email}/{date}"
+   - Label: "Headers: {email}/{date}"
    - Data: Routing path, originating IP, auth results, anomalies
    - Relationships: received_from, routed_through
 ```
@@ -286,8 +287,7 @@ Store the following as structured episodes:
 • 2026-01: Current scan
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: email_john_doe_example_com
+💾 Stored via memory adapter: osint-email (MuninnDB group | local findings file)
 ```
 
 ## Tools & APIs Used

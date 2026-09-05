@@ -165,40 +165,40 @@ Data points:
 - Previous business listings
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the findings:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-phone". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-phone", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-phone.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Phone Entity:
-   - Name: "Phone: {e164_number}"
+   - Label: "Phone: {e164_number}"
    - Data: E.164 format, country, region, line type, carrier
-   - Group: "osint-phones"
+   - Group: "osint-phone"
 
 2. Carrier Information:
-   - Name: "Carrier: {phone}"
+   - Label: "Carrier: {phone}"
    - Data: Current carrier, original carrier, line type, VOIP status
-   - Relationships: owned_by carrier
+   - Relationships: owned_by carrier (muninn_link relates_to)
 
 3. Owner Information:
-   - Name: "PhoneOwner: {phone}"
+   - Label: "PhoneOwner: {phone}"
    - Data: Associated name, address, confidence level
    - Relationships: belongs_to person entity (if linked)
 
 4. Social Accounts:
-   - Name: "PhoneSocial: {phone}"
+   - Label: "PhoneSocial: {phone}"
    - Data: Platforms found, usernames, profile data
    - Relationships: registered_with platforms
 
 5. Risk Assessment:
-   - Name: "PhoneRisk: {phone}"
+   - Label: "PhoneRisk: {phone}"
    - Data: Spam reports, fraud flags, VOIP indicator, risk score
    - Temporal: last checked date
 
 6. Historical Data:
-   - Name: "PhoneHistory: {phone}"
+   - Label: "PhoneHistory: {phone}"
    - Data: Porting history, previous associations, first seen
    - Timeline of changes
 ```
@@ -269,8 +269,7 @@ Risk Summary:
 - Fraud Association: None
 - Identity Confidence: Medium
 
-Stored to Knowledge Graph: Yes
-Entity ID: phone_15551234567
+Stored via memory adapter: osint-phone (MuninnDB group | local findings file)
 ```
 
 ## Tools & APIs Used

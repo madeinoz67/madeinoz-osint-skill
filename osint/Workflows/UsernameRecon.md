@@ -16,26 +16,27 @@ Enumerate a username across 400+ platforms to discover digital footprint.
 
 ## REQUIRED: Agent Delegation
 
-**This workflow MUST be executed by a specialized OSINT agent via the Task tool.**
+**This workflow MUST be executed by a specialized OSINT agent via the native agent/Task tool.**
 
-### Step 1: Generate Agent Prompt
-```bash
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,analytical,exploratory" \
-  --task "Enumerate username '{username}' across social media, developer, gaming, and creative platforms" \
-  --output json
-```
+### Spawn Specialist Agent (MANDATORY)
 
-### Step 2: Spawn Subagent (MANDATORY)
-
-**IMMEDIATELY after getting the AgentFactory output, use the Task tool:**
+Compose the brief from the matching persona in AgentProfiles.yaml (workflow mapping: UsernameRecon → collector), then dispatch natively:
 
 ```
-Task tool parameters:
+Agent/Task tool parameters:
   subagent_type: "general-purpose"
   description: "OSINT username recon for {username}"
   prompt: |
-    [Paste the "prompt" field from AgentFactory JSON]
+    [Persona block from AgentProfiles.yaml — role, voice, traits]
+
+    Task: Enumerate username '{username}' across social media, developer,
+    gaming, and creative platforms.
+    Workflow: Read <skill-dir>/Workflows/UsernameRecon.md and follow it.
+    Memory: use the adapter in <skill-dir>/SKILL.md § Memory Adapter,
+    group "osint-username".
+    Tools: use whatever web/search tools this session provides.
+    Escalate back to the main session on judgment calls (legality,
+    scope expansion, ambiguous identity) — do not decide alone.
 
     ## Workflow Instructions
     [Include the Process steps below]
@@ -49,8 +50,8 @@ Task tool parameters:
 - `analytical` - Methodical platform enumeration
 - `exploratory` - Follow leads to discover accounts
 
-⚠️ **FORBIDDEN: Executing this workflow directly without the Task tool spawn.**
-⚠️ **WHY: Voice system requires SubagentStop hook, which only fires for Task subagents.**
+⚠️ **FORBIDDEN: Executing this workflow directly without the agent spawn.**
+⚠️ **WHY: Specialist collection belongs in subagents — the main session orchestrates, it does not collect.**
 
 ---
 
@@ -92,7 +93,7 @@ For each platform:
 1. Check if username exists (HTTP status, profile page)
 2. Capture profile metadata if found
 3. Note account creation indicators if available
-4. Screenshot profile if Browser Pack available
+4. Screenshot profile if browser automation is available
 
 ### Step 4: Compile Results
 ```
@@ -104,26 +105,26 @@ Found on [X] platforms:
   - Last Activity: [if detectable]
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the findings:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-username". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-username", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-username.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Username Entity:
-   - Name: "Username: {username}"
+   - Label: "Username: {username}"
    - Data: Username, scan date, platforms found, confidence
-   - Group: "osint-usernames"
+   - Group: "osint-username"
 
 2. Platform Accounts:
    - For each found account:
-   - Name: "Account: {platform}/{username}"
+   - Label: "Account: {platform}/{username}"
    - Data: URL, bio, followers, status, last active
-   - Relationships: belongs_to username entity
+   - Relationships: belongs_to username entity (muninn_link relates_to)
 
 3. Profile Metadata:
-   - Name: "Profile: {username}"
+   - Label: "Profile: {username}"
    - Data: Aggregated bio info, common themes, locations mentioned
    - Relationships: linked accounts
 ```
@@ -163,14 +164,13 @@ Store the following as structured episodes:
 • TikTok (profile private)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: usr_johndoe_2026
+💾 Stored via memory adapter: osint-username (MuninnDB group | local findings file)
 ```
 
 ## Tools Used
 - Sherlock-style username checking
-- Browser Pack for dynamic pages
-- Knowledge Pack for storage
+- Browser automation (if available) for dynamic pages
+- Memory adapter (SKILL.md) for storage
 
 ## Ethical Notes
 - Only access publicly available profiles

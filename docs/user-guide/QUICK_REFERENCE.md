@@ -140,13 +140,13 @@ Run a comprehensive risk assessment on ABC Corp
 
 | Type | Location |
 |------|----------|
-| Knowledge Graph | Queryable via knowledge skill |
-| Report Files | `~/.claude/history/research/osint/` |
+| Findings (MuninnDB path) | Recalled via `muninn_recall` with the group tag (e.g. `osint-company`) |
+| Findings (local-log path) | `./osint-findings/<group>.md` (e.g. `./osint-findings/osint-company.md`) |
 
 ## Querying Past Research
 
 ```
-Search knowledge for "company name"
+Recall osint findings for "company name"
 What do I know about target?
 Show relationships for entity
 ```
@@ -176,7 +176,7 @@ Show relationships for entity
 ```
 What deferred leads do I have?
 Show deferred pivots from OSINT-INV-2026-001
-Search knowledge for deferred OSINT leads
+Recall deferred OSINT leads from the investigation group
 ```
 
 ### Resume Investigation
@@ -189,13 +189,16 @@ Investigate deferred pivot colleague@acme.com
 
 ## Dependencies
 
-- **agents** skill - Agent delegation (required)
-- **browser** skill - Web scraping
-- **knowledge** skill - Data persistence
+None required. Optional depth backends:
+
+- **MuninnDB MCP** - Findings persistence (falls back to local `osint-findings/` log)
+- **Bright Data MCP** - Bot-walled sources (falls back to WebSearch/WebFetch)
+- **Browser automation skill** - JS-heavy sites and screenshots
+- **`src/tools/` utilities** - Image forensics depth (OCR, EXIF, hashing)
 
 ## File Naming
 
-Reports saved as:
+Findings-log entries and saved reports follow:
 
 ```
 {workflow}_{target}_{date}.md

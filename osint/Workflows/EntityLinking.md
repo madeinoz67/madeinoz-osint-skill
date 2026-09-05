@@ -25,9 +25,10 @@ Parse inputs to identify:
 - IP addresses
 ```
 
-### Step 2: Search Knowledge Graph
+### Step 2: Query Stored Intelligence (Memory Adapter)
 ```
-Query existing intelligence:
+Recall existing intelligence via the memory adapter (Path 1: muninn_recall
+with context phrases + tags_any ["osint"]; Path 2: read ./osint-findings/):
 - Known entities matching inputs
 - Existing relationships
 - Previous investigations
@@ -82,35 +83,35 @@ Create relationship map:
 - Related entities (associated but different)
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the entity links:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-identity". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-identity", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-identity.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Resolved Identity:
-   - Name: "Identity: {primary_identifier}"
+   - Label: "Identity: {primary_identifier}"
    - Data: Primary identifier, all linked accounts, confidence score
-   - Group: "osint-identities"
+   - Group: "osint-identity"
 
 2. Confirmed Links:
-   - Name: "Link: {entity1} = {entity2}"
+   - Label: "Link: {entity1} = {entity2}"
    - Data: Evidence (matching email, profile pics, bios), confidence percentage
-   - Relationships: same_person_as, confirmed_link
+   - Relationships: same_person_as, confirmed_link (muninn_link relates_to)
 
 3. Probable Links:
-   - Name: "ProbableLink: {entity1} ~ {entity2}"
+   - Label: "ProbableLink: {entity1} ~ {entity2}"
    - Data: Evidence, confidence percentage, verification needed
    - Relationships: likely_same_as
 
 4. Correlation Evidence:
-   - Name: "Evidence: {primary_identifier}"
+   - Label: "Evidence: {primary_identifier}"
    - Data: Profile picture matches, writing style, temporal patterns, network overlap
    - Supporting data for future verification
 
 5. Link Matrix:
-   - Name: "Matrix: {investigation_id}"
+   - Label: "Matrix: {investigation_id}"
    - Data: Full cross-reference matrix with all confidence scores
 ```
 
@@ -203,8 +204,7 @@ john@example │   75%   │  70%   │ 80%  │    -    │
    • 3 shared organization memberships
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Primary Entity ID: person_johndoe_resolved
+💾 Stored via memory adapter: osint-identity (MuninnDB group | local findings file)
 ```
 
 ## Linking Criteria

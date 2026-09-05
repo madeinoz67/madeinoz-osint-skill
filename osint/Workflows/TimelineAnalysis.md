@@ -17,7 +17,8 @@ Analyze temporal patterns across collected intelligence data.
 
 ### Step 1: Gather Temporal Data
 ```
-Query knowledge graph for:
+Query stored intelligence via the memory adapter (Path 1: muninn_recall;
+Path 2: read the group findings file) for:
 - Account creation dates
 - Post/activity timestamps
 - Domain registration dates
@@ -69,35 +70,35 @@ Identify unusual patterns:
 - Behavioral shifts
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the timeline analysis:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-timeline". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-timeline", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-timeline.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Timeline Entity:
-   - Name: "Timeline: {target}"
+   - Label: "Timeline: {target}"
    - Data: Analysis period, account lifecycle milestones
-   - Group: "osint-timelines"
+   - Group: "osint-timeline"
 
 2. Activity Patterns:
-   - Name: "Patterns: {target}"
+   - Label: "Patterns: {target}"
    - Data: Hour/day distributions, peak times, posting frequency
    - Inferred time zone with confidence
 
 3. Events:
-   - Name: "Events: {target}"
+   - Label: "Events: {target}"
    - Data: Notable events with dates, activity spikes, dormancy periods
    - Possible triggers and correlations
 
 4. Anomalies:
-   - Name: "Anomalies: {target}"
+   - Label: "Anomalies: {target}"
    - Data: Detected anomalies with dates, descriptions, possible explanations
    - Temporal metadata
 
 5. Behavioral Profile:
-   - Name: "Behavior: {target}"
+   - Label: "Behavior: {target}"
    - Data: Work patterns, schedule indicators, trend analysis
    - Year-over-year comparisons
 ```
@@ -213,8 +214,7 @@ Date       │ Activity           │ Possible Trigger
 • Active and maintained account
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: timeline_johndoe_2026
+💾 Stored via memory adapter: osint-timeline (MuninnDB group | local findings file)
 ```
 
 ## Pattern Categories

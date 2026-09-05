@@ -1,8 +1,8 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "description": "OSINT Pack voice personalities for VoiceServer integration",
-    "sync_target": "$PAI_DIR/VoiceServer/voice-personalities.json"
+    "description": "OSINT skill voice personalities for spoken status updates",
+    "sync_target": "~/.claude/VoiceServer/voice-personalities.json"
   },
   "voices": {
     "collector": {

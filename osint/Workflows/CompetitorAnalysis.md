@@ -91,35 +91,35 @@ Synthesize findings:
 - Threats (competitive risks)
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the competitive intelligence:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-market". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-market", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-market.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Market Context:
-   - Name: "Market: {industry}"
+   - Label: "Market: {industry}"
    - Data: Market size, growth rate, key trends, segments
-   - Group: "osint-markets"
+   - Group: "osint-market"
 
 2. Competitive Landscape:
-   - Name: "Competitors: {company_name}"
+   - Label: "Competitors: {company_name}"
    - Data: List of competitors with profiles (funding, employees, market share)
-   - Relationships: competes_with, larger_than, smaller_than
+   - Relationships: competes_with, larger_than, smaller_than (muninn_link relates_to)
 
 3. For Each Competitor:
-   - Name: "Competitor: {competitor_name}"
+   - Label: "Competitor: {competitor_name}"
    - Data: Founded, HQ, employees, funding, revenue, strengths, weaknesses
    - Relationships: competes_with {company_name}, operates_in {industry}
 
 4. SWOT Analysis:
-   - Name: "SWOT: {company_name}"
+   - Label: "SWOT: {company_name}"
    - Data: Strengths, weaknesses, opportunities, threats
    - Context: Competitive positioning as of {date}
 
 5. Feature Comparison:
-   - Name: "Features: {company_name} vs Competitors"
+   - Label: "Features: {company_name} vs Competitors"
    - Data: Feature matrix with capability ratings
 ```
 
@@ -339,8 +339,7 @@ ACME vs. Competitor C:
 • Proven scale
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity IDs: comp_analysis_acme_2026, comp_a, comp_b, comp_c
+💾 Stored via memory adapter: osint-market (MuninnDB group | local findings file)
 ```
 
 ## Data Sources

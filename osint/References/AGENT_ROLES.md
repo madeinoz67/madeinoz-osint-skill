@@ -1,10 +1,6 @@
 # OSINT Agent Roles Reference
 
-Complete reference for OSINT specialist agent roles, their trait combinations, voices, and appropriate work types. Use these tiers when composing subagent briefs — see `osint/SKILL.md` § Agent Dispatch.
-
-<p align="center">
-  <img src="../../assets/osint-agent-roles.png" alt="Agent Roles Architecture" width="80%">
-</p>
+Specialist agent roles for OSINT subagent dispatch: trait combinations, voices, and appropriate work types. Compose subagent briefs from these tiers — see [../SKILL.md](../SKILL.md) § Agent Dispatch, personas in [../AgentProfiles.yaml](../AgentProfiles.yaml).
 
 ## Tier 1: Enumeration Specialists (Collection)
 
@@ -27,8 +23,8 @@ Complete reference for OSINT specialist agent roles, their trait combinations, v
 
 ## Tier 3: Correlation Specialists (Linking)
 
-| Role | Voice | Work Types | Use For Workflows |
-|------|-------|------------|-------------------|
+| Role | Traits | Voice | Work Types | Use For Workflows |
+|------|--------|-------|------------|-------------------|
 | **Linker** | `intelligence,analytical,synthesizing` | Sophisticated | Identity resolution, account linking | EntityLinking |
 | **Correlator** | `intelligence,analytical,exploratory` | Sophisticated | Cross-source correlation, pivot detection | InvestigationOrchestrator expansion |
 
@@ -65,11 +61,12 @@ Complete reference for OSINT specialist agent roles, their trait combinations, v
 | **Infrastructure** | Scanner | TechAnalyst | `intelligence,technical,systematic` |
 | **Profile Capture** | Collector | Recon | `intelligence,meticulous,thorough` |
 
-## Workflow Step → Agent Role Assignment
+## Workflow Phase → Agent Role Assignment
 
 For multi-step workflows, assign specific roles to each phase:
 
 ### InvestigationOrchestrator Phases
+
 | Phase | Role | Traits |
 |-------|------|--------|
 | Initial Collection | Recon | `intelligence,analytical,exploratory` |
@@ -80,6 +77,7 @@ For multi-step workflows, assign specific roles to each phase:
 | Synthesis | Synthesizer | `intelligence,communications,synthesizing` |
 
 ### TargetProfile Phases
+
 | Phase | Role | Traits |
 |-------|------|--------|
 | Username Scan | Recon | `intelligence,analytical,exploratory` |
@@ -90,6 +88,7 @@ For multi-step workflows, assign specific roles to each phase:
 | Final Report | Briefer | `intelligence,communications,consultative` |
 
 ### CompanyProfile Phases
+
 | Phase | Role | Traits |
 |-------|------|--------|
 | Registry Research | Researcher | `intelligence,business,systematic` |
@@ -101,13 +100,13 @@ For multi-step workflows, assign specific roles to each phase:
 
 ## Dispatching Specialist Agents
 
-Specialist work runs in subagents, not the main session. Compose each brief from the matching persona in `osint/AgentProfiles.yaml`, then dispatch with the host's native Agent/Task tool:
+Specialist work runs in subagents, not the main session — dispatched with the host's native Agent/Task tool (no external orchestration required):
 
 ```
 Agent(
   description: "OSINT UsernameRecon Specialist",
   prompt: |
-    <persona block from AgentProfiles.yaml — role, voice, traits>
+    <persona block from ../AgentProfiles.yaml — role, voice, traits>
     Target: johndoe
     Workflow: Read <skill-dir>/Workflows/UsernameRecon.md and follow it.
     Memory: use the adapter in <skill-dir>/SKILL.md § Memory Adapter,

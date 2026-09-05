@@ -1,6 +1,6 @@
 # Development
 
-Technical documentation for developers extending or maintaining the PAI OSINT Skill.
+Technical documentation for developers extending or maintaining the OSINT skill.
 
 <p align="center">
   <img src="../assets/enrichment-pipeline.png" alt="OSINT Enrichment Data Pipeline" width="80%">
@@ -16,26 +16,26 @@ Technical documentation for developers extending or maintaining the PAI OSINT Sk
 
 ```
 madeinoz-osint-skill/
-├── src/
-│   └── skills/
-│       └── osint/
-│           ├── SKILL.md           # Intent routing and triggers
-│           ├── AgentProfiles.yaml # Agent personality configurations
-│           └── Workflows/         # Investigation workflow definitions
-├── docs/                          # User and developer documentation
-├── config/                        # Configuration files
-└── package.json                   # Node.js dependencies
+├── osint/                     # The entire skill (symlinked into ~/.claude/skills/osint)
+│   ├── SKILL.md               # Skill metadata, intent routing, memory adapter
+│   ├── AgentProfiles.yaml     # Agent personality configurations
+│   ├── Workflows/             # Investigation workflow definitions
+│   └── References/            # Agent roles, voice mappings, memory groups
+├── src/tools/                 # Optional bun-powered image-forensic utilities
+├── docs/                      # User and developer documentation
+├── config/                    # Configuration files (e.g. voices.json)
+└── package.json               # Node.js dependencies for src/tools
 ```
 
 ## Contributing
 
 When adding new workflows:
 
-1. Create workflow file in `src/skills/osint/Workflows/`
+1. Create workflow file in `osint/Workflows/`
 2. Add trigger pattern to `SKILL.md`
 3. Update documentation in `docs/`
 4. Test with various inputs
-5. Verify knowledge graph storage
+5. Verify findings persist via the memory adapter (see `osint/SKILL.md` § Memory Adapter)
 
 ## Workflow Template
 
@@ -68,5 +68,5 @@ What the workflow produces.
 
 ## Storage
 
-How data is stored to knowledge graph.
+How findings persist via the memory adapter (see `osint/SKILL.md` § Memory Adapter) — group name, one finding per entry, entities named.
 ```

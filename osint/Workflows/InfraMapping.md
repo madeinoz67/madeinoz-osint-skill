@@ -81,35 +81,35 @@ Detect:
 - WAF presence
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the infrastructure data:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-infrastructure". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-infrastructure", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-infrastructure.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Infrastructure Entity:
-   - Name: "Infra: {IP or domain}"
+   - Label: "Infra: {IP or domain}"
    - Data: IP address, ASN, organization, location, IP range
    - Group: "osint-infrastructure"
 
 2. Open Ports:
-   - Name: "Ports: {IP}"
+   - Label: "Ports: {IP}"
    - Data: Port number, service, version, banner info
    - Security notes for each service
 
 3. Technology Stack:
-   - Name: "Tech: {IP or domain}"
+   - Label: "Tech: {IP or domain}"
    - Data: Web server, CMS, frameworks, CDN, WAF
-   - Relationships: runs_on, protected_by
+   - Relationships: runs_on, protected_by (muninn_link relates_to)
 
 4. Network Context:
-   - Name: "Network: {ASN}"
+   - Label: "Network: {ASN}"
    - Data: ASN owner, related hosts, IP block allocation
    - Relationships: part_of ASN, same_network_as
 
 5. Historical Data:
-   - Name: "History: {IP}"
+   - Label: "History: {IP}"
    - Data: First seen, port changes, known CVEs
    - Temporal metadata
 ```
@@ -164,8 +164,7 @@ Store the following as structured episodes:
 • Standard web hosting configuration
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: infra_93.184.216.34
+💾 Stored via memory adapter: osint-infrastructure (MuninnDB group | local findings file)
 ```
 
 ## Tools & APIs

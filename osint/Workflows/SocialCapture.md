@@ -1,6 +1,6 @@
 # Social Media Capture Workflow
 
-Capture and analyze social media profiles, storing intelligence to knowledge graph.
+Capture and analyze social media profiles, storing intelligence via the memory adapter.
 
 ## Trigger Phrases
 - "capture social profile"
@@ -16,26 +16,27 @@ Capture and analyze social media profiles, storing intelligence to knowledge gra
 
 ## REQUIRED: Agent Delegation
 
-**This workflow MUST be executed by a specialized OSINT agent via the Task tool.**
+**This workflow MUST be executed by a specialized OSINT agent via the native agent/Task tool.**
 
-### Step 1: Generate Agent Prompt
-```bash
-bun run $PAI_DIR/skills/Agents/Tools/AgentFactory.ts \
-  --traits "intelligence,meticulous,thorough" \
-  --task "Capture and analyze social media profile '{target}' including profile data, engagement metrics, and content analysis" \
-  --output json
-```
+### Spawn Specialist Agent (MANDATORY)
 
-### Step 2: Spawn Subagent (MANDATORY)
-
-**IMMEDIATELY after getting the AgentFactory output, use the Task tool:**
+Compose the brief from the matching persona in AgentProfiles.yaml (workflow mapping: SocialCapture → collector), then dispatch natively:
 
 ```
-Task tool parameters:
+Agent/Task tool parameters:
   subagent_type: "general-purpose"
   description: "OSINT social capture for {target}"
   prompt: |
-    [Paste the "prompt" field from AgentFactory JSON]
+    [Persona block from AgentProfiles.yaml — role, voice, traits]
+
+    Task: Capture and analyze social media profile '{target}' including
+    profile data, engagement metrics, and content analysis.
+    Workflow: Read <skill-dir>/Workflows/SocialCapture.md and follow it.
+    Memory: use the adapter in <skill-dir>/SKILL.md § Memory Adapter,
+    group "osint-social".
+    Tools: use whatever web/search tools this session provides.
+    Escalate back to the main session on judgment calls (legality,
+    scope expansion, ambiguous identity) — do not decide alone.
 
     ## Workflow Instructions
     [Include the Process steps below]
@@ -49,8 +50,8 @@ Task tool parameters:
 - `meticulous` - Detailed profile data extraction
 - `thorough` - Complete content capture
 
-⚠️ **FORBIDDEN: Executing this workflow directly without the Task tool spawn.**
-⚠️ **WHY: Voice system requires SubagentStop hook, which only fires for Task subagents.**
+⚠️ **FORBIDDEN: Executing this workflow directly without the agent spawn.**
+⚠️ **WHY: Specialist collection belongs in subagents — the main session orchestrates, it does not collect.**
 
 ---
 
@@ -117,35 +118,35 @@ Location clues:
 - Time zone indicators from posting times
 ```
 
-### Step: Output for Memory Capture
+### Step: Store Findings (Memory Adapter)
 
-Format output with proper metadata so memory hooks can capture it automatically. Include frontmatter: the capture:
+Store each finding via the memory adapter (SKILL.md § Memory Adapter), group "osint-social". Path 1 stores one `muninn_remember` per finding (atomic, entity names in [[brackets]], tags `["osint-social", "osint"]`); Path 2 appends each finding to `./osint-findings/osint-social.md`.
 
 ```
-Store the following as structured episodes:
+Store the following findings (one memory/entry each):
 
 1. Social Account:
-   - Name: "Social: {platform}/{handle}"
+   - Label: "Social: {platform}/{handle}"
    - Data: Display name, bio, location, website, joined date, verified status
    - Group: "osint-social"
 
 2. Engagement Metrics:
-   - Name: "Metrics: {platform}/{handle}"
+   - Label: "Metrics: {platform}/{handle}"
    - Data: Followers, following, post count, engagement rate
    - Temporal metadata for tracking changes
 
 3. Network Connections:
-   - Name: "Network: {handle}"
+   - Label: "Network: {handle}"
    - Data: Frequently mentioned accounts, top interactions, common hashtags
-   - Relationships: mentions, interacts_with, follows
+   - Relationships: mentions, interacts_with, follows (muninn_link relates_to)
 
 4. Activity Pattern:
-   - Name: "Activity: {handle}"
+   - Label: "Activity: {handle}"
    - Data: Most active times, peak days, posting frequency, last active
    - Inferred time zone
 
 5. Content Themes:
-   - Name: "Themes: {handle}"
+   - Label: "Themes: {handle}"
    - Data: Topic breakdown, common subjects, media types used
 ```
 
@@ -201,8 +202,7 @@ Store the following as structured episodes:
 • No bot indicators detected
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💾 Stored to Knowledge Graph: Yes
-🔗 Entity ID: social_twitter_johndoe
+💾 Stored via memory adapter: osint-social (MuninnDB group | local findings file)
 📸 Screenshots: 3 captured
 ```
 

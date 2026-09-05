@@ -4,7 +4,7 @@ AI-powered Open Source Intelligence collection and analysis.
 
 ## Overview
 
-The osint skill provides structured workflows for gathering and analyzing publicly available information. All findings are stored to the knowledge graph for future reference and cross-investigation linking.
+The osint skill provides structured workflows for gathering and analyzing publicly available information. All findings are persisted through the skill's memory adapter — MuninnDB MCP when available, a local `osint-findings/` log otherwise — for future reference and cross-investigation linking.
 
 **Key Capability: Iterative Pivot-Driven Investigations** - The Investigation Orchestrator automatically expands collection as new intelligence is discovered, following leads across entity types (username → email → domain → company → personnel).
 
@@ -12,9 +12,11 @@ The osint skill provides structured workflows for gathering and analyzing public
 
 ### Prerequisites
 
-- **agents** skill - Required for agent delegation (OSINT tasks must be executed by specialized agents)
-- **browser** skill - Required for web scraping and page rendering
-- **knowledge** skill - Required for persistent intelligence storage
+None. The skill is self-contained and every workflow degrades gracefully. Optional backends improve depth:
+
+- **MuninnDB MCP** - Persistent findings memory (preferred; falls back to a local `osint-findings/` log)
+- **Bright Data MCP** - Bot-walled or heavily scraped sources (falls back to WebSearch/WebFetch)
+- **Browser automation skill** - JS-heavy sites and screenshots (those sources are skipped without it)
 
 ### Basic Usage
 
@@ -161,7 +163,7 @@ Options:
 
 ### Deferred Leads
 
-Leads that aren't pursued are stored in the Knowledge Graph for later:
+Leads that aren't pursued are stored via the memory adapter (in the investigation's group) for later:
 
 - **Reason tracking**: Why it was deferred (depth limit, user choice, scope)
 - **Context preserved**: What investigation discovered it
@@ -272,15 +274,21 @@ Investigate deferred pivot colleague@acme.com
 All investigations produce:
 
 1. **Structured Report** - Formatted findings displayed in the conversation
-2. **Knowledge Graph** - Entities and relationships stored for querying
-3. **Saved Report** - Markdown file in `~/.claude/history/research/osint/`
+2. **Persisted Memory** - Findings stored via the memory adapter (MuninnDB group, or `./osint-findings/<group>.md` on the local-log path) for querying and resume
+3. **Entity links** - Related findings connected so future investigations can pivot on them
 
 ### Querying Past Investigations
 
-Use the knowledge skill to search previous findings:
+With MuninnDB (Path 1), recall previous findings by group tag:
 
 ```
-Search knowledge for "Acme Corporation"
+Recall osint findings for "Acme Corporation"
+```
+
+On the local-log path (Path 2), read the group file:
+
+```
+Show me what's in osint-findings/osint-company.md
 ```
 
 ```
@@ -327,9 +335,9 @@ All findings include confidence ratings:
 ## Next Steps
 
 - **Iterative Investigations**: Use `deep dive on <target>` for comprehensive pivot-driven analysis
-- See [COMPANY_RESEARCH.md](COMPANY_RESEARCH.md) for detailed company investigation guide
+- See [COMPANY_RESEARCH.md](../advanced/COMPANY_RESEARCH.md) for detailed company investigation guide
 - See [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for command cheat sheet
-- See [CHANGELOG.md](CHANGELOG.md) for version history and release notes
+- See [CHANGELOG.md](https://github.com/madeinoz67/madeinoz-osint-skill/blob/main/CHANGELOG.md) for version history and release notes
 
 ## Pro Tips
 
@@ -337,4 +345,4 @@ All findings include confidence ratings:
 2. **Use interactive mode** (`require_approval=true`) when you want control over which leads to pursue
 3. **Wide scope** is best for threat analysis; **narrow scope** for quick identity verification
 4. **Resume investigations** to continue from deferred leads without losing context
-5. **All findings persist** to Knowledge Graph - query past investigations anytime
+5. **All findings persist** through the memory adapter - query past investigations anytime

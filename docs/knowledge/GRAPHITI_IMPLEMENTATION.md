@@ -1,3 +1,6 @@
+> [!WARNING]
+> **Legacy document — retired optional backend.** This guide documents the former optional Graphiti (Neo4j/FalkorDB) knowledge-graph backend integration, which has been retired. The skill now persists findings through the memory adapter defined in `osint/SKILL.md` § Memory Adapter (MuninnDB MCP preferred, local `osint-findings/` log fallback). This file is kept for historical reference only; do not follow it for new work.
+
 # Graphiti Implementation Guide for OSINT
 
 **Purpose:** Step-by-step guide to implementing custom OSINT entities and relationships in Graphiti knowledge graph
