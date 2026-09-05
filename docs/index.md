@@ -44,14 +44,21 @@
 
 ## Installation
 
-Clone the repository and symlink the `osint/` directory into your Claude skills directory:
+Install as a Claude Code plugin (two commands, no clone):
+
+```
+/plugin marketplace add madeinoz67/madeinoz-osint-skill
+/plugin install madeinoz-osint@madeinoz-osint-marketplace
+```
+
+Or, on any skills-capable host, symlink the `skills/osint/` directory:
 
 ```bash
 git clone https://github.com/madeinoz67/madeinoz-osint-skill.git
-ln -s "$(pwd)/madeinoz-osint-skill/osint" ~/.claude/skills/osint
+ln -s "$(pwd)/madeinoz-osint-skill/skills/osint" ~/.claude/skills/osint
 ```
 
-See the repository root [INSTALL.md](https://github.com/madeinoz67/madeinoz-osint-skill/blob/main/INSTALL.md) for step-by-step setup.
+See the repository root [INSTALL.md](https://github.com/madeinoz67/madeinoz-osint-skill/blob/main/INSTALL.md) for backends, API keys, upgrades, and troubleshooting.
 
 ## Documentation
 
