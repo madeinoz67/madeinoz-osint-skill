@@ -1,0 +1,13 @@
+{
+  "name": "madeinoz-osint-marketplace",
+  "owner": {
+    "name": "Stephen Eaton"
+  },
+  "plugins": [
+    {
+      "name": "madeinoz-osint",
+      "source": "./",
+      "description": "OSINT skill: person investigation, domain recon, company research, pivot-driven investigations"
+    }
+  ]
+}

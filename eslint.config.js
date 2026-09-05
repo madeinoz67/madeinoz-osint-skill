@@ -8,7 +8,7 @@ export default tseslint.config(
     ignores: ['dist/**', 'node_modules/**', '.codanna/**', 'site/**', 'logs/**'],
   },
   {
-    files: ['src/**/*.ts', 'osint/**/*.ts'],
+    files: ['src/**/*.ts', 'skills/**/*.ts'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {

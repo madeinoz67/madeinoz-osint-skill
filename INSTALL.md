@@ -9,23 +9,32 @@ A self-contained Claude skill. No required dependencies — install the director
 
 ## Install
 
-**Option A — symlink (recommended, stays current with git):**
+**Option A — Claude Code plugin (recommended):**
 
-```bash
-git clone https://github.com/madeinoz67/madeinoz-osint-skill.git
-ln -s "$(pwd)/madeinoz-osint-skill/osint" ~/.claude/skills/osint
+```
+/plugin marketplace add madeinoz67/madeinoz-osint-skill
+/plugin install madeinoz-osint@madeinoz-osint-marketplace
 ```
 
-**Option B — copy (frozen snapshot):**
+Two commands, no clone, updates via `/plugin` (auto-update is off by default for third-party marketplaces — enable it or re-run `claude plugin update` after version bumps). The skill runs namespaced as `/madeinoz-osint:osint` plus natural-language routing. Notes: git sources clone over SSH by default; set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` if you don't use SSH keys. Run `/reload-plugins` if installing into a live session.
+
+**Option B — skills-dir symlink (any skills-capable host):**
 
 ```bash
 git clone https://github.com/madeinoz67/madeinoz-osint-skill.git
-cp -r madeinoz-osint-skill/osint ~/.claude/skills/osint
+ln -s "$(pwd)/madeinoz-osint-skill/skills/osint" ~/.claude/skills/osint
+```
+
+**Option C — copy (frozen snapshot):**
+
+```bash
+git clone https://github.com/madeinoz67/madeinoz-osint-skill.git
+cp -r madeinoz-osint-skill/skills/osint ~/.claude/skills/osint
 ```
 
 Restart your Claude session (or start a new one) and confirm the skill loads — say "find all accounts for username johndoe" and watch for OSINT workflow dispatch, or check that `osint` appears in your skills list.
 
-The entire skill is the `osint/` directory: `SKILL.md`, 17 workflows, `AgentProfiles.yaml`, and `References/`.
+The entire skill is the `skills/osint/` directory: `SKILL.md`, 17 workflows, `AgentProfiles.yaml`, and `References/`. The plugin packaging (`.claude-plugin/plugin.json` + `marketplace.json`) wraps that same directory — nothing else ships.
 
 ## Optional backends
 

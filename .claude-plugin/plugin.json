@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "madeinoz-osint",
+  "version": "2.1.0",
+  "displayName": "MadeInOz OSINT Skill",
+  "description": "Open Source Intelligence collection and analysis: person investigation, domain recon, company research, digital-artifact analysis, and iterative pivot-driven investigations with a pluggable memory layer (MuninnDB preferred, local findings log fallback).",
+  "author": {
+    "name": "Stephen Eaton"
+  },
+  "homepage": "https://github.com/madeinoz67/madeinoz-osint-skill",
+  "repository": "https://github.com/madeinoz67/madeinoz-osint-skill",
+  "license": "MIT",
+  "keywords": [
+    "osint",
+    "intelligence",
+    "reconnaissance",
+    "investigation",
+    "due-diligence",
+    "company-research"
+  ]
+}

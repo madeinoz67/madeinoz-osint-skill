@@ -48,7 +48,7 @@ jobs:
 
       - name: Check SKILL.md line count
         run: |
-          LINES=$(wc -l < osint/SKILL.md)
+          LINES=$(wc -l < skills/osint/SKILL.md)
           echo "SKILL.md has $LINES lines"
           if [ $LINES -gt 500 ]; then
             echo "❌ FAIL: SKILL.md exceeds 500 lines ($LINES)"
@@ -59,7 +59,7 @@ jobs:
 
       - name: Check YAML frontmatter
         run: |
-          if head -20 osint/SKILL.md | grep -q "^name:"; then
+          if head -20 skills/osint/SKILL.md | grep -q "^name:"; then
             echo "✅ PASS: Valid YAML frontmatter"
           else
             echo "❌ FAIL: Missing YAML frontmatter"
@@ -68,7 +68,7 @@ jobs:
 
       - name: Check skill name is lowercase
         run: |
-          if grep -q "^name: osint$" osint/SKILL.md; then
+          if grep -q "^name: osint$" skills/osint/SKILL.md; then
             echo "✅ PASS: Skill name is lowercase"
           else
             echo "❌ FAIL: Skill name must be 'osint' (lowercase)"
@@ -77,14 +77,27 @@ jobs:
 
       - name: Validate AgentProfiles.yaml
         run: |
-          python3 -c "import yaml; yaml.safe_load(open('osint/AgentProfiles.yaml'))"
+          python3 -c "import yaml; yaml.safe_load(open('skills/osint/AgentProfiles.yaml'))"
           echo "✅ PASS: AgentProfiles.yaml is valid YAML"
+
+      - name: Validate plugin manifests
+        run: |
+          python3 - <<'EOF'
+          import json, re
+          p = json.load(open('.claude-plugin/plugin.json'))
+          assert re.fullmatch(r'[a-z0-9]+(-[a-z0-9]+)*', p['name']), 'plugin name must be kebab-case'
+          assert re.fullmatch(r'\d+\.\d+\.\d+', p['version']), 'plugin version must be semver'
+          m = json.load(open('.claude-plugin/marketplace.json'))
+          assert m['plugins'][0]['name'] == p['name'], 'marketplace/plugin name mismatch'
+          assert m['plugins'][0]['source'] == './', 'single-repo plugin sources from ./'
+          print('✅ PASS: plugin manifests valid —', p['name'], p['version'])
+          EOF
 
       - name: Check all 17 workflows exist
         run: |
           WORKFLOWS="UsernameRecon DomainRecon SocialCapture InfraMapping EntityLinking TimelineAnalysis TargetProfile IntelReport CompanyProfile CorporateStructure FinancialRecon CompetitorAnalysis RiskAssessment EmailRecon PhoneRecon ImageRecon InvestigationOrchestrator"
           for wf in $WORKFLOWS; do
-            if [ -f "osint/Workflows/${wf}.md" ]; then
+            if [ -f "skills/osint/Workflows/${wf}.md" ]; then
               echo "✅ ${wf}.md"
             else
               echo "❌ ${wf}.md MISSING"
@@ -95,7 +108,7 @@ jobs:
       - name: Check voice markers in workflows
         run: |
           MISSING=0
-          for f in osint/Workflows/*.md; do
+          for f in skills/osint/Workflows/*.md; do
             if grep -q '🗣️' "$f"; then
               echo "✅ $(basename "$f") has voice markers"
             else

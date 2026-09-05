@@ -1,6 +1,6 @@
 ---
 name: OSINT Skill
-version: 2.0.0
+version: 2.1.0
 author: madeinoz
 description: AI-powered Open Source Intelligence collection and analysis with pluggable memory persistence and iterative pivot-driven investigations
 type: skill
@@ -13,7 +13,7 @@ keywords: [osint, intelligence, reconnaissance, investigation, social-media, dom
   <img src="docs/assets/header.png" alt="OSINT Intelligence Gathering" width="100%">
 </p>
 
-# OSINT Skill v2.0.0
+# OSINT Skill v2.1.0
 
 > AI-powered Open Source Intelligence collection and analysis with **iterative pivot-driven investigations** and pluggable memory persistence (MuninnDB preferred, local files otherwise)
 
@@ -90,7 +90,7 @@ No more scattered notes across sessions. Your investigations build on each other
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| OSINT Skill Definition | `osint/SKILL.md` | Intent routing and workflow dispatch |
+| OSINT Skill Definition | `skills/osint/SKILL.md` | Intent routing and workflow dispatch |
 | **Investigation Orchestrator** | `Workflows/InvestigationOrchestrator.md` | **Iterative pivot-driven investigations with parallel agents** |
 | Username Reconnaissance | `Workflows/UsernameRecon.md` | Enumerate usernames across 400+ platforms |
 | Domain Reconnaissance | `Workflows/DomainRecon.md` | DNS, WHOIS, CT logs, subdomains |
@@ -110,7 +110,7 @@ No more scattered notes across sessions. Your investigations build on each other
 | Image Reconnaissance | `Workflows/ImageRecon.md` | Image metadata, forensics, reverse search |
 
 **Summary:**
-- **Skill directory:** `osint/` (1 SKILL.md + 17 workflows + AgentProfiles + References — the entire installable skill)
+- **Skill directory:** `skills/osint/` (1 SKILL.md + 17 workflows + AgentProfiles + References — the entire installable skill)
 - **Optional utilities:** `src/tools/` (bun-powered image forensics)
 - **Dependencies:** none required — MuninnDB MCP, Bright Data MCP, and browser automation are optional enhancements
 
@@ -262,12 +262,18 @@ The OSINT System transforms ad-hoc searching into systematic intelligence collec
 
 ## Installation
 
-See `INSTALL.md` for step-by-step wizard-style installation.
+See `INSTALL.md` for details, backends, and troubleshooting.
 
-**Quick Install:**
+**Quick Install (Claude Code plugin):**
+```
+/plugin marketplace add madeinoz67/madeinoz-osint-skill
+/plugin install madeinoz-osint@madeinoz-osint-marketplace
+```
+
+**Or any skills-capable host (symlink):**
 ```bash
 git clone https://github.com/madeinoz67/madeinoz-osint-skill.git
-ln -s "$(pwd)/madeinoz-osint-skill/osint" ~/.claude/skills/osint
+ln -s "$(pwd)/madeinoz-osint-skill/skills/osint" ~/.claude/skills/osint
 ```
 
 Then verify with the `VERIFY.md` checklist.
@@ -477,6 +483,9 @@ See `docs/` directory for detailed user guides:
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
+
+### v2.1.0 (September 2026)
+- **Claude Code plugin packaging** — `.claude-plugin/plugin.json` + `marketplace.json`; install via `/plugin marketplace add madeinoz67/madeinoz-osint-skill` + `/plugin install madeinoz-osint@madeinoz-osint-marketplace`; skill nests at `skills/osint/`; skills-dir symlink remains as fallback
 
 ### v2.0.0 (September 2026)
 - **Generic Claude skill** - converted from the v1.x skill-pack format: Claude-native SKILL.md, one-directory install (`osint/`), zero required dependencies

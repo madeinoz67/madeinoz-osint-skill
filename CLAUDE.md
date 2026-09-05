@@ -8,7 +8,10 @@ A generic, self-contained Claude skill for Open Source Intelligence: person inve
 
 ```
 madeinoz-osint-skill/
-├── osint/                    # THE SKILL — installable directory
+├── .claude-plugin/
+│   ├── plugin.json           # Plugin manifest (name, version — the update cache key)
+│   └── marketplace.json      # Single-plugin marketplace (required for GitHub /plugin installs)
+├── skills/osint/             # THE SKILL — installable directory
 │   ├── SKILL.md              # Claude-native skill definition (name + description frontmatter)
 │   ├── AgentProfiles.yaml    # Persona definitions for subagent briefs
 │   ├── Workflows/            # 17 investigation workflows
@@ -24,10 +27,11 @@ madeinoz-osint-skill/
 
 ## Architecture invariants
 
-- `osint/` is the entire installable skill — it must stay self-contained (no references out to repo-root files at runtime)
+- `skills/osint/` is the entire installable skill — it must stay self-contained (no references out to repo-root files at runtime)
 - The memory adapter (SKILL.md § Memory Adapter) is the ONLY sanctioned findings-persistence path: `muninn_*` MCP tools when bound, else `./osint-findings/<group>.md`
 - Subagent dispatch is native (Agent tool + AgentProfiles personas); no external agents-skill dependency
-- CI gates: SKILL.md < 500 lines with `name: osint` frontmatter, AgentProfiles.yaml parses, all 17 workflows exist, legacy-residue grep = 0, lint/typecheck/test green, Trivy (pinned release tag) + TruffleHog clean
+- CI gates: SKILL.md < 500 lines with `name: osint` frontmatter, AgentProfiles.yaml parses, all 17 workflows exist, plugin manifests valid (kebab-case name, semver version, marketplace/plugin names match, source `./`), legacy-residue grep = 0, lint/typecheck/test green, Trivy (pinned release tag) + TruffleHog clean
+- Plugin version lives in `.claude-plugin/plugin.json` ONLY (never also in marketplace.json — plugin.json silently wins and a stale duplicate masks it); bump it when the plugin should update for users
 
 ## Key Optional Backends
 
@@ -38,14 +42,14 @@ madeinoz-osint-skill/
 ## When Working on This Project
 
 ### Adding New Workflows
-1. Create new workflow in `osint/Workflows/`
+1. Create new workflow in `skills/osint/Workflows/`
 2. Follow existing workflow naming: `DescriptiveName.md`
-3. Add a routing row in `osint/SKILL.md` § Intent Routing and a persona mapping if new traits apply
+3. Add a routing row in `skills/osint/SKILL.md` § Intent Routing and a persona mapping if new traits apply
 4. Update README.md's "What's Included" table
 
 ### Modifying Skill Behavior
-- Edit `osint/SKILL.md` for routing and the memory/dispatch contracts
-- Edit `osint/AgentProfiles.yaml` for personas
+- Edit `skills/osint/SKILL.md` for routing and the memory/dispatch contracts
+- Edit `skills/osint/AgentProfiles.yaml` for personas
 - Test changes with a fresh session and the VERIFY.md checklist
 
 ### Documentation Updates
