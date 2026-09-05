@@ -8,15 +8,18 @@
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Common OSINT Image Analysis Techniques](#common-osint-image-analysis-techniques)
-3. [Local Analysis Procedures](#local-analysis-procedures)
-4. [Tools and Technologies](#tools-and-technologies)
-5. [Privacy-Preserving Approaches](#privacy-preserving-approaches)
-6. [Chain of Custody Considerations](#chain-of-custody-considerations)
-7. [Verification and Validation Methods](#verification-and-validation-methods)
-8. [Legal and Ethical Considerations](#legal-and-ethical-considerations)
-9. [Recommended Workflows](#recommended-workflows)
-10. [Emerging Trends](#emerging-trends)
+2. [Common OSINT Image Analysis Techniques](#1-common-osint-image-analysis-techniques)
+3. [Local Analysis Procedures](#2-local-analysis-procedures)
+4. [Tools and Technologies](#3-tools-and-technologies)
+5. [Privacy-Preserving Approaches](#4-privacy-preserving-approaches)
+6. [Chain of Custody Considerations](#5-chain-of-custody-considerations)
+7. [Verification and Validation Methods](#6-verification-and-validation-methods)
+8. [Legal and Ethical Considerations](#7-legal-and-ethical-considerations)
+9. [Recommended Workflows](#8-recommended-workflows)
+10. [Emerging Trends](#9-emerging-trends)
+11. [Tool Recommendations Summary](#10-tool-recommendations-summary)
+12. [Conclusion](#conclusion)
+13. [Additional Resources](#additional-resources)
 
 ---
 
