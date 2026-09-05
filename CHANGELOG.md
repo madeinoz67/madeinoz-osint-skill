@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Documentation
+
+- Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md for v2.1.0 [skip ci]
+
+### Miscellaneous
+
+- Bump @eslint/js from 9.39.2 to 9.39.5 (#31)
+
+### Ci
+
+- Guarantee .nojekyll in Pages deploys
 ## [2.1.0] - 2026-09-05
 
 ### Bug Fixes
