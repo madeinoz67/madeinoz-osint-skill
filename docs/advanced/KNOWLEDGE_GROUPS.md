@@ -1,6 +1,6 @@
 # OSINT Memory Group Naming Convention
 
-Standard group names for persisting OSINT findings through the skill's memory adapter (see `osint/SKILL.md` § Memory Adapter).
+Standard group names for persisting OSINT findings through the skill's memory adapter (see `skills/osint/SKILL.md` § Memory Adapter).
 
 ## Standard Group Pattern
 

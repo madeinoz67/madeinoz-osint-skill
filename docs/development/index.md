@@ -31,11 +31,11 @@ madeinoz-osint-skill/
 
 When adding new workflows:
 
-1. Create workflow file in `osint/Workflows/`
+1. Create workflow file in `skills/osint/Workflows/`
 2. Add trigger pattern to `SKILL.md`
 3. Update documentation in `docs/`
 4. Test with various inputs
-5. Verify findings persist via the memory adapter (see `osint/SKILL.md` § Memory Adapter)
+5. Verify findings persist via the memory adapter (see `skills/osint/SKILL.md` § Memory Adapter)
 
 ## Workflow Template
 
@@ -68,5 +68,5 @@ What the workflow produces.
 
 ## Storage
 
-How findings persist via the memory adapter (see `osint/SKILL.md` § Memory Adapter) — group name, one finding per entry, entities named.
+How findings persist via the memory adapter (see `skills/osint/SKILL.md` § Memory Adapter) — group name, one finding per entry, entities named.
 ```

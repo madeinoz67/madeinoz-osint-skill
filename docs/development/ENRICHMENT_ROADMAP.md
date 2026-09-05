@@ -33,7 +33,7 @@ The OSINT skill provides 13 comprehensive workflows covering person, domain, and
 ### Implementation Approach
 
 ```typescript
-// Proposed structure: osint/Tools/EnrichmentEngine.ts
+// Proposed structure: skills/osint/Tools/EnrichmentEngine.ts
 interface EnrichmentProvider {
   name: string;
   apiKey: string | undefined;
@@ -240,7 +240,7 @@ monitoring_capabilities:
 ### Implementation
 
 ```typescript
-// Proposed: osint/Tools/Monitor.ts
+// Proposed: skills/osint/Tools/Monitor.ts
 interface MonitoringRule {
   target_type: "username" | "domain" | "company" | "person";
   target_value: string;

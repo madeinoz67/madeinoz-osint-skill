@@ -1,6 +1,6 @@
 # OSINT Agent Roles Reference
 
-Complete reference for OSINT specialist agent roles, their trait combinations, voices, and appropriate work types. Use these tiers when composing subagent briefs — see `osint/SKILL.md` § Agent Dispatch.
+Complete reference for OSINT specialist agent roles, their trait combinations, voices, and appropriate work types. Use these tiers when composing subagent briefs — see `skills/osint/SKILL.md` § Agent Dispatch.
 
 <p align="center">
   <img src="../../assets/osint-agent-roles.png" alt="Agent Roles Architecture" width="80%">
@@ -101,7 +101,7 @@ For multi-step workflows, assign specific roles to each phase:
 
 ## Dispatching Specialist Agents
 
-Specialist work runs in subagents, not the main session. Compose each brief from the matching persona in `osint/AgentProfiles.yaml`, then dispatch with the host's native Agent/Task tool:
+Specialist work runs in subagents, not the main session. Compose each brief from the matching persona in `skills/osint/AgentProfiles.yaml`, then dispatch with the host's native Agent/Task tool:
 
 ```
 Agent(

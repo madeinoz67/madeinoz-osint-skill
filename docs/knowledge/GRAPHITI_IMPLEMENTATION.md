@@ -1,5 +1,5 @@
 > [!WARNING]
-> **Legacy document — retired optional backend.** This guide documents the former optional Graphiti (Neo4j/FalkorDB) knowledge-graph backend integration, which has been retired. The skill now persists findings through the memory adapter defined in `osint/SKILL.md` § Memory Adapter (MuninnDB MCP preferred, local `osint-findings/` log fallback). This file is kept for historical reference only; do not follow it for new work.
+> **Legacy document — retired optional backend.** This guide documents the former optional Graphiti (Neo4j/FalkorDB) knowledge-graph backend integration, which has been retired. The skill now persists findings through the memory adapter defined in `skills/osint/SKILL.md` § Memory Adapter (MuninnDB MCP preferred, local `osint-findings/` log fallback). This file is kept for historical reference only; do not follow it for new work.
 
 # Graphiti Implementation Guide for OSINT
 

@@ -281,7 +281,7 @@ Prevents intelligence gaps like missing investor-facing portals on alternative T
   raw-data/
 ```
 
-Findings persist separately via the memory adapter — see `osint/SKILL.md` § Memory Adapter (MuninnDB group, or `./osint-findings/<group>.md` on the local-log path).
+Findings persist separately via the memory adapter — see `skills/osint/SKILL.md` § Memory Adapter (MuninnDB group, or `./osint-findings/<group>.md` on the local-log path).
 
 ### Archived Reports
 

@@ -19,7 +19,7 @@
 ---
 
 <p align="center">
-  <img src="../assets/osint-erd-diagram.png" alt="OSINT Knowledge Graph Entity Relationship Diagram" width="80%">
+  <img src="../assets/osint-erd-diagram.png" alt="OSINT entity-relationship model (backend-neutral)" width="80%">
 </p>
 
 ## Overview
@@ -818,7 +818,7 @@ interface CollectionMetadata {
 
 ## Implementation Guide
 
-The ontology is implemented on top of the memory adapter defined in `osint/SKILL.md` § Memory Adapter — no custom backend code required.
+The ontology is implemented on top of the memory adapter defined in `skills/osint/SKILL.md` § Memory Adapter — no custom backend code required.
 
 ### Phase 1: Map Entities onto the Memory Adapter
 

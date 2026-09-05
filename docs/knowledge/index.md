@@ -1,9 +1,9 @@
 # Knowledge & Memory Model
 
-The OSINT skill persists intelligence findings through a pluggable memory adapter: MuninnDB MCP when the host provides it (preferred), a local `osint-findings/` log otherwise. Findings are stored atomically, tagged by group, and linked so future investigations can pivot on them. See `osint/SKILL.md` § Memory Adapter for the adapter contract.
+The OSINT skill persists intelligence findings through a pluggable memory adapter: MuninnDB MCP when the host provides it (preferred), a local `osint-findings/` log otherwise. Findings are stored atomically, tagged by group, and linked so future investigations can pivot on them. See `skills/osint/SKILL.md` § Memory Adapter for the adapter contract.
 
 <p align="center">
-  <img src="../assets/knowledge-graph.png" alt="OSINT Entity Relationships" width="80%">
+  <img src="../assets/entity-model.png" alt="OSINT entity-relationship model (backend-neutral)" width="80%">
 </p>
 
 ## Documentation
