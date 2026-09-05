@@ -46,6 +46,8 @@ All notable changes to this project will be documented in this file.
 - Fix table-of-contents anchors in image analysis research page
 - Update CHANGELOG.md [skip ci]
 - Align INSTALL/VERIFY titles to v2.1.0
+- Update CHANGELOG.md [skip ci]
+- Plugin-first install instructions on the docs landing page
 
 ### Features
 
