@@ -1,4 +1,4 @@
-# OSINT Skill v2.0.0 — Verification Checklist
+# OSINT Skill v2.1.0 — Verification Checklist
 
 Run after installation and after any upgrade. Every check names its expected result; a check that cannot run is a FAIL, not a skip.
 

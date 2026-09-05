@@ -1,4 +1,4 @@
-# OSINT Skill v2.0.0 — Installation Guide
+# OSINT Skill v2.1.0 — Installation Guide
 
 A self-contained Claude skill. No required dependencies — install the directory, and it works with whatever your session already has.
 
