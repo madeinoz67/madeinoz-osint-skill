@@ -1,11 +1,12 @@
 {
   "name": "madeinoz-osint-skill",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "scripts": {
     "lint": "eslint .",
     "typecheck": "cd src/tools && tsc --noEmit",
     "build": "cd src/tools && bun build ./index.ts --outdir ../../dist --target bun",
+    "generate:agents": "bun run src/tools/generate-agents.ts",
     "test": "cd src/tools && CI=true bun test"
   },
   "dependencies": {
