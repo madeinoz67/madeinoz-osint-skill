@@ -3,9 +3,9 @@ task: "ImageRecon pinned-agent prototype — generated agents, allowlists, dual-
 slug: 20260907-093000_imagerecon-pinned-agent-prototype
 project: madeinoz-osint-skill
 phase: climbing
-progress: 7/15
+progress: 13/15
 started: 2026-09-07T09:30:00+08:00
-updated: 2026-09-07T09:35:00+08:00
+updated: 2026-09-07T14:40:00+08:00
 principal_stated_goal: "should we be using specific claude agents with the relevant skills for this skill"
 principal_stated_goal_source: prompt
 principal_stated_goal_signal: 4
@@ -89,16 +89,16 @@ A user installs the plugin and ImageRecon dispatch runs as a pinned, least-privi
 ### F0 · Cross-cutting — CI, versioning, regression floor
 Why: the prototype's whole value is that both doors stay provably intact; without the CI parity spine the agent layer is ungated surface.
 
-- [ ] ISC-1: CI regenerates `agents/` and fails on any diff (generator output is committed truth).
-- [ ] ISC-2: Version 2.2.0 aligned across all four version homes.
-- [ ] ISC-3: Anti: every existing CI gate stays green; no regression to v2.1.0 behavior.
+- [x] ISC-1: CI regenerates `agents/` and fails on any diff (generator output is committed truth).
+- [x] ISC-2: Version 2.2.0 aligned across all four version homes.
+- [x] ISC-3: Anti: every existing CI gate stays green; no regression to v2.1.0 behavior.
 
 ### F1 · Generated agent definitions
 Why: six personas become deterministic, allowlisted agent types via a generator — the single-source move that retires the drift and token objections at once.
 
 - [x] ISC-4: `src/tools/generate-agents.ts` (bun) emits `osint-collector/linker/auditor/shadow/analyst/verifier` with valid frontmatter from AgentProfiles.yaml.
 - [x] ISC-5: The generated body's persona block is a byte-parity projection of the YAML persona (one definition, two projections).
-- [ ] ISC-6: The plugin bundles `agents/`; existing manifest gates pass.
+- [x] ISC-6: The plugin bundles `agents/`; existing manifest gates pass.
 
 ### F2 · Probe-and-fallback dispatch contract
 Why: one documented contract replaces per-dispatch improvisation — prefer pinned types when the session lists them, else compose the inline persona, and log which mode fired so silent fallback cannot hide.
@@ -112,14 +112,14 @@ Why: one documented contract replaces per-dispatch improvisation — prefer pinn
 Why: the allowlist is the actual deliverable — enforcement, not suggestion — and the fixture is its falsifier.
 
 - [x] ISC-11: Static assertion: all six tools lists exclude Write/Edit/NotebookEdit and persistence tools.
-- [ ] ISC-12: Poisoned-EXIF fixture (image with EXIF UserComment carrying write/run instructions) proves the pinned verifier structurally cannot persist the instructed write.
+- [x] ISC-12: Poisoned-EXIF fixture (image with EXIF UserComment carrying write/run instructions) proves the pinned verifier structurally cannot persist the instructed write.
 - [x] ISC-13: Anti: no collection agent holds `muninn_*`, Write, or any persistence path; the memory adapter runs in the main session.
 
 ### F4 · Disclosure
 Why: two tiers that behave differently must say so — the symlink door's residual risk is documented, never assumed away.
 
 - [x] ISC-14: SKILL.md documents the fallback as degraded security posture.
-- [ ] ISC-15: INSTALL.md + README disclose the two-tier posture and the Bash residual risk.
+- [x] ISC-15: INSTALL.md + README disclose the two-tier posture and the Bash residual risk.
 
 ## Decisions
 
@@ -144,3 +144,9 @@ Why: two tiers that behave differently must say so — the symlink door's residu
 - ISC-5: generate-agents.test.ts projection-parity pass — persona block verbatim from AgentProfiles.yaml (455 expect calls in suite)
 - ISC-11: allowlist tests pass — all six ⊆ {Read, Grep, Glob, WebSearch, WebFetch, Bash}; Bash only in osint-verifier
 - ISC-13: persistence-exclusion test pass — no Write/Edit/NotebookEdit/Task/mcp__ in any committed definition
+- ISC-1: local zero-diff gate green — regenerate vs staged agents/ byte-identical; CI agent-definitions job added (commit 417a04a)
+- ISC-2: grep 2.2.0 — plugin.json, package.json, README (frontmatter/H1/changelog), INSTALL.md:1, VERIFY.md:1
+- ISC-3: bun run lint / typecheck / test (CI=true) all green locally — 25 pass / 0 fail; GitHub runner proof at push
+- ISC-6: agents/ at plugin root (marketplace source ./) + CI frontmatter validation + claude plugin validate step
+- ISC-12: poisoned-exif-fixture.test.ts 4/4 — real JPEG (sharp-decoded), payload verbatim, persistence instructions structurally unactable, Bash residual asserted disclosed
+- ISC-15: Security posture sections at README:285 + INSTALL:39; content asserted by passing fixture test
