@@ -1,4 +1,4 @@
-# OSINT Skill v2.1.0 — Installation Guide
+# OSINT Skill v2.2.0 — Installation Guide
 
 A self-contained Claude skill. No required dependencies — install the directory, and it works with whatever your session already has.
 
@@ -34,7 +34,16 @@ cp -r madeinoz-osint-skill/skills/osint ~/.claude/skills/osint
 
 Restart your Claude session (or start a new one) and confirm the skill loads — say "find all accounts for username johndoe" and watch for OSINT workflow dispatch, or check that `osint` appears in your skills list.
 
-The entire skill is the `skills/osint/` directory: `SKILL.md`, 17 workflows, `AgentProfiles.yaml`, and `References/`. The plugin packaging (`.claude-plugin/plugin.json` + `marketplace.json`) wraps that same directory — nothing else ships.
+The entire skill is the `skills/osint/` directory: `SKILL.md`, 17 workflows, `AgentProfiles.yaml`, and `References/`. The plugin packaging (`.claude-plugin/plugin.json` + `marketplace.json`) wraps that same directory plus six pinned agent definitions in `agents/` — nothing else ships.
+
+## Security posture
+
+The two install paths are **not** security-equivalent — pick Option A if the difference matters to you:
+
+- **Option A (plugin) — pinned, allowlisted agents.** The plugin ships six agent definitions generated from `AgentProfiles.yaml`. Collection agents structurally cannot write files or touch memory tools (`Read`/`Grep`/`Glob`/`WebSearch`/`WebFetch` only), collected content is treated as untrusted data, never as instructions, and findings return to the main session — the main session runs the memory adapter. One disclosed residual: `osint-verifier` keeps `Bash` because the image-forensics utilities require it.
+- **Options B/C (symlink/copy) — persona mode on generic agents.** Dispatch composes the persona onto a generic agent holding the host's full tool set: a degraded security posture, not an equivalent mode. Skills cannot transport agent types, so this is permanent for these installs.
+
+CI gates the boundary on every push: `agents/` must regenerate byte-identically, the allowlists are asserted against the committed definitions, and a poisoned-EXIF fixture proves the payload's file-write and memory-persistence instructions have no grantable tool.
 
 ## Optional backends
 
@@ -55,7 +64,7 @@ The repo's `src/tools/` carries bun-powered utilities (OCR, perceptual hashing, 
 ```bash
 cd madeinoz-osint-skill
 bun install
-bun run test        # expect 15/15 passing
+bun run test        # expect 25/25 passing
 bun run typecheck   # expect clean
 ```
 

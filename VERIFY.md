@@ -1,4 +1,4 @@
-# OSINT Skill v2.1.0 — Verification Checklist
+# OSINT Skill v2.2.0 — Verification Checklist
 
 Run after installation and after any upgrade. Every check names its expected result; a check that cannot run is a FAIL, not a skip.
 
@@ -57,7 +57,7 @@ In a fresh Claude session:
 ```bash
 bun install
 bun run lint && bun run typecheck && bun run test
-# expect: lint clean, typecheck clean, 15/15 tests
+# expect: lint clean, typecheck clean, 25/25 tests
 ```
 
 ## 6. CI parity (repo contributors)

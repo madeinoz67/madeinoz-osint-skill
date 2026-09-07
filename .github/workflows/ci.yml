@@ -93,6 +93,46 @@ jobs:
           print('✅ PASS: plugin manifests valid —', p['name'], p['version'])
           EOF
 
+      - name: Validate plugin agent definitions
+        run: |
+          python3 - <<'EOF'
+          import os, re
+
+          agents_dir = 'agents'
+          assert os.path.isdir(agents_dir), 'plugin must ship an agents/ directory'
+          files = sorted(f for f in os.listdir(agents_dir) if f.endswith('.md'))
+          assert len(files) == 6, f'expected exactly six agent definitions, found {len(files)}: {files}'
+
+          for fname in files:
+              path = os.path.join(agents_dir, fname)
+              lines = open(path, encoding='utf-8').read().splitlines()
+              assert lines and lines[0] == '---', f'{fname}: frontmatter must open with --- on line 1'
+              try:
+                  end = lines.index('---', 1)
+              except ValueError:
+                  raise AssertionError(f'{fname}: frontmatter block is never closed')
+
+              fm = {}
+              for line in lines[1:end]:
+                  if ': ' in line:
+                      key, value = line.split(': ', 1)
+                      fm[key.strip()] = value.strip()
+
+              name = fm.get('name')
+              assert name and re.fullmatch(r'[a-z0-9]+(-[a-z0-9]+)*', name), \
+                  f'{fname}: name must be lowercase-hyphens, got {name!r}'
+              description = fm.get('description')
+              assert description and description.strip(), f'{fname}: description is required'
+              tools = fm.get('tools')
+              assert tools, f'{fname}: tools is required'
+              assert all(re.fullmatch(r'[A-Za-z0-9_]+', t.strip()) and t.strip()
+                         for t in tools.split(',')), \
+                  f'{fname}: tools must be a comma-separated string of tool names, got {tools!r}'
+              print(f'✅ {fname} — name={name}, tools={tools}')
+
+          print('✅ PASS: plugin ships six valid agent definitions')
+          EOF
+
       - name: Check all 17 workflows exist
         run: |
           WORKFLOWS="UsernameRecon DomainRecon SocialCapture InfraMapping EntityLinking TimelineAnalysis TargetProfile IntelReport CompanyProfile CorporateStructure FinancialRecon CompetitorAnalysis RiskAssessment EmailRecon PhoneRecon ImageRecon InvestigationOrchestrator"
@@ -130,6 +170,57 @@ jobs:
               echo "⚠️  docs/$doc missing"
             fi
           done
+
+  agent-definitions:
+    name: Agent Definitions
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Regenerate agents and fail on drift
+        run: |
+          bun run generate:agents
+          if git diff --exit-code agents/; then
+            echo "✅ PASS: agents/ is byte-identical to generator output"
+          else
+            echo "❌ FAIL: agents/ differs from generator output — run 'bun run generate:agents' and commit the result"
+            exit 1
+          fi
+
+      # Strongest unauthenticated host-side check: run the real Claude Code
+      # plugin validator (offline, no credentials) over the plugin shape.
+      - name: Install Claude Code CLI
+        run: |
+          # bun's global installer blocks postinstall scripts until trusted
+          bun install -g @anthropic-ai/claude-code
+          bun pm -g trust @anthropic-ai/claude-code
+          bun install -g @anthropic-ai/claude-code
+          claude --version
+
+      - name: Validate plugin agents with the Claude Code validator
+        run: |
+          # `claude plugin validate` inspects agents/ only for a plugin-only
+          # directory — a marketplace.json beside plugin.json redirects the
+          # validation to the marketplace manifest instead. Stage a
+          # plugin-only view of the repo.
+          STAGE="$(mktemp -d)/plugin"
+          mkdir -p "$STAGE/.claude-plugin" "$STAGE/agents"
+          cp .claude-plugin/plugin.json "$STAGE/.claude-plugin/"
+          cp agents/*.md "$STAGE/agents/"
+          # Fresh HOME: the validator must run fully offline and unauthenticated.
+          FRESH_HOME="$(mktemp -d)"
+          HOME="$FRESH_HOME" claude plugin validate "$STAGE" --strict
 
   security:
     name: Security Scan
@@ -184,7 +275,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint, security, typescript-tests]
+    needs: [lint, security, typescript-tests, agent-definitions]
     permissions:
       contents: read
     steps:

@@ -1,6 +1,6 @@
 ---
 name: OSINT Skill
-version: 2.1.0
+version: 2.2.0
 author: madeinoz
 description: AI-powered Open Source Intelligence collection and analysis with pluggable memory persistence and iterative pivot-driven investigations
 type: skill
@@ -13,7 +13,7 @@ keywords: [osint, intelligence, reconnaissance, investigation, social-media, dom
   <img src="docs/assets/header.png" alt="OSINT Intelligence Gathering" width="100%">
 </p>
 
-# OSINT Skill v2.1.0
+# OSINT Skill v2.2.0
 
 > AI-powered Open Source Intelligence collection and analysis with **iterative pivot-driven investigations** and pluggable memory persistence (MuninnDB preferred, local files otherwise)
 
@@ -108,9 +108,11 @@ No more scattered notes across sessions. Your investigations build on each other
 | Email Reconnaissance | `Workflows/EmailRecon.md` | Email investigation, breach checking |
 | Phone Reconnaissance | `Workflows/PhoneRecon.md` | Phone number lookup, validation |
 | Image Reconnaissance | `Workflows/ImageRecon.md` | Image metadata, forensics, reverse search |
+| **Pinned agent definitions** | `agents/osint-*.md` | **Six allowlisted collection agents generated from AgentProfiles.yaml (plugin installs)** |
 
 **Summary:**
 - **Skill directory:** `skills/osint/` (1 SKILL.md + 17 workflows + AgentProfiles + References — the entire installable skill)
+- **Plugin agents:** `agents/` (six pinned definitions — plugin installs only; see [Security posture](#security-posture))
 - **Optional utilities:** `src/tools/` (bun-powered image forensics)
 - **Dependencies:** none required — MuninnDB MCP, Bright Data MCP, and browser automation are optional enhancements
 
@@ -277,6 +279,18 @@ ln -s "$(pwd)/madeinoz-osint-skill/skills/osint" ~/.claude/skills/osint
 ```
 
 Then verify with the `VERIFY.md` checklist.
+
+---
+
+## Security posture
+
+The two install paths dispatch differently, and they are **not** security-equivalent:
+
+- **Plugin installs get allowlisted pinned agents.** The plugin ships six agent definitions (`agents/osint-*.md`, generated from `AgentProfiles.yaml` — regeneration must be byte-identical, gated in CI). Collection agents structurally cannot write files or touch memory tools: their tool allowlists carry no Write/Edit, no `muninn_*`, no persistence path, and collected content is treated as untrusted data, never as instructions. Findings return to the main session as the agent's final report — the main session runs the memory adapter.
+- **Plain-skill installs (symlink/copy) run persona mode on generic agents** with the host's full tool set. That is a **degraded security posture**, not an equivalent mode: an instruction embedded in collected content (a scraped profile, an EXIF payload) can reach every host tool. Skills cannot transport agent types, so this tier is permanent for symlink installs — the plugin ships the definitions.
+- **Disclosed residual:** `osint-verifier` retains `Bash` — the image-forensics utilities require it. Command execution via a poisoned payload in pinned mode is therefore still possible on that one agent; it is a disclosed residual risk, narrowed by the allowlist, not eliminated. CI proves the rest structurally: a poisoned-EXIF fixture asserts the payload's file-write and memory-persistence instructions have no grantable tool in the committed verifier allowlist.
+
+See `skills/osint/SKILL.md` § Agent Dispatch for the probe-and-fallback contract.
 
 ---
 
@@ -483,6 +497,12 @@ See `docs/` directory for detailed user guides:
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
+
+### v2.2.0 (September 2026)
+- **Pinned, allowlisted agents (plugin installs)** — six agent definitions (`agents/osint-*.md`) generated from `AgentProfiles.yaml` (`bun run generate:agents`; CI fails on any drift). Collection agents cannot write files or touch memory tools; findings return to the main session. `osint-verifier` retains Bash for image forensics as a disclosed residual.
+- **Probe-and-fallback dispatch** — SKILL.md § Agent Dispatch prefers pinned agent types when the session lists them, else composes the persona fallback (permanent for plain-skill installs, disclosed as a degraded security posture). ImageRecon dispatches pinned; rollout beyond it stays gated.
+- **Poisoned-EXIF fixture** — a committed fixture image carrying an EXIF UserComment injection payload backs a structural CI assertion: the payload's file-write and memory-persistence instructions have no grantable tool in the pinned verifier allowlist.
+- **CI** — new Agent Definitions job (zero-diff regeneration gate + the real Claude Code plugin validator, run offline and unauthenticated) and plugin-agents packaging validation.
 
 ### v2.1.0 (September 2026)
 - **Claude Code plugin packaging** — `.claude-plugin/plugin.json` + `marketplace.json`; install via `/plugin marketplace add madeinoz67/madeinoz-osint-skill` + `/plugin install madeinoz-osint@madeinoz-osint-marketplace`; skill nests at `skills/osint/`; skills-dir symlink remains as fallback
