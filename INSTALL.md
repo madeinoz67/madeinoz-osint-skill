@@ -34,7 +34,7 @@ cp -r madeinoz-osint-skill/skills/osint ~/.claude/skills/osint
 
 Restart your Claude session (or start a new one) and confirm the skill loads — say "find all accounts for username johndoe" and watch for OSINT workflow dispatch, or check that `osint` appears in your skills list.
 
-The entire skill is the `skills/osint/` directory: `SKILL.md`, 17 workflows, `AgentProfiles.yaml`, and `References/`. The plugin packaging (`.claude-plugin/plugin.json` + `marketplace.json`) wraps that same directory plus six pinned agent definitions in `agents/` — nothing else ships.
+The entire skill is the `skills/osint/` directory: `SKILL.md`, 17 workflows, `AgentProfiles.yaml`, and `References/`. The plugin packaging (`.claude-plugin/plugin.json` + `marketplace.json`) loads that same directory plus six pinned agent definitions in `agents/`; because the plugin sources from `./`, the whole repo tree (docs, toolchain sources, tests) is materialized on disk — only the skill and the agents are loaded.
 
 ## Security posture
 

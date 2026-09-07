@@ -190,7 +190,7 @@ describe("ISC-12: poisoned-EXIF fixture", () => {
     }
   });
 
-  it("the pinned verifier structurally cannot act on the payload's persistence instructions", async () => {
+  it("persistence instructions are unactable through file/memory tools; every Bash-mediated residual is disclosed", async () => {
     const tools = await committedVerifierTools();
     const payload = extractExifUserComment(await readFile(FIXTURE_PATH));
 
