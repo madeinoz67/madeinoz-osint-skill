@@ -5,7 +5,7 @@ project: madeinoz-osint-skill
 phase: climbing
 progress: 13/15
 started: 2026-09-07T09:30:00+08:00
-updated: 2026-09-07T14:40:00+08:00
+updated: 2026-09-07T15:05:00+08:00
 principal_stated_goal: "should we be using specific claude agents with the relevant skills for this skill"
 principal_stated_goal_source: prompt
 principal_stated_goal_signal: 4
@@ -112,7 +112,7 @@ Why: one documented contract replaces per-dispatch improvisation — prefer pinn
 Why: the allowlist is the actual deliverable — enforcement, not suggestion — and the fixture is its falsifier.
 
 - [x] ISC-11: Static assertion: all six tools lists exclude Write/Edit/NotebookEdit and persistence tools.
-- [x] ISC-12: Poisoned-EXIF fixture (image with EXIF UserComment carrying write/run instructions) proves the pinned verifier structurally cannot persist the instructed write.
+- [x] ISC-12: Poisoned-EXIF fixture proves the payload's file-write and memory-persistence instructions are unactable through the verifier's file/memory tools, and that the Bash-mediated residual (command execution, incl. file writes via shell) is disclosed in README + INSTALL. [reworded 2026-09-07 — the original closed wording overclaimed the boundary for the one Bash-holding agent; Max second-look finding HIGH-1]
 - [x] ISC-13: Anti: no collection agent holds `muninn_*`, Write, or any persistence path; the memory adapter runs in the main session.
 
 ### F4 · Disclosure
@@ -131,6 +131,8 @@ Why: two tiers that behave differently must say so — the symlink door's residu
 - 2026-09-07 09:30 — Branch strategy: feature branch, CI green on both paths before main; release/tag principal-gated (v2.0.0 tag precedent).
 - 2026-09-07 10:05 — Shared working-vault mode (principal ask) evaluated, NOT in prototype scope: T1 = orchestrator-minted `wf-osint-<slug>` vault as agent-shared scratch (vault param; canonical archive at close; prompt-level scoping disclosed), T2 = second muninndb MCP instance authenticated with the minted `cap_` token (credential-scoped; injection lands in disposable vault), T3 = claim/lease lead queue + Hebbian (#597 vision). Deferred to Remaining Work — gated on rollout metrics.
 
+- 2026-09-07 15:05 — Second look (Max, fresh-context top-rung, read-only) returned FIX-FIRST; all findings dispositioned. ADOPTED+FIXED: HIGH-1 claim-sentence overclaim (verifier's Bash residual carved into SKILL.md security posture, ISC-12 reworded, fixture test retitled); HIGH-2 silent-fallback shape (pinned-dispatch example with exact type string + "on dispatch error: stop and report, never fall back mid-run" rule added to the contract); MEDIUM-4 pre-existing broken symlink path in SKILL.md:14; LOW-5 VERIFY.md validate-sentence corrected + marketplace top-level description added (--strict now passes, probed); LOW-6 tools allowlist moved into AgentProfiles.yaml per-persona (generator validates the invariant loudly); LOW-7 INSTALL "nothing else ships" reworded. ACCEPTED: MEDIUM-3 (deferral load-bearing — merge remains principal-gated; version 2.2.0 stays in-tree until push). NOTED: INFO-8 zero-diff untracked-file hole closed by the ==6 count assert; INFO-9 fixture not circular (property test on committed artifacts). Unverified-offline items stay parked under the ISC-8/9 decision.
+- 2026-09-07 15:05 — Remediation commit: regenerated agents/ (tools from YAML + residual-aware standing instructions), gates 25/0 green, claude plugin validate --strict passes.
 ## Remaining Work
 
 - [ ] Shared working-vault memory mode (MuninnDB `wf-osint-*` vaults as live investigation scratch for parallel agents) — waits on prototype rollout metrics; tiered design in Decisions 2026-09-07 (T1 parameter-scoped scratch, T2 cap_-scoped MCP instance, T3 claim/lease queue).

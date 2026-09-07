@@ -85,7 +85,7 @@ print('plugin manifests OK:', p['name'], p['version'])
 EOF
 ```
 
-If you have the Claude CLI locally: `claude plugin validate .` (add `--strict` in CI-minded runs) — checks the manifests plus SKILL.md frontmatter.
+If you have the Claude CLI locally: `claude plugin validate .` validates the marketplace manifest at repo root (with `--strict` it also requires the marketplace description — present since v2.2.0). It does not inspect `SKILL.md` or `agents/`; the CI job's frontmatter validation and the bun test suite are the authoritative checks for those.
 
 Live install smoke (fresh session):
 

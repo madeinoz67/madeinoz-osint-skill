@@ -1,5 +1,6 @@
 {
   "name": "madeinoz-osint-marketplace",
+  "description": "Single-plugin marketplace for the MadeInOz OSINT Skill",
   "owner": {
     "name": "Stephen Eaton"
   },
