@@ -5,7 +5,7 @@ project: madeinoz-osint-skill
 phase: climbing
 progress: 13/15
 started: 2026-09-07T09:30:00+08:00
-updated: 2026-09-07T15:05:00+08:00
+updated: 2026-09-08T10:20:00+08:00
 principal_stated_goal: "should we be using specific claude agents with the relevant skills for this skill"
 principal_stated_goal_source: prompt
 principal_stated_goal_signal: 4
@@ -133,6 +133,8 @@ Why: two tiers that behave differently must say so — the symlink door's residu
 
 - 2026-09-07 15:05 — Second look (Max, fresh-context top-rung, read-only) returned FIX-FIRST; all findings dispositioned. ADOPTED+FIXED: HIGH-1 claim-sentence overclaim (verifier's Bash residual carved into SKILL.md security posture, ISC-12 reworded, fixture test retitled); HIGH-2 silent-fallback shape (pinned-dispatch example with exact type string + "on dispatch error: stop and report, never fall back mid-run" rule added to the contract); MEDIUM-4 pre-existing broken symlink path in SKILL.md:14; LOW-5 VERIFY.md validate-sentence corrected + marketplace top-level description added (--strict now passes, probed); LOW-6 tools allowlist moved into AgentProfiles.yaml per-persona (generator validates the invariant loudly); LOW-7 INSTALL "nothing else ships" reworded. ACCEPTED: MEDIUM-3 (deferral load-bearing — merge remains principal-gated; version 2.2.0 stays in-tree until push). NOTED: INFO-8 zero-diff untracked-file hole closed by the ==6 count assert; INFO-9 fixture not circular (property test on committed artifacts). Unverified-offline items stay parked under the ISC-8/9 decision.
 - 2026-09-07 15:05 — Remediation commit: regenerated agents/ (tools from YAML + residual-aware standing instructions), gates 25/0 green, claude plugin validate --strict passes.
+- 2026-09-08 10:20 — Max re-review of 9be84cf returned SHIP: all nine findings RESOLVED, zero regressions, gates independently reproduced (lint/tsc/25-0, --strict exit 0). Three remaining stragglers were his own one-line prescriptions (SKILL.md "cannot persist anything" qualified; dispatch-example prompt reworded; INSTALL parenthetical names the five non-Bash agents) plus two guard-rot tests (named_agents key-set equality; negative-case asserting the generator throws on Bash-to-non-verifier). Applied in c705b35; suite now 27/0.
+- 2026-09-08 10:20 — Principal standing order "push it once max is clear" — condition met on SHIP. Branch feat/imagerecon-pinned-agents pushed to origin (417a04a, 06bd0a7, 9be84cf, c705b35). First real-runner execution of the new CI jobs (incl. the Claude CLI install + plugin-validate steps) is now in flight; the ISC-3/ISC-1/ISC-6 GitHub-runner proof lands with that run. ISC-8/9 still await the principal's e2e-shape ruling; merge to main gated on CI green.
 ## Remaining Work
 
 - [ ] Shared working-vault memory mode (MuninnDB `wf-osint-*` vaults as live investigation scratch for parallel agents) — waits on prototype rollout metrics; tiered design in Decisions 2026-09-07 (T1 parameter-scoped scratch, T2 cap_-scoped MCP instance, T3 claim/lease queue).
