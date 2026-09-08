@@ -5,7 +5,7 @@ project: madeinoz-osint-skill
 phase: climbing
 progress: 13/15
 started: 2026-09-07T09:30:00+08:00
-updated: 2026-09-08T10:20:00+08:00
+updated: 2026-09-08T22:40:00+08:00
 principal_stated_goal: "should we be using specific claude agents with the relevant skills for this skill"
 principal_stated_goal_source: prompt
 principal_stated_goal_signal: 4
@@ -135,6 +135,7 @@ Why: two tiers that behave differently must say so — the symlink door's residu
 - 2026-09-07 15:05 — Remediation commit: regenerated agents/ (tools from YAML + residual-aware standing instructions), gates 25/0 green, claude plugin validate --strict passes.
 - 2026-09-08 10:20 — Max re-review of 9be84cf returned SHIP: all nine findings RESOLVED, zero regressions, gates independently reproduced (lint/tsc/25-0, --strict exit 0). Three remaining stragglers were his own one-line prescriptions (SKILL.md "cannot persist anything" qualified; dispatch-example prompt reworded; INSTALL parenthetical names the five non-Bash agents) plus two guard-rot tests (named_agents key-set equality; negative-case asserting the generator throws on Bash-to-non-verifier). Applied in c705b35; suite now 27/0.
 - 2026-09-08 10:20 — Principal standing order "push it once max is clear" — condition met on SHIP. Branch feat/imagerecon-pinned-agents pushed to origin (417a04a, 06bd0a7, 9be84cf, c705b35). First real-runner execution of the new CI jobs (incl. the Claude CLI install + plugin-validate steps) is now in flight; the ISC-3/ISC-1/ISC-6 GitHub-runner proof lands with that run. ISC-8/9 still await the principal's e2e-shape ruling; merge to main gated on CI green.
+- 2026-09-08 22:40 — CI green on origin (4d8375d): all six jobs success, including the Agent Definitions job's first passing runner execution. Runner proof for ISC-1/3/6 upgraded from local evidence. Outstanding: ISC-8/9 (principal's e2e-shape ruling) and the merge-to-main decision.
 ## Remaining Work
 
 - [ ] Shared working-vault memory mode (MuninnDB `wf-osint-*` vaults as live investigation scratch for parallel agents) — waits on prototype rollout metrics; tiered design in Decisions 2026-09-07 (T1 parameter-scoped scratch, T2 cap_-scoped MCP instance, T3 claim/lease queue).
@@ -148,9 +149,9 @@ Why: two tiers that behave differently must say so — the symlink door's residu
 - ISC-5: generate-agents.test.ts projection-parity pass — persona block verbatim from AgentProfiles.yaml (455 expect calls in suite)
 - ISC-11: allowlist tests pass — all six ⊆ {Read, Grep, Glob, WebSearch, WebFetch, Bash}; Bash only in osint-verifier
 - ISC-13: persistence-exclusion test pass — no Write/Edit/NotebookEdit/Task/mcp__ in any committed definition
-- ISC-1: local zero-diff gate green — regenerate vs staged agents/ byte-identical; CI agent-definitions job added (commit 417a04a)
+- ISC-1: runner-proven — CI run 34238864540 (4d8375d): Agent Definitions job green (regenerate + zero-diff + frontmatter validation); first attempt c705b35 failed on a bun-trust exit-semantics step bug, fixed 4d8375d
 - ISC-2: grep 2.2.0 — plugin.json, package.json, README (frontmatter/H1/changelog), INSTALL.md:1, VERIFY.md:1
-- ISC-3: bun run lint / typecheck / test (CI=true) all green locally — 25 pass / 0 fail; GitHub runner proof at push
-- ISC-6: agents/ at plugin root (marketplace source ./) + CI frontmatter validation + claude plugin validate step
+- ISC-3: runner-proven — CI 4d8375d: Lint, OSINT Skill Validation, Security Scan, TypeScript Tests, Build all success; suite now 27/0
+- ISC-6: runner-proven — CI 4d8375d Agent Definitions job: staged plugin-only view passed `claude plugin validate` ("✔ Validation passed")
 - ISC-12: poisoned-exif-fixture.test.ts 4/4 — real JPEG (sharp-decoded), payload verbatim, persistence instructions structurally unactable, Bash residual asserted disclosed
 - ISC-15: Security posture sections at README:285 + INSTALL:39; content asserted by passing fixture test
