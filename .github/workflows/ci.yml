@@ -202,10 +202,11 @@ jobs:
       # plugin validator (offline, no credentials) over the plugin shape.
       - name: Install Claude Code CLI
         run: |
-          # bun's global installer blocks postinstall scripts until trusted
           bun install -g @anthropic-ai/claude-code
-          bun pm -g trust @anthropic-ai/claude-code
-          bun install -g @anthropic-ai/claude-code
+          # Trust is only needed when bun blocks postinstall scripts; when the
+          # package is already trusted (or has none to run) bun exits 1 —
+          # tolerate that, the binary is what matters.
+          bun pm -g trust @anthropic-ai/claude-code || true
           claude --version
 
       - name: Validate plugin agents with the Claude Code validator
