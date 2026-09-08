@@ -16,7 +16,7 @@
  */
 
 import { describe, it, expect } from "bun:test";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { parse } from "yaml";
@@ -80,6 +80,30 @@ describe("generate-agents (ISC-4: generation)", () => {
         const committed = await readFile(join(AGENTS_DIR, `osint-${persona}.md`), "utf8");
         expect(regenerated).toBe(committed);
       }
+    });
+  });
+
+  it("AgentProfiles.yaml named_agents key set is exactly the six personas (no silent extras)", async () => {
+    const doc = parse(await readFile(PROFILES_PATH, "utf8")) as { named_agents: Record<string, unknown> };
+    expect(Object.keys(doc.named_agents).sort()).toEqual([...PERSONA_ORDER].sort());
+  });
+});
+
+describe("generate-agents validation (guard against silent rot)", () => {
+  it("rejects a YAML grant of Bash to a non-verifier persona (validation is loud)", async () => {
+    await withTempDir(async (dir) => {
+      const yaml = await readFile(PROFILES_PATH, "utf8");
+      // First occurrence of the base tools line is the collector's.
+      const poisoned = yaml.replace(
+        "tools: [Read, Grep, Glob, WebSearch, WebFetch]",
+        "tools: [Read, Grep, Glob, WebSearch, WebFetch, Bash]",
+      );
+      expect(poisoned).not.toBe(yaml);
+      const badPath = join(dir, "bad-profiles.yaml");
+      await writeFile(badPath, poisoned, "utf8");
+      await expect(generateAgents({ profilesPath: badPath, outDir: join(dir, "out") })).rejects.toThrow(
+        "Bash is verifier-only",
+      );
     });
   });
 });
