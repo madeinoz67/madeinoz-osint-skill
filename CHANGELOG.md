@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Close 13/15 ISA claims after independent verification
 - ISA records re-review SHIP verdict, straggler fixes, and branch push
 - ISA records runner-proven CI green (4d8375d)
+- Update CHANGELOG.md [skip ci]
 
 ### Features
 
@@ -26,6 +27,7 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous
 
 - Bump @eslint/js from 9.39.2 to 9.39.5 (#31)
+- Bump @types/bun from 1.4.0 to 1.4.1 (#32)
 
 ### Ci
 
