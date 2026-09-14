@@ -4,10 +4,24 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Bug Fixes
+
+- Second-look remediation — claim honesty, failure branch, YAML allowlist source
+- Max re-review stragglers — final claim honesty + guard-rot tests
+- Tolerate bun pm trust exit 1 when package already trusted
+
 ### Documentation
 
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md for v2.1.0 [skip ci]
+- Update CHANGELOG.md [skip ci]
+- Close 13/15 ISA claims after independent verification
+- ISA records re-review SHIP verdict, straggler fixes, and branch push
+- ISA records runner-proven CI green (4d8375d)
+
+### Features
+
+- Pinned-agent prototype with tool-allowlist security boundary
 
 ### Miscellaneous
 
