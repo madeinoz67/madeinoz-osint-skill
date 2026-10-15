@@ -8,10 +8,14 @@ All notable changes to this project will be documented in this file.
 
 - Update CHANGELOG.md [skip ci]
 - Update CHANGELOG.md for v2.2.0 [skip ci]
+- Update CHANGELOG.md [skip ci]
 
 ### Miscellaneous
 
 - Bump sharp from 0.35.4 to 0.35.5 (#37)
+- Bump @types/bun from 1.4.1 to 1.4.3 (#33)
+- Bump yaml from 2.9.0 to 2.9.1 (#35)
+- Bump typescript-eslint from 8.69.0 to 8.71.1 (#39)
 ## [2.2.0] - 2026-09-14
 
 ### Bug Fixes
