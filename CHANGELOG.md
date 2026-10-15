@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Documentation
+
+- Update CHANGELOG.md [skip ci]
+- Update CHANGELOG.md for v2.2.0 [skip ci]
+
+### Miscellaneous
+
+- Bump sharp from 0.35.4 to 0.35.5 (#37)
 ## [2.2.0] - 2026-09-14
 
 ### Bug Fixes
